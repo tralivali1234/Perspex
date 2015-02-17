@@ -16,7 +16,7 @@ namespace Perspex.Markup.Pml.Parsers
         public static readonly Parser<Node> PropertySetter =
             from name in IdentifierParser.NamespacedIdentifier.Token()
             from colon in Parse.Char(':').Token()
-            from value in ExpressionParser.Expression.Token()
+            from value in ExpressionParser.Expression().Token()
             from end in Parse.String(";").Text().Or(Parse.LineEnd).Optional()
             select new PropertySetter { Name = name, Value = value };
 

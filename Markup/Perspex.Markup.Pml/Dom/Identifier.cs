@@ -9,7 +9,7 @@ namespace Perspex.Markup.Pml.Dom
     using System.Collections.Generic;
     using System.Linq;
 
-    public class Identifier : Expression
+    public class Identifier
     {
         public Identifier(string name)
         {

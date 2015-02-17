@@ -6,6 +6,7 @@
 namespace Perspex.Markup.Pml.UnitTests
 {
     using System.Linq;
+    using Microsoft.CodeAnalysis.CSharp;
     using Perspex.Markup.Pml.Dom;
     using Perspex.Markup.Pml.Parsers;
     using Sprache;
@@ -48,54 +49,6 @@ namespace Perspex.Markup.Pml.UnitTests
         }
 
         [Fact]
-        public void Boolean_Literal_Property_Value_Should_Be_Parsed()
-        {
-            var result = PmlParser.ParseMarkup("Root { Property1: true }");
-            var propertySet = result.RootNode.Children.First() as PropertySetter;
-            var literal = propertySet.Value as Literal;
-
-            Assert.NotNull(propertySet);
-            Assert.NotNull(literal);
-            Assert.Equal(true, literal.Value);
-        }
-
-        [Fact]
-        public void Integer_Literal_Property_Value_Should_Be_Parsed()
-        {
-            var result = PmlParser.ParseMarkup("Root { Property1: 42 }");
-            var propertySet = result.RootNode.Children.First() as PropertySetter;
-            var literal = propertySet.Value as Literal;
-
-            Assert.NotNull(propertySet);
-            Assert.NotNull(literal);
-            Assert.Equal(42.0, literal.Value);
-        }
-
-        [Fact]
-        public void Real_Literal_Property_Value_Should_Be_Parsed()
-        {
-            var result = PmlParser.ParseMarkup("Root { Property1: 42.12 }");
-            var propertySet = result.RootNode.Children.First() as PropertySetter;
-            var literal = propertySet.Value as Literal;
-
-            Assert.NotNull(propertySet);
-            Assert.NotNull(literal);
-            Assert.Equal(42.12, literal.Value);
-        }
-
-        [Fact]
-        public void String_Literal_Property_Value_Should_Be_Parsed()
-        {
-            var result = PmlParser.ParseMarkup("Root { Property1: \"hello\" }");
-            var propertySet = result.RootNode.Children.First() as PropertySetter;
-            var literal = propertySet.Value as Literal;
-
-            Assert.NotNull(propertySet);
-            Assert.NotNull(literal);
-            Assert.Equal("hello", literal.Value);
-        }
-
-        [Fact]
         public void Property_Setters_Can_Be_Separated_With_Semicolon()
         {
             var result = PmlParser.ParseMarkup("Root { Property1: 42; Property2: 24 }");
@@ -103,6 +56,42 @@ namespace Perspex.Markup.Pml.UnitTests
             Assert.Equal(2, result.RootNode.Children.Count());
             Assert.IsType<PropertySetter>(result.RootNode.Children.ElementAt(0));
             Assert.IsType<PropertySetter>(result.RootNode.Children.ElementAt(1));
+        }
+
+        [Fact]
+        public void Boolean_Literal_Property_Value_Should_Be_Parsed()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1: true }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+
+            Assert.Equal(SyntaxKind.TrueLiteralExpression, propertySet.Value.Expression.CSharpKind());
+        }
+
+        [Fact]
+        public void Integer_Literal_Property_Value_Should_Be_Parsed()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1: 42 }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+
+            Assert.Equal(SyntaxKind.NumericLiteralExpression, propertySet.Value.Expression.CSharpKind());
+        }
+
+        [Fact]
+        public void String_Literal_Property_Value_Should_Be_Parsed()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1: \"Hello World!\" }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+
+            Assert.Equal(SyntaxKind.StringLiteralExpression, propertySet.Value.Expression.CSharpKind());
+        }
+
+        [Fact]
+        public void Function_Call_Property_Value_Should_Be_Parsed()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1: Math.Sqrt(100) }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+
+            Assert.Equal(SyntaxKind.InvocationExpression, propertySet.Value.Expression.CSharpKind());
         }
 
         [Fact]

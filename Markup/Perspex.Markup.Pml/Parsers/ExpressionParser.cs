@@ -6,34 +6,47 @@
 
 namespace Perspex.Markup.Pml.Parsers
 {
-    using Perspex.Markup.Pml.Dom;
+    using System.Linq;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Sprache;
 
     public class ExpressionParser
     {
-        public static readonly Parser<Literal> BooleanLiteral = Parse
-            .String("true").Return(new Literal(true))
-            .Or(Parse.String("false").Return(new Literal(false)));
+        public static Parser<ExpressionStatementSyntax> Expression()
+        {
+            return input =>
+            {
+                if (!input.AtEnd)
+                {
+                    var expression = ParseExpression(input);
 
-        public static readonly Parser<Literal> NumericLiteral =
-            from integer in Parse.Digit.Many().Text()
-            from point in Parse.Char('.').Optional()
-            from fraction in Parse.Digit.Many().Text().Optional()
-            select new Literal(double.Parse(integer + point.GetOrDefault() + fraction.GetOrDefault()));
+                    if (expression != null)
+                    {
+                        var remainder = input;
 
-        public static readonly Parser<Literal> StringLiteral =
-            from open in Parse.Char('"')
-            from text in Parse.AnyChar.Except(Parse.Char('"')).Many().Text()
-            from close in Parse.Char('"')
-            select new Literal(text);
+                        for (int c = 0; c < expression.Span.Length; ++c)
+                        {
+                            remainder = remainder.Advance();
+                        }
 
-        public static readonly Parser<Literal> Literal =
-            BooleanLiteral
-            .Or(StringLiteral)
-            .Or(NumericLiteral);
+                        return Result.Success(expression, remainder);
+                    }
+                }
 
-        public static readonly Parser<Expression> Expression = 
-            Literal
-            .Or<Expression>(IdentifierParser.Identifier);
+                return Result.Failure<ExpressionStatementSyntax>(input, "Unexpected end of input", new[] { "Expression" });
+            };
+        }
+
+        private static ExpressionStatementSyntax ParseExpression(IInput input)
+        {
+            var text = input.Source.Substring(input.Position);
+            var options = new CSharpParseOptions(kind: SourceCodeKind.Interactive);
+            var compilation = CSharpSyntaxTree.ParseText(text, options).GetRoot();
+            var global = compilation?.DescendantNodes().FirstOrDefault() as GlobalStatementSyntax;
+            var expression = global?.DescendantNodes().FirstOrDefault() as ExpressionStatementSyntax;
+            return expression;
+        }
     }
 }

@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Perspex.Markup.Pml.Dom
 {
@@ -12,6 +13,6 @@ namespace Perspex.Markup.Pml.Dom
     {
         public Identifier Name { get; set; }
 
-        public Expression Value { get; set; }
+        public ExpressionStatementSyntax Value { get; set; }
     }
 }
