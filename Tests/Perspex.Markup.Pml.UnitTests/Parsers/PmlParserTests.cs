@@ -95,6 +95,15 @@ namespace Perspex.Markup.Pml.UnitTests
         }
 
         [Fact]
+        public void Lambda_Property_Value_Should_Be_Parsed()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1 = () => 100 }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+
+            Assert.Equal(SyntaxKind.ParenthesizedLambdaExpression, propertySet.Value.Expression.CSharpKind());
+        }
+
+        [Fact]
         public void Line_Not_ObjectDeclaration_Or_Property_Setter_Should_Throw_Exception()
         {
             Assert.Throws<ParseException>(() => PmlParser.ParseMarkup("Root { Invalid }"));
