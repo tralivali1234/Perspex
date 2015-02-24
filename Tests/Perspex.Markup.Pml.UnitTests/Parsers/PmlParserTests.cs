@@ -41,8 +41,8 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup(@"
                 Root {
-                    Property1: 1
-                    Foo.Property2: 2
+                    Property1= 1
+                    Foo.Property2 = 2
                 }");
 
             Assert.Equal(new[] { "Property1", "Foo.Property2" }, result.RootNode.Children.OfType<PropertySetter>().Select(x => x.Name.Name));
@@ -51,7 +51,7 @@ namespace Perspex.Markup.Pml.UnitTests
         [Fact]
         public void Property_Setters_Can_Be_Separated_With_Semicolon()
         {
-            var result = PmlParser.ParseMarkup("Root { Property1: 42; Property2: 24 }");
+            var result = PmlParser.ParseMarkup("Root { Property1 = 42; Property2 = 24 }");
 
             Assert.Equal(2, result.RootNode.Children.Count());
             Assert.IsType<PropertySetter>(result.RootNode.Children.ElementAt(0));
@@ -61,7 +61,7 @@ namespace Perspex.Markup.Pml.UnitTests
         [Fact]
         public void Boolean_Literal_Property_Value_Should_Be_Parsed()
         {
-            var result = PmlParser.ParseMarkup("Root { Property1: true }");
+            var result = PmlParser.ParseMarkup("Root { Property1 = true }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
 
             Assert.Equal(SyntaxKind.TrueLiteralExpression, propertySet.Value.Expression.CSharpKind());
@@ -70,7 +70,7 @@ namespace Perspex.Markup.Pml.UnitTests
         [Fact]
         public void Integer_Literal_Property_Value_Should_Be_Parsed()
         {
-            var result = PmlParser.ParseMarkup("Root { Property1: 42 }");
+            var result = PmlParser.ParseMarkup("Root { Property1 = 42 }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
 
             Assert.Equal(SyntaxKind.NumericLiteralExpression, propertySet.Value.Expression.CSharpKind());
@@ -79,7 +79,7 @@ namespace Perspex.Markup.Pml.UnitTests
         [Fact]
         public void String_Literal_Property_Value_Should_Be_Parsed()
         {
-            var result = PmlParser.ParseMarkup("Root { Property1: \"Hello World!\" }");
+            var result = PmlParser.ParseMarkup("Root { Property1 = \"Hello World!\" }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
 
             Assert.Equal(SyntaxKind.StringLiteralExpression, propertySet.Value.Expression.CSharpKind());
@@ -88,7 +88,7 @@ namespace Perspex.Markup.Pml.UnitTests
         [Fact]
         public void Function_Call_Property_Value_Should_Be_Parsed()
         {
-            var result = PmlParser.ParseMarkup("Root { Property1: Math.Sqrt(100) }");
+            var result = PmlParser.ParseMarkup("Root { Property1 = Math.Sqrt(100) }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
 
             Assert.Equal(SyntaxKind.InvocationExpression, propertySet.Value.Expression.CSharpKind());
