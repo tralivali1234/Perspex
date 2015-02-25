@@ -24,16 +24,21 @@ namespace Perspex.Markup.Pml.Parsers
         public static readonly Parser<PropertyValue> PropertyValue =
             InstantiationPropertyValue.Or(ExpressionPropertyValue);
 
+        public static readonly Parser<BindingMode> EqualsBindingMode =
+            Parse.Char('=').Return(BindingMode.None)
+            .Or(Parse.String("<=>").Return(BindingMode.TwoWay))
+            .Or(Parse.String("<=").Return(BindingMode.OneWay));
+
         public static readonly Parser<Node> PropertySetter =
             from name in IdentifierParser.NamespacedIdentifier.Token()
-            from colon in Parse.Char('=').Token()
+            from eq in EqualsBindingMode.Token()
             from value in PropertyValue.Token()
             from end in Parse.String(";").Text().Or(Parse.LineEnd).Optional()
-            select new PropertySetter { Name = name, Value = value };
+            select new PropertySetter { Name = name, Value = value, BindingMode = eq };
 
         public static Parser<ObjectInstantiation> ObjectInstantiation()
         {
-            return from name in IdentifierParser.Identifier.Token()
+            return from name in IdentifierParser.NamespacedIdentifier.Token()
                    from leftBrace in Parse.Char('{').Token()
                    from children in Children
                    from rightBrace in Parse.Char('}').Token()

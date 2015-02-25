@@ -6,12 +6,10 @@
 
 namespace Perspex.Markup.Pml.Dom
 {
-    public class PropertySetter : Node
+    public enum BindingMode
     {
-        public Identifier Name { get; set; }
-
-        public PropertyValue Value { get; set; }
-
-        public BindingMode BindingMode { get; set; }
+        None,
+        OneWay,
+        TwoWay,
     }
 }

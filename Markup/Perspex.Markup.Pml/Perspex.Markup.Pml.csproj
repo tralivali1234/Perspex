@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Dom\BindingMode.cs" />
     <Compile Include="Dom\ObjectInstantiationValue.cs" />
     <Compile Include="Dom\Identifier.cs" />
     <Compile Include="Dom\ExpressionValue.cs" />

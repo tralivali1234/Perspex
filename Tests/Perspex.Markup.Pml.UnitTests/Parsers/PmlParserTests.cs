@@ -29,6 +29,14 @@ namespace Perspex.Markup.Pml.UnitTests
         }
 
         [Fact]
+        public void Namespaced_Root_Node_Should_Have_Correct_Name()
+        {
+            var result = PmlParser.ParseMarkup("Namespace.Root { }");
+
+            Assert.Equal("Namespace.Root", result.RootNode.Type.Name);
+        }
+
+        [Fact]
         public void Child_Nodes_Should_Have_Correct_Names()
         {
             var result = PmlParser.ParseMarkup("Root { Child1 { } Child2 { } }");
@@ -116,6 +124,33 @@ namespace Perspex.Markup.Pml.UnitTests
             var value = propertySet.Value as ObjectInstantiationValue;
 
             Assert.Equal("Control", value.Instantiation.Type.Name);
+        }
+
+        [Fact]
+        public void Property_Set_With_Equals_Should_Have_BindingMode_None()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1 = 1 }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+
+            Assert.Equal(BindingMode.None, propertySet.BindingMode);
+        }
+
+        [Fact]
+        public void Property_Set_With_LtEquals_Should_Have_BindingMode_OneWay()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1 <= 1 }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+
+            Assert.Equal(BindingMode.OneWay, propertySet.BindingMode);
+        }
+
+        [Fact]
+        public void Property_Set_With_LtEqualsGt_Should_Have_BindingMode_TwoWay()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1 <=> 1 }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+
+            Assert.Equal(BindingMode.TwoWay, propertySet.BindingMode);
         }
 
         [Fact]
