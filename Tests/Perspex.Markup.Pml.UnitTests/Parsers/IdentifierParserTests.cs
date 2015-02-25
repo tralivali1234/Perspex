@@ -17,7 +17,7 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = IdentifierParser.Identifier.Parse("_Foo");
 
-            Assert.Equal("_Foo", result.Name);
+            Assert.Equal("_Foo", result);
         }
 
         [Fact]

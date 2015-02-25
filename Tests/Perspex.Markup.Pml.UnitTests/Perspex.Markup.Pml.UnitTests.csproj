@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler\PmlCompilerTests.cs" />
     <Compile Include="Parsers\IdentifierParserTests.cs" />
     <Compile Include="Parsers\PmlParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

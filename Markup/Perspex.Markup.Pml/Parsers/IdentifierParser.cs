@@ -39,12 +39,12 @@ namespace Perspex.Markup.Pml.Parsers
             .Or(CombiningCharacter)
             .Or(FormattingCharacter);
 
-        public static readonly Parser<Identifier> Identifier =
+        public static readonly Parser<string> Identifier =
             from start in IdentifierStart.Once().Text()
             from part in IdentifierPart.Many().Text()
-            select new Identifier(start + part);
+            select start + part;
 
-        public static readonly Parser<Identifier> DottedIdentifier =
+        public static readonly Parser<string> DottedIdentifier =
             from dot in Parse.Char('.')
             from identifier in IdentifierParser.Identifier
             select identifier;

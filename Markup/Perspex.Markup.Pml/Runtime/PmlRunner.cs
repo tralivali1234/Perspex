@@ -32,12 +32,12 @@ namespace Perspex.Markup.Pml.Runtime
 
         public void Run(PropertySetter setter, object target)
         {
-            var property = target.GetType().GetTypeInfo().GetDeclaredProperty(setter.PropertyName.Name);
+            var property = target.GetType().GetTypeInfo().GetDeclaredProperty(setter.PropertyName.FullName);
 
             if (property == null)
             {
                 // TODO: Do this properly.
-                throw new Exception("Could not find property: " + setter.PropertyName.Name);
+                throw new Exception("Could not find property: " + setter.PropertyName.FullName);
             }
 
             var expression = setter.Value as ExpressionValue;

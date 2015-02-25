@@ -25,7 +25,7 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup("Root { }");
 
-            Assert.Equal("Root", result.RootNode.Type.Name);
+            Assert.Equal("Root", result.RootNode.Type.FullName);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup("Namespace.Root { }");
 
-            Assert.Equal("Namespace.Root", result.RootNode.Type.Name);
+            Assert.Equal("Namespace.Root", result.RootNode.Type.FullName);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup("Root { Child1 { } Child2 { } }");
             
-            Assert.Equal(new[] { "Child1", "Child2" }, result.RootNode.Children.OfType<ObjectInstantiation>().Select(x => x.Type.Name));
+            Assert.Equal(new[] { "Child1", "Child2" }, result.RootNode.Children.OfType<ObjectInstantiation>().Select(x => x.Type.FullName));
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace Perspex.Markup.Pml.UnitTests
                     Foo.Property2 = 2
                 }");
 
-            Assert.Equal(new[] { "Property1", "Foo.Property2" }, result.RootNode.Children.OfType<PropertySetter>().Select(x => x.PropertyName.Name));
+            Assert.Equal(new[] { "Property1", "Foo.Property2" }, result.RootNode.Children.OfType<PropertySetter>().Select(x => x.PropertyName.FullName));
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace Perspex.Markup.Pml.UnitTests
             var propertySet = result.RootNode.Children.First() as PropertySetter;
             var value = propertySet.Value as ObjectInstantiationValue;
 
-            Assert.Equal("Control", value.Instantiation.Type.Name);
+            Assert.Equal("Control", value.Instantiation.Type.FullName);
         }
 
         [Fact]

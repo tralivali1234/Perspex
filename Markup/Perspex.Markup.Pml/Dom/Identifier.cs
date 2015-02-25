@@ -13,14 +13,29 @@ namespace Perspex.Markup.Pml.Dom
     {
         public Identifier(string name)
         {
-            this.Name = name;
+            this.Parts = new[] { name };
         }
 
-        public Identifier(IEnumerable<Identifier> parts)
+        public Identifier(IEnumerable<string> parts)
         {
-            this.Name = string.Join(".", parts.Select(x => x.Name));
+            this.Parts = parts.ToArray();
         }
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return this.Parts.Last(); }
+        }
+
+        public string FullName
+        {
+            get { return string.Join(".", this.Parts); }
+        }
+
+        public string NamespaceName
+        {
+            get { return string.Join(".", this.Parts.Take(this.Parts.Length - 1)); }
+        }
+
+        public string[] Parts { get; set; }
     }
 }
