@@ -63,8 +63,9 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup("Root { Property1 = true }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
+            var value = propertySet.Value as ExpressionValue;
 
-            Assert.Equal(SyntaxKind.TrueLiteralExpression, propertySet.Value.Expression.CSharpKind());
+            Assert.Equal(SyntaxKind.TrueLiteralExpression, value.Statement.Expression.CSharpKind());
         }
 
         [Fact]
@@ -72,8 +73,9 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup("Root { Property1 = 42 }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
+            var value = propertySet.Value as ExpressionValue;
 
-            Assert.Equal(SyntaxKind.NumericLiteralExpression, propertySet.Value.Expression.CSharpKind());
+            Assert.Equal(SyntaxKind.NumericLiteralExpression, value.Statement.Expression.CSharpKind());
         }
 
         [Fact]
@@ -81,8 +83,9 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup("Root { Property1 = \"Hello World!\" }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
+            var value = propertySet.Value as ExpressionValue;
 
-            Assert.Equal(SyntaxKind.StringLiteralExpression, propertySet.Value.Expression.CSharpKind());
+            Assert.Equal(SyntaxKind.StringLiteralExpression, value.Statement.Expression.CSharpKind());
         }
 
         [Fact]
@@ -90,8 +93,9 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup("Root { Property1 = Math.Sqrt(100) }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
+            var value = propertySet.Value as ExpressionValue;
 
-            Assert.Equal(SyntaxKind.InvocationExpression, propertySet.Value.Expression.CSharpKind());
+            Assert.Equal(SyntaxKind.InvocationExpression, value.Statement.Expression.CSharpKind());
         }
 
         [Fact]
@@ -99,8 +103,19 @@ namespace Perspex.Markup.Pml.UnitTests
         {
             var result = PmlParser.ParseMarkup("Root { Property1 = () => 100 }");
             var propertySet = result.RootNode.Children.First() as PropertySetter;
+            var value = propertySet.Value as ExpressionValue;
 
-            Assert.Equal(SyntaxKind.ParenthesizedLambdaExpression, propertySet.Value.Expression.CSharpKind());
+            Assert.Equal(SyntaxKind.ParenthesizedLambdaExpression, value.Statement.Expression.CSharpKind());
+        }
+
+        [Fact]
+        public void ObjectInstantiation_Property_Value_Should_Be_Parsed()
+        {
+            var result = PmlParser.ParseMarkup("Root { Property1 = Control { } }");
+            var propertySet = result.RootNode.Children.First() as PropertySetter;
+            var value = propertySet.Value as ObjectInstantiationValue;
+
+            Assert.Equal("Control", value.Instantiation.Type.Name);
         }
 
         [Fact]
