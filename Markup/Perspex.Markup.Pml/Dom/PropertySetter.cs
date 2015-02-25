@@ -8,7 +8,7 @@ namespace Perspex.Markup.Pml.Dom
 {
     public class PropertySetter : Node
     {
-        public Identifier Name { get; set; }
+        public Identifier PropertyName { get; set; }
 
         public PropertyValue Value { get; set; }
 

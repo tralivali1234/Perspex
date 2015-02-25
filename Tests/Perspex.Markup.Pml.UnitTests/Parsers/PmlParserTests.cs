@@ -53,7 +53,7 @@ namespace Perspex.Markup.Pml.UnitTests
                     Foo.Property2 = 2
                 }");
 
-            Assert.Equal(new[] { "Property1", "Foo.Property2" }, result.RootNode.Children.OfType<PropertySetter>().Select(x => x.Name.Name));
+            Assert.Equal(new[] { "Property1", "Foo.Property2" }, result.RootNode.Children.OfType<PropertySetter>().Select(x => x.PropertyName.Name));
         }
 
         [Fact]

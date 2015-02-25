@@ -34,7 +34,7 @@ namespace Perspex.Markup.Pml.Parsers
             from eq in EqualsBindingMode.Token()
             from value in PropertyValue.Token()
             from end in Parse.String(";").Text().Or(Parse.LineEnd).Optional()
-            select new PropertySetter { Name = name, Value = value, BindingMode = eq };
+            select new PropertySetter { PropertyName = name, Value = value, BindingMode = eq };
 
         public static Parser<ObjectInstantiation> ObjectInstantiation()
         {
