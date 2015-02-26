@@ -10,8 +10,11 @@ namespace PerspexGitHubClient.ViewModels
 
         public LogInViewModel()
         {
-            this.username = "Foo";
-            this.OkCommand = ReactiveCommand.Create();
+            this.OkCommand = ReactiveCommand.Create(
+                this.WhenAnyValue(
+                    x => x.Username,
+                    x => x.Password,
+                    (u, p) => !string.IsNullOrWhiteSpace(u) && !string.IsNullOrWhiteSpace(p)));
         }
 
         public string Username
