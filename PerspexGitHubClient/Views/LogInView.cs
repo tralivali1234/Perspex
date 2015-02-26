@@ -9,11 +9,18 @@ namespace PerspexGitHubClient.Views
 {
     public class LogInView : View<LogInViewModel>
     {
+        private TextBox username;
+
+        private TextBox password;
+
         public LogInView()
         {
             this.InitializeComponent();
             this.HorizontalAlignment = HorizontalAlignment.Center;
             this.VerticalAlignment = VerticalAlignment.Center;
+
+            this.Bind(this.ViewModel, x => x.Username, x => x.username.Text);
+            this.Bind(this.ViewModel, x => x.Password, x => x.password.Text);
         }
 
         private void InitializeComponent()
@@ -56,13 +63,12 @@ namespace PerspexGitHubClient.Views
                             VerticalAlignment = VerticalAlignment.Center,
                             [Grid.RowProperty] = 2,
                         },
-                        new TextBox
+                        (this.username = new TextBox
                         {
                             MinWidth = 120,
-                            [!TextBox.TextProperty] = this.WhenAnyValue(x => x.ViewModel.Username),
                             [Grid.ColumnProperty] = 2,
                             [Grid.RowProperty] = 2,
-                        },
+                        }),
                         new TextBlock
                         {
                             Text = "Password",
@@ -70,12 +76,12 @@ namespace PerspexGitHubClient.Views
                             VerticalAlignment = VerticalAlignment.Center,
                             [Grid.RowProperty] = 4,
                         },
-                        new TextBox
+                        (this.password = new TextBox
                         {
                             MinWidth = 120,
                             [Grid.ColumnProperty] = 2,
                             [Grid.RowProperty] = 4,
-                        },
+                        }),
                         new Button
                         {
                             Content = "OK",
