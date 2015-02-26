@@ -1,10 +1,13 @@
 ﻿using Perspex;
 using Perspex.Controls;
 using Perspex.Layout;
+using Perspex.Media;
+using PerspexGitHubClient.ViewModels;
+using ReactiveUI;
 
 namespace PerspexGitHubClient.Views
 {
-    public class LogInView : UserControl
+    public class LogInView : View<LogInViewModel>
     {
         public LogInView()
         {
@@ -15,58 +18,75 @@ namespace PerspexGitHubClient.Views
 
         private void InitializeComponent()
         {
-            this.Content = new Grid
+            this.Content = new Border
             {
-                ColumnDefinitions = new ColumnDefinitions
+                BorderBrush = Brushes.Gray,
+                BorderThickness = 2,
+                Padding = new Thickness(16),
+                Content = new Grid
                 {
-                    new ColumnDefinition(GridLength.Auto),
-                    new ColumnDefinition(new GridLength(4, GridUnitType.Pixel)),
-                    new ColumnDefinition(GridLength.Auto),
-                },
-                RowDefinitions = new RowDefinitions
-                {
-                    new RowDefinition(GridLength.Auto),
-                    new RowDefinition(new GridLength(4, GridUnitType.Pixel)),
-                    new RowDefinition(GridLength.Auto),
-                    new RowDefinition(new GridLength(4, GridUnitType.Pixel)),
-                    new RowDefinition(GridLength.Auto),
-                    new RowDefinition(new GridLength(4, GridUnitType.Pixel)),
-                    new RowDefinition(GridLength.Auto),
-                },
-                Children = new Controls
-                {
-                    new TextBlock
+                    ColumnDefinitions = new ColumnDefinitions
                     {
-                        Text = "Log In",
-                        FontSize = 24,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        [Grid.ColumnSpanProperty] = 3,
+                        new ColumnDefinition(GridLength.Auto),
+                        new ColumnDefinition(GridLength.Auto),
                     },
-                    new TextBlock
+                        RowDefinitions = new RowDefinitions
                     {
-                        Text = "Username",
-                        VerticalAlignment = VerticalAlignment.Center,
-                        [Grid.RowProperty] = 2,
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(new GridLength(12, GridUnitType.Pixel)),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(new GridLength(4, GridUnitType.Pixel)),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(new GridLength(12, GridUnitType.Pixel)),
+                        new RowDefinition(GridLength.Auto),
                     },
-                    new TextBox
+                    Children = new Controls
                     {
-                        MinWidth = 120,
-                        [Grid.ColumnProperty] = 2,
-                        [Grid.RowProperty] = 2,
+                        new TextBlock
+                        {
+                            Text = "Log In",
+                            FontSize = 24,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            [Grid.ColumnSpanProperty] = 2,
+                        },
+                        new TextBlock
+                        {
+                            Text = "Username",
+                            Margin = new Thickness(4, 0),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            [Grid.RowProperty] = 2,
+                        },
+                        new TextBox
+                        {
+                            MinWidth = 120,
+                            [!TextBox.TextProperty] = this.WhenAnyValue(x => x.ViewModel.Username),
+                            [Grid.ColumnProperty] = 2,
+                            [Grid.RowProperty] = 2,
+                        },
+                        new TextBlock
+                        {
+                            Text = "Password",
+                            Margin = new Thickness(4, 0),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            [Grid.RowProperty] = 4,
+                        },
+                        new TextBox
+                        {
+                            MinWidth = 120,
+                            [Grid.ColumnProperty] = 2,
+                            [Grid.RowProperty] = 4,
+                        },
+                        new Button
+                        {
+                            Content = "OK",
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            MinWidth = 100,
+                            [!Button.CommandProperty] = this.WhenAnyValue(x => x.ViewModel.OkCommand),
+                            [Grid.ColumnSpanProperty] = 2,
+                            [Grid.RowProperty] = 6,
+                        }
                     },
-                    new TextBlock
-                    {
-                        Text = "Password",
-                        VerticalAlignment = VerticalAlignment.Center,
-                        [Grid.RowProperty] = 4,
-                    },
-                    new TextBox
-                    {
-                        MinWidth = 120,
-                        [Grid.ColumnProperty] = 2,
-                        [Grid.RowProperty] = 4,
-                    },
-                },
+                }
             };
         }
     }

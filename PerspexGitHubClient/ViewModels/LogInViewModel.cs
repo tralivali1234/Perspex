@@ -8,6 +8,12 @@ namespace PerspexGitHubClient.ViewModels
 
         private string password;
 
+        public LogInViewModel()
+        {
+            this.username = "Foo";
+            this.OkCommand = ReactiveCommand.Create();
+        }
+
         public string Username
         {
             get { return this.username; }
@@ -18,6 +24,12 @@ namespace PerspexGitHubClient.ViewModels
         {
             get { return this.password; }
             set { this.RaiseAndSetIfChanged(ref this.password, value); }
+        }
+
+        public ReactiveCommand<object> OkCommand
+        {
+            get;
+            private set;
         }
     }
 }
