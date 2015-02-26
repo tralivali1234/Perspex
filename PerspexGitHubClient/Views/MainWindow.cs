@@ -17,6 +17,9 @@ namespace PerspexGitHubClient.Views
 
         private void InitializeComponent()
         {
+            this.Width = 800;
+            this.Height = 600;
+
             this.Content = new ContentControl
             {
                 [!ContentControl.ContentProperty] = viewModel.WhenAnyValue(x => x.Content),
