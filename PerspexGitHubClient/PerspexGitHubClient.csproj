@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="ViewModels\LoadingViewModel.cs" />
+    <Compile Include="Views\LoadingView.cs" />
     <Compile Include="Views\View.cs" />
     <Compile Include="ViewLocator.cs" />
     <Compile Include="ViewModels\LogInViewModel.cs" />
