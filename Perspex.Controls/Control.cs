@@ -21,7 +21,7 @@ namespace Perspex.Controls
     public class Control : InputElement, ILogical, IStyleable, IStyleHost
     {
         public static readonly PerspexProperty<object> DataContextProperty =
-            PerspexProperty.Register<Control, object>("DataContext");
+            PerspexProperty.Register<Control, object>("DataContext", inherits: true);
 
         public static readonly PerspexProperty<Control> ParentProperty =
             PerspexProperty.Register<Control, Control>("Parent");
