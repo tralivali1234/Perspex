@@ -7,6 +7,7 @@
 namespace Perspex.Markup.Pml.Compiler
 {
     using System;
+    using Microsoft.CodeAnalysis;
     using Perspex.Markup.Pml.Dom;
     using SF = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -24,7 +25,7 @@ namespace Perspex.Markup.Pml.Compiler
             var unit = SF.CompilationUnit().AddMembers(
                 SF.NamespaceDeclaration(SF.ParseName(root.Type.NamespaceName)).AddMembers(
                     SF.ClassDeclaration(SF.ParseToken(root.Type.Name))
-                        .AddBaseListTypes(SF.SimpleBaseType(SF.ParseTypeName("Window")))));
+                        .AddBaseListTypes(SF.SimpleBaseType(SF.ParseTypeName("Window"))))).NormalizeWhitespace();
 
             var text = unit.ToString();
         }
