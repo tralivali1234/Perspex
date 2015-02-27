@@ -10,10 +10,6 @@ namespace PerspexGitHubClient.Views
 {
     public class UserRepositoriesView : View<UserRepositoriesViewModel>
     {
-        private TextBox username;
-
-        private TextBox password;
-
         public UserRepositoriesView()
         {
             this.InitializeComponent();
@@ -34,7 +30,24 @@ namespace PerspexGitHubClient.Views
                     {
                         DataTemplates = new DataTemplates
                         {
-                            new DataTemplate<Repository>(x => new TextBlock { Text = x.Name }),
+                            new DataTemplate<Repository>(x => 
+                                new StackPanel
+                                {
+                                    Orientation = Orientation.Vertical,
+                                    Children = new Controls
+                                    {
+                                        new TextBlock
+                                        {
+                                            Text = x.Name,
+                                            FontSize = 16,
+                                        },
+                                        new TextBlock
+                                        {
+                                            Text = x.Description,
+                                            TextWrapping = TextWrapping.Wrap,
+                                        },
+                                    }
+                                }),
                         },
                         [!ListBox.ItemsProperty] = this.WhenAnyValue(x => x.ViewModel.Repositories),
                     }
