@@ -20,7 +20,6 @@ namespace PerspexGitHubClient.Views
             this.VerticalAlignment = VerticalAlignment.Center;
 
             this.Bind(this.ViewModel, x => x.Username, x => x.username.Text);
-            this.Bind(this.ViewModel, x => x.Password, x => x.password.Text);
         }
 
         private void InitializeComponent()
@@ -37,12 +36,10 @@ namespace PerspexGitHubClient.Views
                         new ColumnDefinition(GridLength.Auto),
                         new ColumnDefinition(GridLength.Auto),
                     },
-                        RowDefinitions = new RowDefinitions
+                    RowDefinitions = new RowDefinitions
                     {
                         new RowDefinition(GridLength.Auto),
                         new RowDefinition(new GridLength(12, GridUnitType.Pixel)),
-                        new RowDefinition(GridLength.Auto),
-                        new RowDefinition(new GridLength(4, GridUnitType.Pixel)),
                         new RowDefinition(GridLength.Auto),
                         new RowDefinition(new GridLength(12, GridUnitType.Pixel)),
                         new RowDefinition(GridLength.Auto),
@@ -69,19 +66,6 @@ namespace PerspexGitHubClient.Views
                             [Grid.ColumnProperty] = 2,
                             [Grid.RowProperty] = 2,
                         }),
-                        new TextBlock
-                        {
-                            Text = "Password",
-                            Margin = new Thickness(4, 0),
-                            VerticalAlignment = VerticalAlignment.Center,
-                            [Grid.RowProperty] = 4,
-                        },
-                        (this.password = new TextBox
-                        {
-                            MinWidth = 120,
-                            [Grid.ColumnProperty] = 2,
-                            [Grid.RowProperty] = 4,
-                        }),
                         new Button
                         {
                             Content = "OK",
@@ -89,7 +73,7 @@ namespace PerspexGitHubClient.Views
                             MinWidth = 100,
                             [!Button.CommandProperty] = this.WhenAnyValue(x => x.ViewModel.OkCommand),
                             [Grid.ColumnSpanProperty] = 2,
-                            [Grid.RowProperty] = 6,
+                            [Grid.RowProperty] = 4,
                         }
                     },
                 }

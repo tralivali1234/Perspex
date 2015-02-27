@@ -35,6 +35,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Octokit, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octokit.0.7.1\lib\net45\Octokit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.6.4.0.1\lib\Net45\ReactiveUI.dll</HintPath>
     </Reference>
@@ -43,6 +47,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http">
+      <HintPath>D:\projects\Perspex\packages\Microsoft.Net.Http.2.0.20505\lib\net40\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <HintPath>D:\projects\Perspex\packages\Microsoft.Net.Http.2.0.20505\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -67,8 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="ViewModels\LoadingViewModel.cs" />
-    <Compile Include="Views\LoadingView.cs" />
+    <Compile Include="ViewModels\UserRepositoriesViewModel.cs" />
+    <Compile Include="Views\UserRepositoriesVie.cs" />
     <Compile Include="Views\View.cs" />
     <Compile Include="ViewLocator.cs" />
     <Compile Include="ViewModels\LogInViewModel.cs" />

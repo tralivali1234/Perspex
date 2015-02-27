@@ -23,13 +23,15 @@ namespace PerspexGitHubClient.ViewModels
         private void ShowLogin()
         {
             this.login = new LogInViewModel();
-            this.login.OkCommand.Subscribe(_ => this.TryLogin());
+            this.login.OkCommand.Subscribe(_ => this.ShowRepositories());
             this.Content = this.login;
         }
 
-        private void TryLogin()
+        private void ShowRepositories()
         {
-            this.Content = new LoadingViewModel("Logging in...");
+            var vm = new UserRepositoriesViewModel();
+            vm.Load(this.login.Username);
+            this.Content = vm;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using System;
+using Octokit;
+using ReactiveUI;
 
 namespace PerspexGitHubClient.ViewModels
 {
@@ -6,27 +8,18 @@ namespace PerspexGitHubClient.ViewModels
     {
         private string username;
 
-        private string password;
-
         public LogInViewModel()
         {
             this.OkCommand = ReactiveCommand.Create(
                 this.WhenAnyValue(
                     x => x.Username,
-                    x => x.Password,
-                    (u, p) => !string.IsNullOrWhiteSpace(u) && !string.IsNullOrWhiteSpace(p)));
+                    x => !string.IsNullOrWhiteSpace(x)));
         }
 
         public string Username
         {
             get { return this.username; }
             set { this.RaiseAndSetIfChanged(ref this.username, value); }
-        }
-
-        public string Password
-        {
-            get { return this.password; }
-            set { this.RaiseAndSetIfChanged(ref this.password, value); }
         }
 
         public ReactiveCommand<object> OkCommand
