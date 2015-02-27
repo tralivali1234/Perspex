@@ -6,6 +6,7 @@
 
 namespace Perspex.Markup.Pml.UnitTests.Compiler
 {
+    using Microsoft.CodeAnalysis;
     using Perspex.Markup.Pml.Compiler;
     using Perspex.Markup.Pml.Parsers;
     using Xunit;
@@ -13,13 +14,26 @@ namespace Perspex.Markup.Pml.UnitTests.Compiler
     public class PmlCompilerTests
     {
         [Fact]
-        public void Foo()
+        public void Simple_Class_Declaration_With_Property_Returns_Correct_Code()
         {
             var markup = "Namespace.TestTarget { Title = \"Hello World\" }";
             var document = PmlParser.ParseMarkup(markup);
             var compiler = new PmlCompiler();
 
-            compiler.Compile(document);
+            var result = compiler.Compile(document).NormalizeWhitespace().ToString();
+
+            var expected = @"namespace Namespace
+{
+    public class TestTarget : Window
+    {
+        void InitializeComponent()
+        {
+            this.Title = ""Hello World"";
+        }
+    }
+}";
+
+            Assert.Equal(expected, result);
         }
     }
 }
