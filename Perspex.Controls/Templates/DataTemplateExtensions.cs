@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Perspex.Controls
+namespace Perspex.Controls.Templates
 {
     using System.Linq;
     using Perspex.LogicalTree;
@@ -29,8 +29,6 @@ namespace Perspex.Controls
             {
                 result = DataTemplate.Default.Build(data);
             }
-
-            result.DataContext = data;
 
             return result;
         }

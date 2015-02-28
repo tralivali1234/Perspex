@@ -10,6 +10,7 @@ namespace Perspex.Controls.Generators
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using Perspex.Controls.Templates;
 
     public class ItemContainerGenerator : IItemContainerGenerator
     {
@@ -83,6 +84,7 @@ namespace Perspex.Controls.Generators
                 foreach (object item in items)
                 {
                     Control container = this.CreateContainerOverride(item);
+                    container.DataContext = item;
                     container.TemplatedParent = null;
                     this.AddInternal(item, container);
                     result.Add(container);
