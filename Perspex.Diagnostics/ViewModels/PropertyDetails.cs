@@ -27,6 +27,12 @@ namespace Perspex.Diagnostics.ViewModels
             }
         }
 
+        public PropertyDetails(string name, object value)
+        {
+            this.Name = name;
+            this.Value = value;
+        }
+
         public string Name
         {
             get;

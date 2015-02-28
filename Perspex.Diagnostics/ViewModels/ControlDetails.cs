@@ -19,6 +19,11 @@ namespace Perspex.Diagnostics.ViewModels
             {
                 this.Properties = control.GetAllValues()
                     .Select(x => new PropertyDetails(x))
+                    .Concat(new[]
+                    {
+                        new PropertyDetails("Bounds", ((IVisual)control).Bounds),
+                        new PropertyDetails("DesiredSize", control.DesiredSize),
+                    })
                     .OrderBy(x => x.Name);
             }
         }
