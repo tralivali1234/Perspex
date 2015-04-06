@@ -14,9 +14,8 @@ using Perspex.Rendering;
 using Perspex.Threading;
 #if PERSPEX_GTK
 using Perspex.Gtk;
-#else
-using ReactiveUI;
 #endif
+using ReactiveUI;
 using Splat;
 
 namespace TestApplication
@@ -188,6 +187,8 @@ namespace TestApplication
 
         private static TabItem ButtonsTab()
         {
+            Button defaultButton;
+
             var showDialog = ReactiveCommand.Create();
             Button showDialogButton;
             
@@ -213,6 +214,11 @@ namespace TestApplication
                             Content = "Button",
                             Background = new SolidColorBrush(0xcc119eda),
                         },
+                        (defaultButton = new Button
+                        {
+                            Content = "Default",
+                            IsDefault = true,
+                        }),
                         new Button
                         {
                             Content = "Disabled",
@@ -248,6 +254,11 @@ namespace TestApplication
                         },
                     }
                 },
+            };
+
+            defaultButton.Click += (s, e) =>
+            {
+                defaultButton.Content = ((string)defaultButton.Content == "Default") ? "Clicked" : "Default";
             };
 
             showDialog.Subscribe(async _ =>
@@ -299,6 +310,11 @@ namespace TestApplication
                         {
                             Text = "Italic text.",
                             FontStyle = FontStyle.Italic,
+                        },
+                        new TextBlock
+                        {
+                            Text = "Bold text.",
+                            FontWeight = FontWeight.Bold,
                         },
                         new TextBox
                         {
