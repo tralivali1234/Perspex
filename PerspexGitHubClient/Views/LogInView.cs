@@ -69,6 +69,7 @@ namespace PerspexGitHubClient.Views
                         new Button
                         {
                             Content = "OK",
+                            IsDefault = true,
                             HorizontalAlignment = HorizontalAlignment.Center,
                             MinWidth = 100,
                             [!Button.CommandProperty] = this.WhenAnyValue(x => x.ViewModel.OkCommand),
