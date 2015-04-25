@@ -25,8 +25,7 @@ namespace Perspex.Input
 
         public IInputElement Current
         {
-            get;
-            private set;
+            get { return KeyboardDevice.Instance.FocusedElement; }
         }
 
         public IFocusScope Scope
@@ -39,48 +38,52 @@ namespace Perspex.Input
         /// Focuses a control.
         /// </summary>
         /// <param name="control">The control to focus.</param>
-        public void Focus(IInputElement control)
+        /// <param name="keyboardNavigated">
+        /// Whether the control was focused by a keypress (e.g. the Tab key).
+        /// </param>
+        public void Focus(IInputElement control, bool keyboardNavigated = false)
         {
-            Contract.Requires<ArgumentNullException>(control != null);
-
-            var current = this.Current as IInteractive;
-            var next = control as IInteractive;
-            var scope = control.GetSelfAndVisualAncestors()
-                .OfType<IFocusScope>()
-                .FirstOrDefault();
-
-            if (scope != null && control != current)
+            if (control != null)
             {
-                this.focusScopes[scope] = control;
+                var scope = control.GetSelfAndVisualAncestors()
+                    .OfType<IFocusScope>()
+                    .FirstOrDefault();
 
-                if (current != null)
+                if (scope != null)
                 {
-                    current.RaiseEvent(new RoutedEventArgs
-                    {
-                        RoutedEvent = InputElement.LostFocusEvent,
-                        Source = current,
-                        OriginalSource = current,
-                    });
+                    this.SetFocusedElement(scope, control, keyboardNavigated);
                 }
+            }
+            else
+            {
+                this.SetFocusedElement(this.Scope, null);
+            }
+        }
 
-                this.Current = control;
+        /// <summary>
+        /// Sets the currently focused element in the specified scope.
+        /// </summary>
+        /// <param name="scope">The focus scope.</param>
+        /// <param name="element">The element to focus. May be null.</param>
+        /// <param name="keyboardNavigated">
+        /// Whether the control was focused by a keypress (e.g. the Tab key).
+        /// </param>
+        /// <remarks>
+        /// If the specified scope is the current <see cref="Scope"/> then the keyboard focus
+        /// will change.
+        /// </remarks>
+        public void SetFocusedElement(
+            IFocusScope scope, 
+            IInputElement element, 
+            bool keyboardNavigated = false)
+        {
+            Contract.Requires<ArgumentNullException>(scope != null);
 
-                IKeyboardDevice keyboard = Locator.Current.GetService<IKeyboardDevice>();
+            this.focusScopes[scope] = element;
 
-                if (keyboard != null)
-                {
-                    keyboard.FocusedElement = control;
-                }
-
-                if (next != null)
-                {
-                    next.RaiseEvent(new RoutedEventArgs
-                    {
-                        RoutedEvent = InputElement.GotFocusEvent,
-                        Source = next,
-                        OriginalSource = next,
-                    });
-                }
+            if (this.Scope == scope)
+            {
+                KeyboardDevice.Instance.SetFocusedElement(element, keyboardNavigated);
             }
         }
 
@@ -88,10 +91,6 @@ namespace Perspex.Input
         /// Notifies the focus manager of a change in focus scope.
         /// </summary>
         /// <param name="scope">The new focus scope.</param>
-        /// <remarks>
-        /// This should not be called by client code. It is called by an <see cref="IFocusScope"/>
-        /// when it activates, e.g. when a Window is activated.
-        /// </remarks>
         public void SetFocusScope(IFocusScope scope)
         {
             Contract.Requires<ArgumentNullException>(scope != null);

@@ -41,9 +41,11 @@ namespace Perspex.Direct2D1
             string text, 
             string fontFamily, 
             double fontSize, 
-            FontStyle fontStyle)
+            FontStyle fontStyle,
+            TextAlignment textAlignment,
+            FontWeight fontWeight)
         {
-            return new FormattedTextImpl(text, fontFamily, fontSize, fontStyle);
+            return new FormattedTextImpl(text, fontFamily, fontSize, fontStyle, textAlignment, fontWeight);
         }
 
         public IRenderer CreateRenderer(IPlatformHandle handle, double width, double height)

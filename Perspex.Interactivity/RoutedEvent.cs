@@ -14,9 +14,9 @@ namespace Perspex.Interactivity
     [Flags]
     public enum RoutingStrategies
     {
-        Direct = 0,
-        Tunnel = 1,
-        Bubble = 2,
+        Direct = 0x01,
+        Tunnel = 0x02,
+        Bubble = 0x04,
     }
 
     public class RoutedEvent
@@ -40,8 +40,6 @@ namespace Perspex.Interactivity
             this.OwnerType = ownerType;
             this.RoutingStrategies = routingStrategies;
         }
-
-        public event EventHandler<RoutedEventArgs> Raised;
 
         public Type EventArgsType 
         { 
@@ -104,7 +102,8 @@ namespace Perspex.Interactivity
             foreach (var sub in this.subscriptions)
             {
                 if (sub.TargetType.GetTypeInfo().IsAssignableFrom(sender.GetType().GetTypeInfo()) &&
-                    (e.Route == RoutingStrategies.Direct) || (e.Route & sub.Routes) != 0)
+                    ((e.Route == RoutingStrategies.Direct) || (e.Route & sub.Routes) != 0) &&
+                    (!e.Handled || sub.AlsoIfHandled))
                 {
                     sub.Handler.DynamicInvoke(sender, e);
                 }

@@ -21,6 +21,9 @@ namespace Perspex
 
     public class Visual : Animatable, IVisual
     {
+        public static readonly PerspexProperty<Rect> BoundsProperty =
+            PerspexProperty.Register<Visual, Rect>("Bounds");
+
         public static readonly PerspexProperty<bool> ClipToBoundsProperty =
             PerspexProperty.Register<Visual, bool>("ClipToBounds");
 
@@ -36,7 +39,8 @@ namespace Perspex
         public static readonly PerspexProperty<Origin> TransformOriginProperty =
             PerspexProperty.Register<Visual, Origin>("TransformOrigin", defaultValue: Origin.Default);
 
-        private Rect bounds;
+        public static readonly PerspexProperty<int> ZIndexProperty =
+            PerspexProperty.Register<Visual, int>("ZIndex");
 
         private PerspexList<IVisual> visualChildren;
 
@@ -52,6 +56,12 @@ namespace Perspex
         {
             this.visualChildren = new PerspexList<IVisual>();
             this.visualChildren.CollectionChanged += this.VisualChildrenChanged;
+        }
+
+        public Rect Bounds
+        {
+            get { return this.GetValue(BoundsProperty); }
+            protected set { this.SetValue(BoundsProperty, value); }
         }
 
         public bool ClipToBounds
@@ -84,9 +94,10 @@ namespace Perspex
             set { this.SetValue(TransformOriginProperty, value); }
         }
 
-        Rect IVisual.Bounds
+        public int ZIndex
         {
-            get { return this.bounds; }
+            get { return this.GetValue(ZIndexProperty); }
+            set { this.SetValue(ZIndexProperty, value); }
         }
 
         IPerspexReadOnlyList<IVisual> IVisual.VisualChildren
@@ -129,7 +140,7 @@ namespace Perspex
         {
             var thisOffset = GetOffsetFromRoot(this).Item2;
             var thatOffset = GetOffsetFromRoot(visual).Item2;
-            return Matrix.Translation(-thisOffset) * Matrix.Translation(thatOffset);
+            return Matrix.Translation(-thatOffset) * Matrix.Translation(thisOffset);
         }
 
         protected static void AffectsRender(PerspexProperty property)
@@ -171,11 +182,6 @@ namespace Perspex
             {
                 this.visualChildren.Remove(v);
             }
-        }
-
-        protected void SetVisualBounds(Rect bounds)
-        {
-            this.bounds = bounds;
         }
 
         protected virtual void OnAttachedToVisualTree(IRenderRoot root)

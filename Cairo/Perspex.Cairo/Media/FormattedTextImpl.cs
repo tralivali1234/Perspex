@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="TextService.cs" company="Steven Kirk">
+// <copyright file="FormattedTextImpl.cs" company="Steven Kirk">
 // Copyright 2014 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -19,7 +19,9 @@ namespace Perspex.Cairo.Media
             string text,
             string fontFamily,
             double fontSize,
-            FontStyle fontStyle)
+            FontStyle fontStyle,
+            TextAlignment textAlignment,
+            FontWeight fontWeight)
         {
             var context = Locator.Current.GetService<Pango.Context>();
             this.Layout = new Pango.Layout(context);
@@ -29,7 +31,10 @@ namespace Perspex.Cairo.Media
                 Family = fontFamily,
                 Size = Pango.Units.FromDouble(fontSize),
                 Style = (Pango.Style)fontStyle,
+                Weight = fontWeight.ToCairo()
             };
+
+            this.Layout.Alignment = textAlignment.ToCairo();
         }
 
         public Size Constraint
@@ -41,6 +46,7 @@ namespace Perspex.Cairo.Media
 
             set
             {
+
                 this.Layout.Width = Pango.Units.FromDouble(value.Width);
             }
         }
@@ -96,6 +102,12 @@ namespace Perspex.Cairo.Media
             int width;
             int height;
             this.Layout.GetPixelSize(out width, out height);
+        
+            if (this.Layout.Alignment == Pango.Alignment.Right)
+            {
+                return new Size(width, height);
+            }
+
             return new Size(width, height);
         }
 

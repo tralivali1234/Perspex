@@ -24,13 +24,19 @@ namespace Perspex.Input
             PerspexProperty.Register<InputElement, bool>("IsEnabledCore", true);
 
         public static readonly PerspexProperty<bool> IsFocusedProperty =
-            PerspexProperty.Register<InputElement, bool>("IsFocused", false);
+            PerspexProperty.Register<InputElement, bool>("IsFocused");
+
+        public static readonly PerspexProperty<bool> IsHitTestVisibleProperty =
+            PerspexProperty.Register<InputElement, bool>("IsHitTestVisible", true);
 
         public static readonly PerspexProperty<bool> IsPointerOverProperty =
             PerspexProperty.Register<InputElement, bool>("IsPointerOver");
 
-        public static readonly RoutedEvent<RoutedEventArgs> GotFocusEvent =
-            RoutedEvent.Register<InputElement, RoutedEventArgs>("GotFocus", RoutingStrategies.Bubble);
+        public static readonly PerspexProperty<bool> IsTabFocusedProperty =
+            PerspexProperty.Register<InputElement, bool>("IsTabFocused");
+
+        public static readonly RoutedEvent<GotFocusEventArgs> GotFocusEvent =
+            RoutedEvent.Register<InputElement, GotFocusEventArgs>("GotFocus", RoutingStrategies.Bubble);
 
         public static readonly RoutedEvent<RoutedEventArgs> LostFocusEvent =
             RoutedEvent.Register<InputElement, RoutedEventArgs>("LostFocus", RoutingStrategies.Bubble);
@@ -153,6 +159,12 @@ namespace Perspex.Input
             private set { this.SetValue(IsFocusedProperty, value); }
         }
 
+        public bool IsHitTestVisible
+        {
+            get { return this.GetValue(IsHitTestVisibleProperty); }
+            set { this.SetValue(IsHitTestVisibleProperty, value); }
+        }
+
         public bool IsPointerOver
         {
             get { return this.GetValue(IsPointerOverProperty); }
@@ -164,6 +176,11 @@ namespace Perspex.Input
             get { return this.IsEnabledCore; }
         }
 
+        bool IInputElement.IsTabFocused
+        {
+            get { return this.GetValue(IsTabFocusedProperty); }
+        }
+
         protected bool IsEnabledCore
         {
             get { return this.GetValue(IsEnabledCoreProperty); }
@@ -172,10 +189,7 @@ namespace Perspex.Input
 
         public IInputElement InputHitTest(Point p)
         {
-            return this.GetVisualsAt(p)
-                .OfType<IInputElement>()
-                .Where(x => x.IsEnabledCore)
-                .FirstOrDefault();
+            return this.GetInputElementsAt(p).FirstOrDefault();
         }
 
         public void Focus()
@@ -183,23 +197,50 @@ namespace Perspex.Input
             FocusManager.Instance.Focus(this);
         }
 
+        protected override void OnDetachedFromVisualTree(IRenderRoot oldRoot)
+        {
+            base.OnDetachedFromVisualTree(oldRoot);
+
+            if (this.IsFocused)
+            {
+                FocusManager.Instance.Focus(null);
+            }
+        }
+
         protected override void OnVisualParentChanged(Visual oldParent)
         {
             this.UpdateIsEnabledCore();
         }
 
-        protected virtual void OnGotFocus(RoutedEventArgs e)
+        protected virtual void OnGotFocus(GotFocusEventArgs e)
         {
             this.IsFocused = e.OriginalSource == this;
+            this.SetValue(IsTabFocusedProperty, e.KeyboardNavigated);
         }
 
         protected virtual void OnLostFocus(RoutedEventArgs e)
         {
             this.IsFocused = false;
+            this.SetValue(IsTabFocusedProperty, false);
         }
 
         protected virtual void OnKeyDown(KeyEventArgs e)
         {
+            if (e.Key == Key.Tab && !e.Handled)
+            {
+                var shift = (e.Device.Modifiers & ModifierKeys.Shift) != 0;
+
+                if (!shift)
+                {
+                    KeyboardNavigation.Instance.TabNext(this);
+                }
+                else
+                {
+                    KeyboardNavigation.Instance.TabPrevious(this);
+                }
+
+                e.Handled = true;
+            }
         }
 
         protected virtual void OnPointerEnter(PointerEventArgs e)

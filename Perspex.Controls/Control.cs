@@ -11,6 +11,8 @@ namespace Perspex.Controls
     using System.Linq;
     using System.Reactive.Linq;
     using Perspex.Collections;
+    using Perspex.Controls.Primitives;
+    using Perspex.Controls.Shapes;
     using Perspex.Input;
     using Perspex.Interactivity;
     using Perspex.Media;
@@ -22,6 +24,9 @@ namespace Perspex.Controls
     {
         public static readonly PerspexProperty<object> DataContextProperty =
             PerspexProperty.Register<Control, object>("DataContext", inherits: true);
+
+        public static readonly PerspexProperty<AdornerTemplate> FocusAdornerProperty =
+            PerspexProperty.Register<Control, AdornerTemplate>("FocusAdorner");
 
         public static readonly PerspexProperty<Control> ParentProperty =
             PerspexProperty.Register<Control, Control>("Parent");
@@ -40,6 +45,8 @@ namespace Perspex.Controls
         private Classes classes = new Classes();
 
         private DataTemplates dataTemplates;
+
+        private Control focusAdorner;
 
         private string id;
 
@@ -170,7 +177,7 @@ namespace Perspex.Controls
 
         public void BringIntoView()
         {
-            this.BringIntoView(new Rect(this.ActualSize));
+            this.BringIntoView(new Rect(this.Bounds.Size));
         }
 
         public void BringIntoView(Rect rect)
@@ -183,6 +190,47 @@ namespace Perspex.Controls
             };
 
             this.RaiseEvent(ev);
+        }
+
+        protected override void OnGotFocus(GotFocusEventArgs e)
+        {
+            base.OnGotFocus(e);
+
+            if (this.IsFocused && e.KeyboardNavigated)
+            {
+                var adornerLayer = AdornerLayer.GetAdornerLayer(this);
+
+                if (adornerLayer != null)
+                {
+                    if (this.focusAdorner == null)
+                    {
+                        var template = this.GetValue(FocusAdornerProperty);
+
+                        if (template != null)
+                        {
+                            this.focusAdorner = template.Build();
+                        }
+                    }
+
+                    if (this.focusAdorner != null)
+                    {
+                        AdornerLayer.SetAdornedElement(this.focusAdorner, this);
+                        adornerLayer.Children.Add(this.focusAdorner);
+                    }
+                }
+            }
+        }
+
+        protected override void OnLostFocus(RoutedEventArgs e)
+        {
+            base.OnLostFocus(e);
+            
+            if (this.focusAdorner != null)
+            {
+                var adornerLayer = this.focusAdorner.Parent as Panel;
+                adornerLayer.Children.Remove(this.focusAdorner);
+                this.focusAdorner = null;
+            }
         }
 
         protected static void PseudoClass(PerspexProperty<bool> property, string className)

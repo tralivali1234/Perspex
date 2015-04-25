@@ -17,7 +17,9 @@ namespace Perspex.Media
             string text,
             string fontFamilyName,
             double fontSize,
-            FontStyle fontStyle)
+            FontStyle fontStyle,
+            TextAlignment textAlignment,
+            FontWeight fontWeight)
         {
             this.Text = text;
             this.FontFamilyName = fontFamilyName;
@@ -25,7 +27,14 @@ namespace Perspex.Media
             this.FontStyle = fontStyle;
 
             var platform = Locator.Current.GetService<IPlatformRenderInterface>();
-            this.PlatformImpl = platform.CreateFormattedText(text, fontFamilyName, fontSize, fontStyle);
+
+            this.PlatformImpl = platform.CreateFormattedText(
+                text, 
+                fontFamilyName, 
+                fontSize, 
+                fontStyle, 
+                textAlignment,
+                fontWeight);
         }
 
         public Size Constraint

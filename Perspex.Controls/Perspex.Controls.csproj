@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Border.cs" />
     <Compile Include="Button.cs" />
+    <Compile Include="AdornerTemplate.cs" />
     <Compile Include="DropDown.cs" />
     <Compile Include="IContentControl.cs" />
     <Compile Include="IItemsPanel.cs" />
@@ -44,6 +45,8 @@
     <Compile Include="Popup.cs" />
     <Compile Include="IDataTemplate.cs" />
     <Compile Include="Presenters\IPresenter.cs" />
+    <Compile Include="Primitives\AdornerDecorator.cs" />
+    <Compile Include="Primitives\AdornerLayer.cs" />
     <Compile Include="RadioButton.cs" />
     <Compile Include="CheckBox.cs" />
     <Compile Include="ColumnDefinition.cs" />

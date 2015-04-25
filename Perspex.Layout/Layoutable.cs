@@ -29,9 +29,6 @@ namespace Perspex.Layout
 
     public class Layoutable : Visual, ILayoutable, IEnableLogger
     {
-        public static readonly PerspexProperty<Size> ActualSizeProperty =
-            PerspexProperty.Register<Layoutable, Size>("ActualSize");
-
         public static readonly PerspexProperty<double> WidthProperty =
             PerspexProperty.Register<Layoutable, double>("Width", double.NaN);
 
@@ -131,11 +128,6 @@ namespace Perspex.Layout
             set { this.SetValue(VerticalAlignmentProperty, value); }
         }
 
-        public Size ActualSize
-        {
-            get { return this.GetValue(ActualSizeProperty); }
-        }
-
         public Size? DesiredSize
         {
             get;
@@ -178,7 +170,17 @@ namespace Perspex.Layout
             if (force || !this.IsMeasureValid || this.previousMeasure != availableSize)
             {
                 this.IsMeasureValid = true;
-                this.DesiredSize = this.MeasureCore(availableSize).Constrain(availableSize);
+
+                var desiredSize = this.MeasureCore(availableSize).Constrain(availableSize);
+
+                if (desiredSize.Width < 0 || desiredSize.Height < 0 ||
+                    double.IsInfinity(desiredSize.Width) || double.IsInfinity(desiredSize.Height) ||
+                    double.IsNaN(desiredSize.Width) || double.IsNaN(desiredSize.Height))
+                {
+                    throw new InvalidOperationException("Invalid size returned for Measure.");
+                }
+
+                this.DesiredSize = desiredSize;
                 this.previousMeasure = availableSize;
 
                 this.Log().Debug(
@@ -327,9 +329,7 @@ namespace Perspex.Layout
                         break;
                 }
 
-                var bounds = new Rect(originX, originY, size.Width, size.Height);
-                this.SetVisualBounds(bounds);
-                this.SetValue(ActualSizeProperty, bounds.Size);
+                this.Bounds = new Rect(originX, originY, size.Width, size.Height);
             }
         }
 
