@@ -9,7 +9,8 @@ namespace Perspex.Layout
     using System;
     using System.Linq;
     using Perspex.VisualTree;
-    using Splat;
+    using Serilog;
+    using Serilog.Core.Enrichers;
 
     public enum HorizontalAlignment
     {
@@ -27,7 +28,7 @@ namespace Perspex.Layout
         Bottom,
     }
 
-    public class Layoutable : Visual, ILayoutable, IEnableLogger
+    public class Layoutable : Visual, ILayoutable
     {
         public static readonly PerspexProperty<double> WidthProperty =
             PerspexProperty.Register<Layoutable, double>("Width", double.NaN);
@@ -56,9 +57,14 @@ namespace Perspex.Layout
         public static readonly PerspexProperty<VerticalAlignment> VerticalAlignmentProperty =
             PerspexProperty.Register<Layoutable, VerticalAlignment>("VerticalAlignment");
 
+        public static readonly PerspexProperty<bool> UseLayoutRoundingProperty =
+            PerspexProperty.Register<Layoutable, bool>("UseLayoutRounding", defaultValue: true, inherits: true);
+
         private Size? previousMeasure;
 
         private Rect? previousArrange;
+
+        private ILogger layoutLog;
 
         static Layoutable()
         {
@@ -72,6 +78,16 @@ namespace Perspex.Layout
             Layoutable.AffectsMeasure(Layoutable.MarginProperty);
             Layoutable.AffectsMeasure(Layoutable.HorizontalAlignmentProperty);
             Layoutable.AffectsMeasure(Layoutable.VerticalAlignmentProperty);
+        }
+
+        public Layoutable()
+        {
+            this.layoutLog = Log.ForContext(new[]
+            {
+                new PropertyEnricher("Area", "Layout"),
+                new PropertyEnricher("SourceContext", this.GetType()),
+                new PropertyEnricher("Id", this.GetHashCode()),
+            });
         }
 
         public double Width
@@ -128,7 +144,7 @@ namespace Perspex.Layout
             set { this.SetValue(VerticalAlignmentProperty, value); }
         }
 
-        public Size? DesiredSize
+        public Size DesiredSize
         {
             get;
             set;
@@ -144,6 +160,12 @@ namespace Perspex.Layout
         {
             get;
             private set;
+        }
+
+        public bool UseLayoutRounding
+        {
+            get { return this.GetValue(UseLayoutRoundingProperty); }
+            set { this.SetValue(UseLayoutRoundingProperty, value); }
         }
 
         Size? ILayoutable.PreviousMeasure
@@ -183,11 +205,7 @@ namespace Perspex.Layout
                 this.DesiredSize = desiredSize;
                 this.previousMeasure = availableSize;
 
-                this.Log().Debug(
-                    "Measure of {0} (#{1:x8}) requested {2} ",
-                    this.GetType().Name,
-                    this.GetHashCode(),
-                    this.DesiredSize);
+                this.layoutLog.Verbose("Measure requested {DesiredSize}", this.DesiredSize);
             }
         }
 
@@ -209,11 +227,7 @@ namespace Perspex.Layout
 
             if (force || !this.IsArrangeValid || this.previousArrange != rect)
             {
-                this.Log().Debug(
-                    "Arrange of {0} (#{1:x8}) gave {2} ",
-                    this.GetType().Name,
-                    this.GetHashCode(),
-                    rect);
+                this.layoutLog.Verbose("Arrange to {Rect} ", rect);
 
                 this.IsArrangeValid = true;
                 this.ArrangeCore(rect);
@@ -227,17 +241,13 @@ namespace Perspex.Layout
 
             if (this.IsMeasureValid)
             {
-                this.Log().Debug(
-                    "Invalidated measure of {0} (#{1:x8})",
-                    this.GetType().Name,
-                    this.GetHashCode());
+                this.layoutLog.Verbose("Invalidated measure");
             }
 
             this.IsMeasureValid = false;
             this.IsArrangeValid = false;
             this.previousMeasure = null;
             this.previousArrange = null;
-            this.DesiredSize = null;
 
             if (parent != null && IsResizable(parent))
             {
@@ -260,10 +270,7 @@ namespace Perspex.Layout
 
             if (this.IsArrangeValid)
             {
-                this.Log().Debug(
-                    "Invalidated arrange of {0} (#{1:x8})",
-                    this.GetType().Name,
-                    this.GetHashCode());
+                this.layoutLog.Verbose("Arrange measure");
             }
 
             this.IsArrangeValid = false;
@@ -298,15 +305,21 @@ namespace Perspex.Layout
 
                 if (this.HorizontalAlignment != HorizontalAlignment.Stretch)
                 {
-                    size = size.WithWidth(Math.Min(size.Width, this.DesiredSize.Value.Width));
+                    size = size.WithWidth(Math.Min(size.Width, this.DesiredSize.Width));
                 }
 
                 if (this.VerticalAlignment != VerticalAlignment.Stretch)
                 {
-                    size = size.WithHeight(Math.Min(size.Height, this.DesiredSize.Value.Height));
+                    size = size.WithHeight(Math.Min(size.Height, this.DesiredSize.Height));
                 }
 
                 size = LayoutHelper.ApplyLayoutConstraints(this, size);
+
+                if (this.UseLayoutRounding)
+                {
+                    size = new Size(Math.Ceiling(size.Width), Math.Ceiling(size.Height));
+                }
+
                 size = this.ArrangeOverride(size).Constrain(size);
 
                 switch (this.HorizontalAlignment)
@@ -327,6 +340,13 @@ namespace Perspex.Layout
                     case VerticalAlignment.Bottom:
                         originY += sizeMinusMargins.Height - size.Height;
                         break;
+                }
+
+                if (this.UseLayoutRounding)
+                {
+                    originX = Math.Floor(originX);
+                    originY = Math.Floor(originY);
+                    size = this.ArrangeOverride(size).Constrain(size);
                 }
 
                 this.Bounds = new Rect(originX, originY, size.Width, size.Height);
@@ -389,8 +409,8 @@ namespace Perspex.Layout
             foreach (ILayoutable child in this.GetVisualChildren().OfType<ILayoutable>())
             {
                 child.Measure(availableSize);
-                width = Math.Max(width, child.DesiredSize.Value.Width);
-                height = Math.Max(height, child.DesiredSize.Value.Height);
+                width = Math.Max(width, child.DesiredSize.Width);
+                height = Math.Max(height, child.DesiredSize.Height);
             }
 
             return new Size(width, height);

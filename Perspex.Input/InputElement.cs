@@ -46,6 +46,11 @@ namespace Perspex.Input
                 "KeyDown", 
                 RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
+        public static readonly RoutedEvent<KeyEventArgs> KeyUpEvent =
+            RoutedEvent.Register<InputElement, KeyEventArgs>(
+                "KeyUp",
+                RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
         public static readonly RoutedEvent<PointerEventArgs> PointerEnterEvent =
             RoutedEvent.Register<InputElement, PointerEventArgs>("PointerEnter", RoutingStrategies.Direct);
 
@@ -79,6 +84,7 @@ namespace Perspex.Input
             GotFocusEvent.AddClassHandler<InputElement>(x => x.OnGotFocus);
             LostFocusEvent.AddClassHandler<InputElement>(x => x.OnLostFocus);
             KeyDownEvent.AddClassHandler<InputElement>(x => x.OnKeyDown);
+            KeyUpEvent.AddClassHandler<InputElement>(x => x.OnKeyUp);
             PointerEnterEvent.AddClassHandler<InputElement>(x => x.OnPointerEnter);
             PointerLeaveEvent.AddClassHandler<InputElement>(x => x.OnPointerLeave);
             PointerMovedEvent.AddClassHandler<InputElement>(x => x.OnPointerMoved);
@@ -103,6 +109,12 @@ namespace Perspex.Input
         {
             add { this.AddHandler(KeyDownEvent, value); }
             remove { this.RemoveHandler(KeyDownEvent, value); }
+        }
+
+        public event EventHandler<KeyEventArgs> KeyUp
+        {
+            add { this.AddHandler(KeyUpEvent, value); }
+            remove { this.RemoveHandler(KeyUpEvent, value); }
         }
 
         public event EventHandler<PointerEventArgs> PointerEnter
@@ -226,21 +238,10 @@ namespace Perspex.Input
 
         protected virtual void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Key == Key.Tab && !e.Handled)
-            {
-                var shift = (e.Device.Modifiers & ModifierKeys.Shift) != 0;
+        }
 
-                if (!shift)
-                {
-                    KeyboardNavigation.Instance.TabNext(this);
-                }
-                else
-                {
-                    KeyboardNavigation.Instance.TabPrevious(this);
-                }
-
-                e.Handled = true;
-            }
+        protected virtual void OnKeyUp(KeyEventArgs e)
+        {
         }
 
         protected virtual void OnPointerEnter(PointerEventArgs e)
