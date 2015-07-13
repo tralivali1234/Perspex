@@ -7,12 +7,13 @@
 namespace Perspex.Controls
 {
     using Perspex.Input;
+    using Perspex.Layout;
     using Perspex.Styling;
 
     /// <summary>
     /// Interface for Perspex controls.
     /// </summary>
-    public interface IControl : IInputElement, INamed, ILogical, IStyleable, IStyleHost
+    public interface IControl : IVisual, ILogical, ILayoutable, IInputElement, INamed, IStyleable, IStyleHost
     {
     }
 }

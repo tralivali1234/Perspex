@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls.cs" />
     <Compile Include="IControl.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="DataTemplate`1.cs" />

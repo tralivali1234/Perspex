@@ -16,8 +16,8 @@ namespace Perspex.Controls.Core
         /// <summary>
         /// Defines the <see cref="Child"/> property.
         /// </summary>
-        public static readonly PerspexProperty<Control> ChildProperty =
-            PerspexProperty.Register<Decorator, Control>("Content");
+        public static readonly PerspexProperty<IControl> ChildProperty =
+            PerspexProperty.Register<Decorator, IControl>("Content");
 
         /// <summary>
         /// Defines the <see cref="Padding"/> property.
@@ -38,7 +38,7 @@ namespace Perspex.Controls.Core
         /// <summary>
         /// Gets or sets the decorated control.
         /// </summary>
-        public Control Child
+        public IControl Child
         {
             get { return this.GetValue(ChildProperty); }
             set { this.SetValue(ChildProperty, value); }
