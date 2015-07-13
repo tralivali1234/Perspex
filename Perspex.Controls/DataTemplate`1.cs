@@ -11,6 +11,7 @@ namespace Perspex.Controls
     /// <summary>
     /// Builds a control for a piece of data of specified type.
     /// </summary>
+    /// <typeparam name="T">The type of the template's data.</typeparam>
     public class DataTemplate<T> : DataTemplate
     {
         /// <summary>
