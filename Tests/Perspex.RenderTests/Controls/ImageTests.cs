@@ -7,7 +7,7 @@
 namespace Perspex.Direct2D1.RenderTests.Controls
 {
     using System.IO;
-    using Perspex.Controls;
+    using Perspex.Controls.Core;
     using Perspex.Media;
     using Perspex.Media.Imaging;
     using Xunit;
@@ -30,10 +30,10 @@ namespace Perspex.Direct2D1.RenderTests.Controls
                 Padding = new Thickness(20, 8),
                 Width = 200,
                 Height = 200,
-                Content = new Border
+                Child = new Border
                 {
                     Background = Brushes.Red,
-                    Content = new Image
+                    Child = new Image
                     {
                         Source = this.bitmap,
                         Stretch = Stretch.None,
@@ -53,10 +53,10 @@ namespace Perspex.Direct2D1.RenderTests.Controls
                 Padding = new Thickness(20, 8),
                 Width = 200,
                 Height = 200,
-                Content = new Border
+                Child = new Border
                 {
                     Background = Brushes.Red,
-                    Content = new Image
+                    Child = new Image
                     {
                         Source = this.bitmap,
                         Stretch = Stretch.Fill,
@@ -76,10 +76,10 @@ namespace Perspex.Direct2D1.RenderTests.Controls
                 Padding = new Thickness(20, 8),
                 Width = 200,
                 Height = 200,
-                Content = new Border
+                Child = new Border
                 {
                     Background = Brushes.Red,
-                    Content = new Image
+                    Child = new Image
                     {
                         Source = this.bitmap,
                         Stretch = Stretch.Uniform,
@@ -99,10 +99,10 @@ namespace Perspex.Direct2D1.RenderTests.Controls
                 Padding = new Thickness(20, 8),
                 Width = 200,
                 Height = 200,
-                Content = new Border
+                Child = new Border
                 {
                     Background = Brushes.Red,
-                    Content = new Image
+                    Child = new Image
                     {
                         Source = this.bitmap,
                         Stretch = Stretch.UniformToFill,

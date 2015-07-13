@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Shapes\PathTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Media\GeometryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RectComparer.cs" />
@@ -73,6 +74,10 @@
     <ProjectReference Include="..\..\Perspex.Base\Perspex.Base.csproj">
       <Project>{b09b78d8-9b26-48b0-9149-d64a2f120f3f}</Project>
       <Name>Perspex.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Perspex.Controls.Shapes\Perspex.Controls.Shapes.csproj">
+      <Project>{d9105695-8e72-4d2c-820a-2d3bec278e74}</Project>
+      <Name>Perspex.Controls.Shapes</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Perspex.Controls\Perspex.Controls.csproj">
       <Project>{d2221c82-4a25-4583-9b43-d791e3f6820c}</Project>

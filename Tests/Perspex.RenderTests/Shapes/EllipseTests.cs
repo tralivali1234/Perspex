@@ -6,9 +6,9 @@
 
 namespace Perspex.Direct2D1.RenderTests.Shapes
 {
-    using Perspex.Controls;
-    using Perspex.Media;
+    using Perspex.Controls.Core;
     using Perspex.Controls.Shapes;
+    using Perspex.Media;
     using Xunit;
 
     public class EllipseTests : TestBase
@@ -26,7 +26,7 @@ namespace Perspex.Direct2D1.RenderTests.Shapes
                 Padding = new Thickness(8),
                 Width = 200,
                 Height = 200,
-                Content = new Ellipse
+                Child = new Ellipse
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 1,

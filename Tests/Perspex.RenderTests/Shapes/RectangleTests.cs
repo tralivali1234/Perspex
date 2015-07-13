@@ -6,9 +6,9 @@
 
 namespace Perspex.Direct2D1.RenderTests.Shapes
 {
-    using Perspex.Controls;
-    using Perspex.Media;
+    using Perspex.Controls.Core;
     using Perspex.Controls.Shapes;
+    using Perspex.Media;
     using Xunit;
 
     public class RectangleTests : TestBase
@@ -26,7 +26,7 @@ namespace Perspex.Direct2D1.RenderTests.Shapes
                 Padding = new Thickness(8),
                 Width = 200,
                 Height = 200,
-                Content = new Rectangle
+                Child = new Rectangle
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 1,
@@ -45,7 +45,7 @@ namespace Perspex.Direct2D1.RenderTests.Shapes
                 Padding = new Thickness(8),
                 Width = 200,
                 Height = 200,
-                Content = new Rectangle
+                Child = new Rectangle
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 2,
@@ -64,7 +64,7 @@ namespace Perspex.Direct2D1.RenderTests.Shapes
                 Padding = new Thickness(8),
                 Width = 200,
                 Height = 200,
-                Content = new Rectangle
+                Child = new Rectangle
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 2,
