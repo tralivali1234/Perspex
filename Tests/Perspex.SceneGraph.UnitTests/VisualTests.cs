@@ -59,6 +59,18 @@ namespace Perspex.SceneGraph.UnitTests
         }
 
         [Fact]
+        public void Removed_Child_Should_Have_IsAttachedToVisualTree_False()
+        {
+            var target = new TestVisual();
+            var child = new TestVisual();
+
+            target.AddChild(child);
+            target.RemoveChild(child);
+
+            Assert.Null(child.InheritanceParent);
+        }
+
+        [Fact]
         public void Clearing_Children_Should_Clear_VisualParent()
         {
             var children = new[] { new Visual(), new Visual() };
@@ -108,6 +120,29 @@ namespace Perspex.SceneGraph.UnitTests
 
             Assert.Equal(1, changed);
             Assert.Equal(2, detached);
+        }
+
+        [Fact]
+        public void Added_Child_Should_Have_IsAttachedToVisualTree_True()
+        {
+            var target = new TestRoot();
+            var child = new TestVisual();
+
+            target.AddChild(child);
+
+            Assert.True(((IVisual)child).IsAttachedToVisualTree);
+        }
+
+        [Fact]
+        public void Removed_Child_Should_Have_IsAttachedToVisualTree_True()
+        {
+            var target = new TestRoot();
+            var child = new TestVisual();
+
+            target.AddChild(child);
+            target.RemoveChild(child);
+
+            Assert.False(((IVisual)child).IsAttachedToVisualTree);
         }
     }
 }

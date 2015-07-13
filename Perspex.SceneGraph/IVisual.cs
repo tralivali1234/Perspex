@@ -33,6 +33,11 @@ namespace Perspex
         bool ClipToBounds { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the scene graph node is a part of a rooted visual tree.
+        /// </summary>
+        bool IsAttachedToVisualTree { get; }
+
+        /// <summary>
         /// Gets a value indicating whether this scene graph node and all its parents are visible.
         /// </summary>
         bool IsEffectivelyVisible { get; }

@@ -66,7 +66,7 @@ namespace Perspex
     /// <remarks>
     /// This class is analogous to DependencyObject in WPF.
     /// </remarks>
-    public class PerspexObject : INotifyPropertyChanged
+    public class PerspexObject : INotifyPropertyChanged, IPropertyBag
     {
         /// <summary>
         /// The registered properties by type.
@@ -466,7 +466,7 @@ namespace Perspex
         }
 
         /// <summary>
-        /// Checks whether a <see cref="PerspexProperty"/> is registered on this class.
+        /// Checks whether a <see cref="PerspexProperty"/> is registered on this object.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>True if the property is registered, otherwise false.</returns>

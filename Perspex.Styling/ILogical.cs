@@ -14,9 +14,9 @@ namespace Perspex
     public interface ILogical
     {
         /// <summary>
-        /// Gets the logical parent.
+        /// Gets or sets the logical parent.
         /// </summary>
-        ILogical LogicalParent { get; }
+        ILogical LogicalParent { get; set;  }
 
         /// <summary>
         /// Gets the logical children.

@@ -171,15 +171,16 @@ namespace Perspex.Styling
 
         private static SelectorMatch MatchTemplate(IStyleable control, Selector previous)
         {
-            IStyleable templatedParent = control.TemplatedParent as IStyleable;
+            throw new NotImplementedException();
+            //IStyleable templatedParent = control.TemplatedParent as IStyleable;
 
-            if (templatedParent == null)
-            {
-                throw new InvalidOperationException(
-                    "Cannot call Template selector on control with null TemplatedParent.");
-            }
+            //if (templatedParent == null)
+            //{
+            //    throw new InvalidOperationException(
+            //        "Cannot call Template selector on control with null TemplatedParent.");
+            //}
 
-            return previous.Match(templatedParent);
+            //return previous.Match(templatedParent);
         }
     }
 }

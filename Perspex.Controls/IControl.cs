@@ -1,19 +1,18 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="UserControl.cs" company="Steven Kirk">
+// <copyright file="IControl.cs" company="Steven Kirk">
 // Copyright 2015 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
 
 namespace Perspex.Controls
 {
-    using System;
+    using Perspex.Input;
     using Perspex.Styling;
 
-    public class UserControl : ContentControl, IStyleable
+    /// <summary>
+    /// Interface for Perspex controls.
+    /// </summary>
+    public interface IControl : IInputElement, INamed, ILogical, IStyleable, IStyleHost
     {
-        Type IStyleable.StyleKey
-        {
-            get { return typeof(ContentControl); }
-        }
     }
 }

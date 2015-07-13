@@ -36,101 +36,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MenuItemAccessKeyHandler.cs" />
-    <Compile Include="Parsers\GridLengthsParser.cs" />
-    <Compile Include="Primitives\AccessText.cs" />
-    <Compile Include="Border.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="MenuItem.cs" />
-    <Compile Include="Menu.cs" />
-    <Compile Include="Button.cs" />
-    <Compile Include="AdornerTemplate.cs" />
-    <Compile Include="DropDown.cs" />
-    <Compile Include="IContentControl.cs" />
-    <Compile Include="IItemsPanel.cs" />
-    <Compile Include="INamed.cs" />
-    <Compile Include="INavigablePanel.cs" />
-    <Compile Include="Deck.cs" />
-    <Compile Include="Platform\IPopupImpl.cs" />
-    <Compile Include="Platform\ITopLevelImpl.cs" />
-    <Compile Include="PlacementMode.cs" />
-    <Compile Include="Popup.cs" />
-    <Compile Include="IDataTemplate.cs" />
-    <Compile Include="Presenters\IItemsPresenter.cs" />
-    <Compile Include="Presenters\IPresenter.cs" />
-    <Compile Include="Presenters\DeckPresenter.cs" />
-    <Compile Include="Primitives\AdornerDecorator.cs" />
-    <Compile Include="Primitives\AdornerLayer.cs" />
-    <Compile Include="RadioButton.cs" />
-    <Compile Include="CheckBox.cs" />
-    <Compile Include="ColumnDefinition.cs" />
-    <Compile Include="ColumnDefinitions.cs" />
-    <Compile Include="ContentControl.cs" />
-    <Compile Include="GridSplitter.cs" />
-    <Compile Include="ISelectable.cs" />
-    <Compile Include="ListBoxItem.cs" />
-    <Compile Include="ListBox.cs" />
-    <Compile Include="Platform\IWindowImpl.cs" />
-    <Compile Include="Presenters\ScrollContentPresenter.cs" />
-    <Compile Include="Presenters\ContentPresenter.cs" />
+    <Compile Include="IControl.cs" />
     <Compile Include="Control.cs" />
-    <Compile Include="ControlExtensions.cs" />
-    <Compile Include="Controls.cs" />
-    <Compile Include="ControlTemplate.cs" />
-    <Compile Include="Templates\DataTemplateExtensions.cs" />
+    <Compile Include="DataTemplate`1.cs" />
     <Compile Include="DataTemplate.cs" />
-    <Compile Include="Generators\TreeItemContainerGenerator.cs" />
-    <Compile Include="Generators\TypedItemContainerGenerator.cs" />
-    <Compile Include="Generators\ItemContainerGenerator.cs" />
-    <Compile Include="IGlobalDataTemplates.cs" />
     <Compile Include="DataTemplates.cs" />
-    <Compile Include="Decorator.cs" />
-    <Compile Include="DefinitionBase.cs" />
-    <Compile Include="Grid.cs" />
-    <Compile Include="GridLength.cs" />
-    <Compile Include="Primitives\HeaderedContentControl.cs" />
-    <Compile Include="Primitives\HeaderedItemsControl.cs" />
-    <Compile Include="IHeadered.cs" />
-    <Compile Include="Image.cs" />
-    <Compile Include="Generators\IItemContainerGenerator.cs" />
-    <Compile Include="ItemsControl.cs" />
-    <Compile Include="ItemsPanelTemplate.cs" />
-    <Compile Include="Presenters\ItemsPresenter.cs" />
-    <Compile Include="Panel.cs" />
-    <Compile Include="Primitives\ScrollBarVisibility.cs" />
-    <Compile Include="Primitives\Track.cs" />
-    <Compile Include="Primitives\Thumb.cs" />
-    <Compile Include="RequestBringIntoViewEventArgs.cs" />
-    <Compile Include="Shapes\Ellipse.cs" />
-    <Compile Include="ToolTip.cs" />
-    <Compile Include="UserControl.cs" />
-    <Compile Include="Templates\TemplateExtensions.cs" />
-    <Compile Include="TextWrapping.cs" />
-    <Compile Include="Utils\IEnumerableUtils.cs" />
-    <Compile Include="Utils\StringUtils.cs" />
-    <Compile Include="TopLevel.cs" />
-    <Compile Include="PopupRoot.cs" />
-    <Compile Include="Window.cs" />
-    <Compile Include="RowDefinition.cs" />
-    <Compile Include="RowDefinitions.cs" />
-    <Compile Include="Primitives\SelectingItemsControl.cs" />
-    <Compile Include="ScrollViewer.cs" />
-    <Compile Include="Shapes\Path.cs" />
-    <Compile Include="Shapes\Rectangle.cs" />
-    <Compile Include="Shapes\Shape.cs" />
-    <Compile Include="Primitives\ScrollBar.cs" />
-    <Compile Include="StackPanel.cs" />
-    <Compile Include="TabControl.cs" />
-    <Compile Include="TabItem.cs" />
-    <Compile Include="Primitives\TabStrip.cs" />
-    <Compile Include="Primitives\TemplatedControl.cs" />
-    <Compile Include="TextBlock.cs" />
-    <Compile Include="TextBox.cs" />
-    <Compile Include="Presenters\TextPresenter.cs" />
-    <Compile Include="Primitives\ToggleButton.cs" />
-    <Compile Include="TreeDataTemplate.cs" />
-    <Compile Include="TreeView.cs" />
-    <Compile Include="TreeViewItem.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IDataTemplate.cs" />
+    <Compile Include="IGlobalDataTemplates.cs" />
+    <Compile Include="INamed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,10 +68,6 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Perspex.Animation\Perspex.Animation.csproj">

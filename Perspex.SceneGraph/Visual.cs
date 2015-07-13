@@ -186,6 +186,14 @@ namespace Perspex
         }
 
         /// <summary>
+        /// Gets a value indicating whether the scene graph node is a part of a rooted visual tree.
+        /// </summary>
+        bool IVisual.IsAttachedToVisualTree
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the scene graph node's child nodes.
         /// </summary>
         IPerspexReadOnlyList<IVisual> IVisual.VisualChildren

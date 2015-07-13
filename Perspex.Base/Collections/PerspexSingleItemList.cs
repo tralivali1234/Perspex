@@ -27,6 +27,8 @@ namespace Perspex.Collections
     {
         private T item;
 
+        public static readonly IPerspexReadOnlyList<T> Empty = new PerspexSingleItemList<T>();
+
         public PerspexSingleItemList()
         {
         }

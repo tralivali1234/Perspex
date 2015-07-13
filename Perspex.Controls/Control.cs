@@ -1,72 +1,86 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="Control.cs" company="Steven Kirk">
-// Copyright 2014 MIT Licence. See licence.md for more information.
+// Copyright 2015 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
 
 namespace Perspex.Controls
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reactive.Linq;
     using Perspex.Collections;
-    using Perspex.Controls.Primitives;
-    using Perspex.Controls.Shapes;
     using Perspex.Input;
-    using Perspex.Interactivity;
-    using Perspex.Media;
     using Perspex.Rendering;
     using Perspex.Styling;
     using Splat;
 
-    public class Control : InputElement, INamed, ILogical, IStyleable, IStyleHost
+    /// <summary>
+    /// Base class for Perspex controls.
+    /// </summary>
+    /// <remarks>
+    /// The control class extends <see cref="InputElement"/> and adds the following features:
+    ///
+    /// - A <see cref="Name"/>.
+    /// - An inherited <see cref="DataContext"/>.
+    /// - A <see cref="Tag"/> property to allow user-defined data to be attached to the control.
+    /// - A collection of class strings for custom styling.
+    /// - Implements <see cref="IStyleable"/> to allow styling to work on the control.
+    /// - Implements <see cref="ILogical"/> to form part of a logical tree.
+    /// </remarks>
+    public class Control : InputElement, IControl
     {
+        /// <summary>
+        /// Defines the <see cref="DataContext"/> property.
+        /// </summary>
         public static readonly PerspexProperty<object> DataContextProperty =
             PerspexProperty.Register<Control, object>("DataContext", inherits: true);
 
-        public static readonly PerspexProperty<AdornerTemplate> FocusAdornerProperty =
-            PerspexProperty.Register<Control, AdornerTemplate>("FocusAdorner");
-
+        /// <summary>
+        /// Defines the <see cref="Parent"/> property.
+        /// </summary>
         public static readonly PerspexProperty<Control> ParentProperty =
             PerspexProperty.Register<Control, Control>("Parent");
 
+        /// <summary>
+        /// Defines the <see cref="Tag"/> property.
+        /// </summary>
         public static readonly PerspexProperty<object> TagProperty =
             PerspexProperty.Register<Control, object>("Tag");
 
-        public static readonly PerspexProperty<ITemplatedControl> TemplatedParentProperty =
-            PerspexProperty.Register<Control, ITemplatedControl>("TemplatedParent");
-
-        public static readonly RoutedEvent<RequestBringIntoViewEventArgs> RequestBringIntoViewEvent =
-            RoutedEvent.Register<Control, RequestBringIntoViewEventArgs>("RequestBringIntoView", RoutingStrategies.Bubble);
-
-        private static readonly IPerspexReadOnlyList<ILogical> EmptyChildren = new PerspexSingleItemList<ILogical>();
-
-        private Classes classes = new Classes();
+        private Classes classes;
 
         private DataTemplates dataTemplates;
 
-        private Control focusAdorner;
-
-        private string id;
+        private string name;
 
         private Styles styles;
 
+        /// <summary>
+        /// Initializes static members of the <see cref="Control"/> class.
+        /// </summary>
         static Control()
         {
             Control.AffectsMeasure(Control.IsVisibleProperty);
-            PseudoClass(InputElement.IsEnabledCoreProperty, x => !x, ":disabled");
-            PseudoClass(InputElement.IsFocusedProperty, ":focus");
-            PseudoClass(InputElement.IsPointerOverProperty, ":pointerover");
         }
 
+        /// <summary>
+        /// Gets or sets the controls classes.
+        /// </summary>
+        /// <remarks>
+        /// Classes can be used to apply user-defined styling to controls, or to allow controls
+        /// that share a common purpose to be easily selected.
+        /// </remarks>
         public Classes Classes
         {
-            get 
+            get
             {
-                return this.classes; 
+                if (this.classes == null)
+                {
+                    this.classes = new Classes();
+                }
+
+                return this.classes;
             }
-            
+
             set
             {
                 if (this.classes != value)
@@ -77,12 +91,26 @@ namespace Perspex.Controls
             }
         }
 
+        /// <summary>
+        /// Gets or sets the control's data context.
+        /// </summary>
+        /// <remarks>
+        /// The data context is an inherited property that specifies the default object that will
+        /// be used for data binding.
+        /// </remarks>
         public object DataContext
         {
             get { return this.GetValue(DataContextProperty); }
             set { this.SetValue(DataContextProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the data templates for the control.
+        /// </summary>
+        /// <remarks>
+        /// Each control may define data templates which are applied to the control itself and its
+        /// children.
+        /// </remarks>
         public DataTemplates DataTemplates
         {
             get
@@ -101,29 +129,40 @@ namespace Perspex.Controls
             }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the control.
+        /// </summary>
+        /// <remarks>
+        /// A control's name is used to uniquely identify a control within the control's name
+        /// scope. Once a control is added to a visual tree, its name cannot be changed.
+        /// </remarks>
         public string Name
         {
             get
             {
-                return this.id;
+                return this.name;
             }
 
             set
             {
-                if (this.id != null)
+                if (((IVisual)this).IsAttachedToVisualTree)
                 {
-                    throw new InvalidOperationException("ID already set.");
+                    throw new InvalidOperationException(
+                        "Cannot set Name : control already added to visual tree.");
                 }
 
-                if (((IVisual)this).VisualParent != null)
-                {
-                    throw new InvalidOperationException("Cannot set ID : control already added to tree.");
-                }
-
-                this.id = value;
+                this.name = value;
             }
         }
 
+        /// <summary>
+        /// Gets or sets the styles for the control.
+        /// </summary>
+        /// <remarks>
+        /// Styles for the entire application are added to the Application.Styles collection, but
+        /// each control may in addition define its own styles which are applied to the control
+        /// itself and its children.
+        /// </remarks>
         public Styles Styles
         {
             get
@@ -142,131 +181,82 @@ namespace Perspex.Controls
             }
         }
 
+        /// <summary>
+        /// Gets the control's logical parent.
+        /// </summary>
         public Control Parent
         {
             get { return this.GetValue(ParentProperty); }
-            internal set { this.SetValue(ParentProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets a user-defined object attached to the control.
+        /// </summary>
         public object Tag
         {
             get { return this.GetValue(TagProperty); }
             set { this.SetValue(TagProperty, value); }
         }
 
-        public ITemplatedControl TemplatedParent
-        {
-            get { return this.GetValue(TemplatedParentProperty); }
-            internal set { this.SetValue(TemplatedParentProperty, value); }
-        }
-
+        /// <summary>
+        /// Gets or sets the control's logical parent.
+        /// </summary>
         ILogical ILogical.LogicalParent
         {
             get { return this.Parent; }
+            set { this.SetValue(ParentProperty, value); }
         }
 
+        /// <summary>
+        /// Gets the control's logical children.
+        /// </summary>
         IPerspexReadOnlyList<ILogical> ILogical.LogicalChildren
         {
-            get { return EmptyChildren; }
+            get { return PerspexSingleItemList<ILogical>.Empty; }
         }
 
+        /// <summary>
+        /// Gets the type by which the control is styled.
+        /// </summary>
+        /// <remarks>
+        /// Usually controls are styled by their own type, but there are instances where you want
+        /// a control to be styled by its base type, e.g. creating SpecialButton that
+        /// derives from Button and adds extra functionality but is still styled as a regular
+        /// Button.
+        /// </remarks>
         Type IStyleable.StyleKey
         {
             get { return this.GetType(); }
         }
 
+        /// <summary>
+        /// Tries to being the control into view.
+        /// </summary>
         public void BringIntoView()
         {
             this.BringIntoView(new Rect(this.Bounds.Size));
         }
 
+        /// <summary>
+        /// Tries to being the specified area on the control into view.
+        /// </summary>
+        /// <param name="rect">The area of the control to being into view.</param>
         public void BringIntoView(Rect rect)
         {
-            var ev = new RequestBringIntoViewEventArgs
-            {
-                RoutedEvent = RequestBringIntoViewEvent,
-                TargetObject = this,
-                TargetRect = rect,
-            };
+            ////var ev = new RequestBringIntoViewEventArgs
+            ////{
+            ////    RoutedEvent = RequestBringIntoViewEvent,
+            ////    TargetObject = this,
+            ////    TargetRect = rect,
+            ////};
 
-            this.RaiseEvent(ev);
+            ////this.RaiseEvent(ev);
         }
 
-        protected static void PseudoClass(PerspexProperty<bool> property, string className)
-        {
-            PseudoClass(property, x => x, className);
-        }
-
-        protected static void PseudoClass<T>(
-            PerspexProperty<T> property,
-            Func<T, bool> selector,
-            string className)
-        {
-            Contract.Requires<ArgumentNullException>(property != null);
-            Contract.Requires<ArgumentNullException>(selector != null);
-            Contract.Requires<ArgumentNullException>(className != null);
-            Contract.Requires<ArgumentNullException>(property != null);
-
-            if (string.IsNullOrWhiteSpace(className))
-            {
-                throw new ArgumentException("Cannot supply an empty className.");
-            }
-
-            Observable.Merge(property.Changed, property.Initialized)
-                .Subscribe(e =>
-                {
-                    if (selector((T)e.NewValue))
-                    {
-                        ((Control)e.Sender).Classes.Add(className);
-                    }
-                    else
-                    {
-                        ((Control)e.Sender).Classes.Remove(className);
-                    }
-                });
-        }
-
-        protected override void OnGotFocus(GotFocusEventArgs e)
-        {
-            base.OnGotFocus(e);
-
-            if (this.IsFocused && e.KeyboardNavigated)
-            {
-                var adornerLayer = AdornerLayer.GetAdornerLayer(this);
-
-                if (adornerLayer != null)
-                {
-                    if (this.focusAdorner == null)
-                    {
-                        var template = this.GetValue(FocusAdornerProperty);
-
-                        if (template != null)
-                        {
-                            this.focusAdorner = template.Build();
-                        }
-                    }
-
-                    if (this.focusAdorner != null)
-                    {
-                        AdornerLayer.SetAdornedElement(this.focusAdorner, this);
-                        adornerLayer.Children.Add(this.focusAdorner);
-                    }
-                }
-            }
-        }
-
-        protected override void OnLostFocus(RoutedEventArgs e)
-        {
-            base.OnLostFocus(e);
-            
-            if (this.focusAdorner != null)
-            {
-                var adornerLayer = this.focusAdorner.Parent as Panel;
-                adornerLayer.Children.Remove(this.focusAdorner);
-                this.focusAdorner = null;
-            }
-        }
-
+        /// <summary>
+        /// Applies styles to the control when it is attached to the visual tree.
+        /// </summary>
+        /// <param name="root">The root of the visual tree.</param>
         protected override void OnAttachedToVisualTree(IRenderRoot root)
         {
             base.OnAttachedToVisualTree(root);

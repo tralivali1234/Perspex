@@ -6,10 +6,14 @@
 
 namespace Perspex.Controls
 {
-    using System.Collections.Generic;
-
+    /// <summary>
+    /// Defines an object that provides data templates for the whole application.
+    /// </summary>
     public interface IGlobalDataTemplates
     {
+        /// <summary>
+        /// Gets the globals data templates.
+        /// </summary>
         DataTemplates DataTemplates { get; }
     }
 }
