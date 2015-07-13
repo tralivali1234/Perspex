@@ -25,7 +25,7 @@ namespace Perspex
         IDisposable Bind(
             PerspexProperty property,
             IObservable<object> source,
-            BindingPriority priority);
+            BindingPriority priority = BindingPriority.LocalValue);
 
         /// <summary>
         /// Gets an observable for a <see cref="PerspexProperty"/>.

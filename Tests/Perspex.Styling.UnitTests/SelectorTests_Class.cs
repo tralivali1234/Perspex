@@ -46,16 +46,17 @@ namespace Perspex.Styling.UnitTests
         [Fact]
         public async Task Class_Matches_Control_With_TemplatedParent()
         {
-            var control = new Control1
-            {
-                Classes = new Classes { "foo" },
-                TemplatedParent = new Mock<ITemplatedControl>().Object,
-            };
+            Assert.True(false);
+            ////var control = new Control1
+            ////{
+            ////    Classes = new Classes { "foo" },
+            ////    TemplatedParent = new Mock<ITemplatedControl>().Object,
+            ////};
 
-            var target = new Selector().Class("foo");
-            var activator = target.Match(control).ObservableResult;
+            ////var target = new Selector().Class("foo");
+            ////var activator = target.Match(control).ObservableResult;
 
-            Assert.True(await activator.Take(1));
+            ////Assert.True(await activator.Take(1));
         }
 
         [Fact]

@@ -83,7 +83,6 @@ namespace Perspex.Styling.UnitTests
             public IPerspexReadOnlyList<ILogical> LogicalChildren { get; set; }
             public ILogical LogicalParent { get; set; }
             public Type StyleKey { get; }
-            public ITemplatedControl TemplatedParent { get; }
 
             public IDisposable Bind(PerspexProperty property, IObservable<object> source, BindingPriority priority)
             {

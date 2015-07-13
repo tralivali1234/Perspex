@@ -44,6 +44,6 @@ namespace Perspex
         /// <param name="property">The property.</param>
         /// <param name="value">The value.</param>
         /// <param name="priority">The priority of the value.</param>
-        void SetValue(PerspexProperty property, object value, BindingPriority priority);
+        void SetValue(PerspexProperty property, object value, BindingPriority priority = BindingPriority.LocalValue);
     }
 }

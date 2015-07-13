@@ -28,12 +28,6 @@ namespace Perspex.Styling.UnitTests
 
         public TestObservable SubscribeCheckObservable { get; private set; }
 
-        public ITemplatedControl TemplatedParent
-        {
-            get;
-            set;
-        }
-
         public IDisposable Bind(PerspexProperty property, IObservable<object> source, BindingPriority priority)
         {
             throw new NotImplementedException();

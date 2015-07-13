@@ -7,7 +7,7 @@
 namespace Perspex.Controls
 {
     /// <summary>
-    /// Interface used to build a control for a piece of data.
+    /// Interface representing a template used to build a control for a piece of data.
     /// </summary>
     public interface IDataTemplate
     {
