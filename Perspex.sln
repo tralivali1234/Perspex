@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspex.Controls.Windowing"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspex.Controls.Standard", "Perspex.Controls.Standard\Perspex.Controls.Standard.csproj", "{D232FF37-50C8-4A74-8901-C35503937426}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspex.Controls.Standard.UnitTests", "Tests\Perspex.Controls.Standard.UnitTests\Perspex.Controls.Standard.UnitTests.csproj", "{21B34DD4-4667-4F4F-9894-374FEDBDD908}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -189,6 +191,10 @@ Global
 		{D232FF37-50C8-4A74-8901-C35503937426}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D232FF37-50C8-4A74-8901-C35503937426}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D232FF37-50C8-4A74-8901-C35503937426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B34DD4-4667-4F4F-9894-374FEDBDD908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B34DD4-4667-4F4F-9894-374FEDBDD908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B34DD4-4667-4F4F-9894-374FEDBDD908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B34DD4-4667-4F4F-9894-374FEDBDD908}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,5 +213,6 @@ Global
 		{AC18926A-E784-40FE-B09D-BB0FE2B599F0} = {C5A00AC3-B34C-4564-9BDD-2DA473EF4D8B}
 		{EFB11458-9CDF-41C0-BE4F-44AF45A4CAB8} = {C5A00AC3-B34C-4564-9BDD-2DA473EF4D8B}
 		{61C56A9A-54B6-4C52-AF98-6A85FCDAE478} = {C5A00AC3-B34C-4564-9BDD-2DA473EF4D8B}
+		{21B34DD4-4667-4F4F-9894-374FEDBDD908} = {C5A00AC3-B34C-4564-9BDD-2DA473EF4D8B}
 	EndGlobalSection
 EndGlobal

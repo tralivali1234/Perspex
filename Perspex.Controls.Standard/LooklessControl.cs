@@ -34,7 +34,7 @@ namespace Perspex.Controls.Standard
         /// Defines the TemplatedParent attached property.
         /// </summary>
         public static readonly PerspexProperty<ILooklessControl> TemplatedParentProperty =
-            PerspexProperty.RegisterAttached<LooklessControl, IControl, ILooklessControl>("TemplatedParent");
+            PerspexProperty.RegisterAttached<LooklessControl, Control, ILooklessControl>("TemplatedParent");
 
         private bool templateApplied;
 
