@@ -55,6 +55,8 @@ namespace Perspex.Controls.Core
 
                 if (this.children != value)
                 {
+                    this.ClearVisualChildren();
+
                     if (this.children != null)
                     {
                         this.ClearLogicalParent(this.children);
@@ -62,13 +64,12 @@ namespace Perspex.Controls.Core
                     }
 
                     this.children = value;
-                    this.ClearVisualChildren();
 
                     if (this.children != null)
                     {
                         this.children.CollectionChanged += this.ChildrenChanged;
-                        this.AddVisualChildren(value.Cast<Visual>());
                         this.SetLogicalParent(value);
+                        this.AddVisualChildren(value.Cast<Visual>());
                         this.InvalidateMeasure();
                     }
                 }
@@ -144,15 +145,16 @@ namespace Perspex.Controls.Core
 
                 case NotifyCollectionChangedAction.Remove:
                     controls = e.OldItems.OfType<Control>().ToList();
-                    this.ClearLogicalParent(e.OldItems.OfType<Control>());
                     this.RemoveVisualChildren(e.OldItems.OfType<Visual>());
+                    this.ClearLogicalParent(e.OldItems.OfType<Control>());
                     this.OnChildrenRemoved(controls);
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     controls = e.OldItems.OfType<Control>().ToList();
-                    this.ClearLogicalParent(controls);
                     this.ClearVisualChildren();
+                    this.ClearLogicalParent(controls);
+                    this.SetLogicalParent(this.children);
                     this.AddVisualChildren(this.children.Cast<Visual>());
                     this.OnChildrenAdded(controls);
                     break;

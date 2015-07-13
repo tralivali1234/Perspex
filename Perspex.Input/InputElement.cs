@@ -209,19 +209,16 @@ namespace Perspex.Input
             FocusManager.Instance.Focus(this);
         }
 
-        protected override void OnDetachedFromVisualTree(IRenderRoot oldRoot)
+        protected override void OnDetachedFromVisualTree(IRenderRoot root)
         {
-            base.OnDetachedFromVisualTree(oldRoot);
+            base.OnDetachedFromVisualTree(root);
+
+            this.UpdateIsEnabledCore();
 
             if (this.IsFocused)
             {
                 FocusManager.Instance.Focus(null);
             }
-        }
-
-        protected override void OnVisualParentChanged(Visual oldParent)
-        {
-            this.UpdateIsEnabledCore();
         }
 
         protected virtual void OnGotFocus(GotFocusEventArgs e)

@@ -12,6 +12,10 @@ namespace Perspex.Controls
     using Perspex.Rendering;
     using Perspex.Styling;
     using Splat;
+    using Perspex.LogicalTree;
+    using System.Linq;
+
+
 
     /// <summary>
     /// Base class for Perspex controls.
@@ -254,15 +258,40 @@ namespace Perspex.Controls
         }
 
         /// <summary>
-        /// Applies styles to the control when it is attached to the visual tree.
+        /// Called when the control is attached to a visual tree.
         /// </summary>
         /// <param name="root">The root of the visual tree.</param>
         protected override void OnAttachedToVisualTree(IRenderRoot root)
         {
             base.OnAttachedToVisualTree(root);
 
+            if (!string.IsNullOrWhiteSpace(this.name))
+            {
+                var nameScope = this.GetLogicalAncestors()
+                    .OfType<INameScope>()
+                    .FirstOrDefault();
+                nameScope?.Names.Register(this);
+            }
+
             IStyler styler = Locator.Current.GetService<IStyler>();
-            styler.ApplyStyles(this);
+            styler?.ApplyStyles(this);
+        }
+
+        /// <summary>
+        /// Called when the control is detached from a visual tree.
+        /// </summary>
+        /// <param name="root">The root of the visual tree.</param>
+        protected override void OnDetachedFromVisualTree(IRenderRoot root)
+        {
+            base.OnDetachedFromVisualTree(root);
+
+            if (!string.IsNullOrWhiteSpace(this.name))
+            {
+                var nameScope = this.GetLogicalAncestors()
+                    .OfType<INameScope>()
+                    .FirstOrDefault();
+                nameScope?.Names.Deregister(this);
+            }
         }
     }
 }

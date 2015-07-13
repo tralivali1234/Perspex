@@ -73,41 +73,30 @@ namespace Perspex.SceneGraph.UnitTests
         }
 
         [Fact]
-        public void ParentChanged_Attached_Methods_Should_Be_Called_In_Right_Order()
+        public void AttachedToVisualTree_Should_Be_Called()
         {
             var target = new TestRoot();
             var child = new TestVisual();
-            int changed = 0;
-            int attched = 0;
-            int i = 1;
+            var called = false;
 
-            child.VisualParentChangedCalled += (s, e) => changed = i++;
-            child.AttachedToVisualTreeCalled += (s, e) => attched = i++;
-
+            child.AttachedToVisualTreeCalled += (s, e) => called = true;
             target.AddChild(child);
 
-            Assert.Equal(1, changed);
-            Assert.Equal(2, attched);
+            Assert.True(called);
         }
 
         [Fact]
-        public void ParentChanged_Detached_Methods_Should_Be_Called_In_Right_Order()
+        public void DetachedFromVisualTree_Should_Be_Called()
         {
             var target = new TestRoot();
             var child = new TestVisual();
-            int changed = 0;
-            int detached = 0;
-            int i = 1;
+            var called = false;
 
             target.AddChild(child);
-
-            child.VisualParentChangedCalled += (s, e) => changed = i++;
-            child.DetachedFromVisualTreeCalled += (s, e) => detached = i++;
-
+            child.DetachedFromVisualTreeCalled += (s, e) => called = true;
             target.ClearChildren();
 
-            Assert.Equal(1, changed);
-            Assert.Equal(2, detached);
+            Assert.True(called);
         }
 
         [Fact]

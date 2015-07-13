@@ -1,95 +1,74 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="ControlTests.cs" company="Steven Kirk">
-// Copyright 2013 MIT Licence. See licence.md for more information.
+// Copyright 2015 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
 
 namespace Perspex.Controls.UnitTests
 {
     using System;
-    using Moq;
-    using Perspex.Controls;
-    using Perspex.Layout;
-    using Perspex.Platform;
-    using Perspex.Rendering;
-    using Perspex.Styling;
-    using Splat;
+    using System.Collections.Generic;
+    using Perspex.Controls.Core;
     using Xunit;
+    using Perspex.Rendering;
+    using Perspex.Platform;
 
     public class ControlTests
     {
         [Fact]
-        public void Classes_Should_Initially_Be_Empty()
+        public void Named_Control_Should_Register_With_NameScope()
         {
-            var target = new Control();
+            Control target;
 
-            Assert.Equal(0, target.Classes.Count);
+            var scope = new NameScope
+            {
+                Children = new Controls
+                {
+                    (target = new Control
+                    {
+                        Name = "Foo"
+                    })
+                }
+            };
+
+            Assert.Equal(
+                new[] { new KeyValuePair<string, INamed>("Foo", target) },
+                scope.Names);
         }
 
         [Fact]
-        public void Adding_Control_To_IRenderRoot_Should_Style_Control()
+        public void Named_Control_Should_Unregister_With_NameScope()
         {
-            using (Locator.CurrentMutable.WithResolver())
+            Control target;
+
+            var scope = new NameScope
             {
-                var root = new TestRoot();
-                var target = new Control();
-                var styler = new Mock<IStyler>();
+                Children = new Controls
+                {
+                    (target = new Control
+                    {
+                        Name = "Foo"
+                    })
+                }
+            };
 
-                Locator.CurrentMutable.Register(() => styler.Object, typeof(IStyler));
+            scope.Children.Remove(target);
 
-                root.Content = target;
-
-                styler.Verify(x => x.ApplyStyles(target), Times.Once());
-            }
+            Assert.Empty(scope.Names);
         }
 
-        [Fact]
-        public void Adding_Tree_To_ILayoutRoot_Should_Style_Controls()
+        private class NameScope : Panel, INameScope, IRenderRoot
         {
-            using (Locator.CurrentMutable.WithResolver())
+            public NameScope()
             {
-                var root = new TestRoot();
-                var parent = new Border();
-                var child = new Border();
-                var grandchild = new Control();
-                var styler = new Mock<IStyler>();
-
-                Locator.CurrentMutable.Register(() => styler.Object, typeof(IStyler));
-
-                parent.Content = child;
-                child.Content = grandchild;
-
-                styler.Verify(x => x.ApplyStyles(It.IsAny<IStyleable>()), Times.Never());
-
-                root.Content = parent;
-
-                styler.Verify(x => x.ApplyStyles(parent), Times.Once());
-                styler.Verify(x => x.ApplyStyles(child), Times.Once());
-                styler.Verify(x => x.ApplyStyles(grandchild), Times.Once());
-            }
-        }
-
-        private class TestRoot : Decorator, ILayoutRoot, IRenderRoot
-        {
-            public Size ClientSize
-            {
-                get { throw new System.NotImplementedException(); }
+                this.Names = new NameDictionary();
             }
 
-            public ILayoutManager LayoutManager
-            {
-                get { throw new System.NotImplementedException(); }
-            }
+            public NameDictionary Names { get; }
 
-            public IRenderer Renderer
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public IRenderer Renderer { get; }
 
-            public IRenderManager RenderManager
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public IRenderManager RenderManager { get; }
 
             public Point TranslatePointToScreen(Point p)
             {

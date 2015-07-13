@@ -46,6 +46,8 @@
     <Compile Include="IDataTemplate.cs" />
     <Compile Include="IGlobalDataTemplates.cs" />
     <Compile Include="INamed.cs" />
+    <Compile Include="NameDictionary.cs" />
+    <Compile Include="INameScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
