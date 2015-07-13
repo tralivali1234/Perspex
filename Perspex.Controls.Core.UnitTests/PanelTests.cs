@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Perspex.Controls.UnitTests
+namespace Perspex.Controls.Core.UnitTests
 {
     using System.Linq;
     using Xunit;
