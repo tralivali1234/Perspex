@@ -77,6 +77,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TestRoot.cs" />
     <Compile Include="TestVisual.cs" />
     <Compile Include="VisualTests.cs" />
@@ -91,6 +92,10 @@
     <ProjectReference Include="..\..\Perspex.Base\Perspex.Base.csproj">
       <Project>{b09b78d8-9b26-48b0-9149-d64a2f120f3f}</Project>
       <Name>Perspex.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Perspex.Controls.Core\Perspex.Controls.Core.csproj">
+      <Project>{ad2445de-3530-4ceb-8b13-98bb61839b95}</Project>
+      <Name>Perspex.Controls.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Perspex.Controls\Perspex.Controls.csproj">
       <Project>{d2221c82-4a25-4583-9b43-d791e3f6820c}</Project>

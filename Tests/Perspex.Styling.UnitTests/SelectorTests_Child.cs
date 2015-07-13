@@ -104,6 +104,21 @@ namespace Perspex.Styling.UnitTests
             {
                 throw new NotImplementedException();
             }
+
+            public void ClearValue(PerspexProperty property)
+            {
+                throw new NotImplementedException();
+            }
+
+            public object GetValue(PerspexProperty property)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool IsSet(PerspexProperty property)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class TestLogical1 : TestLogical

@@ -74,6 +74,11 @@ namespace Perspex
             PerspexProperty.Register<Visual, int>(nameof(ZIndex));
 
         /// <summary>
+        /// Whether the control is attached to the visual tree.
+        /// </summary>
+        private bool isAttachedToVisualTree;
+
+        /// <summary>
         /// Holds the children of the visual.
         /// </summary>
         private PerspexList<IVisual> visualChildren;
@@ -190,7 +195,7 @@ namespace Perspex
         /// </summary>
         bool IVisual.IsAttachedToVisualTree
         {
-            get;
+            get { return this.isAttachedToVisualTree; }
         }
 
         /// <summary>
@@ -495,6 +500,7 @@ namespace Perspex
         {
             this.visualLogger.Verbose("Attached to visual tree");
 
+            this.isAttachedToVisualTree = true;
             this.OnAttachedToVisualTree(root);
 
             if (this.visualChildren != null)
@@ -515,6 +521,7 @@ namespace Perspex
         {
             this.visualLogger.Verbose("Detached from visual tree");
 
+            this.isAttachedToVisualTree = false;
             this.OnDetachedFromVisualTree(root);
 
             if (this.visualChildren != null)

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="BoundsTracker.cs" company="Steven Kirk">
+// <copyright file="BoundsTrackerTests.cs" company="Steven Kirk">
 // Copyright 2015 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -10,8 +10,7 @@ namespace Perspex.SceneGraph.UnitTests.VisualTree
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
-    using Perspex.Controls;
-    using Perspex.Controls.Shapes;
+    using Perspex.Controls.Core;
     using Perspex.VisualTree;
     using Xunit;
 
@@ -21,18 +20,18 @@ namespace Perspex.SceneGraph.UnitTests.VisualTree
         public void Should_Track_Bounds()
         {
             var target = new BoundsTracker();
-            var control = default(Rectangle);
+            var control = default(TextBlock);
             var tree = new Decorator
             {
                 Padding = new Thickness(10),
-                Content = new Decorator
+                Child = new Decorator
                 {
                     Padding = new Thickness(5),
-                    Content = (control = new Rectangle
+                    Child = control = new TextBlock
                     {
                         Width = 15,
                         Height = 15,
-                    }),
+                    },
                 }
             };
 

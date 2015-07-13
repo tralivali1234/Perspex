@@ -67,7 +67,7 @@ namespace Perspex.Controls.Core.UnitTests
             var child = new Control();
             var called = false;
 
-            ((ILogical)target).LogicalChildren.CollectionChanged += (s, e) => 
+            ((ILogical)target).LogicalChildren.CollectionChanged += (s, e) =>
                 called = e.Action == NotifyCollectionChangedAction.Add;
 
             target.Child = child;

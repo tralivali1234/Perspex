@@ -69,6 +69,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessText.cs" />
     <Compile Include="Border.cs" />
     <Compile Include="ColumnDefinition.cs" />
     <Compile Include="ColumnDefinitions.cs" />
@@ -85,6 +86,8 @@
     <Compile Include="RowDefinition.cs" />
     <Compile Include="RowDefinitions.cs" />
     <Compile Include="StackPanel.cs" />
+    <Compile Include="TextBlock.cs" />
+    <Compile Include="TextWrapping.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

@@ -7,6 +7,7 @@
 namespace Perspex.Input.UnitTests
 {
     using Perspex.Controls;
+    using Perspex.Controls.Core;
     using Xunit;
 
     public class KeyboardNavigationTests
@@ -15,8 +16,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Continue_Returns_Next_Control_In_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -26,18 +27,18 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            (current = new Button { Name = "Button2" }),
-                            (next = new Button { Name = "Button3" }),
+                            new TestControl { Name = "Button1" },
+                            (current = new TestControl { Name = "Button2" }),
+                            (next = new TestControl { Name = "Button3" }),
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -52,8 +53,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Continue_Returns_First_Control_In_Next_Sibling_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -63,18 +64,18 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            new Button { Name = "Button2" },
-                            (current = new Button { Name = "Button3" }),
+                            new TestControl { Name = "Button1" },
+                            new TestControl { Name = "Button2" },
+                            (current = new TestControl { Name = "Button3" }),
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            (next = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            (next = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -89,8 +90,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Continue_Returns_Next_Sibling()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -100,12 +101,12 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            new Button { Name = "Button2" },
-                            (current = new Button { Name = "Button3" }),
+                            new TestControl { Name = "Button1" },
+                            new TestControl { Name = "Button2" },
+                            (current = new TestControl { Name = "Button3" }),
                         }
                     }),
-                    (next = new Button { Name = "Button4" }),
+                    (next = new TestControl { Name = "Button4" }),
                 }
             };
 
@@ -118,8 +119,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Continue_Returns_First_Control_In_Next_Uncle_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -133,9 +134,9 @@ namespace Perspex.Input.UnitTests
                             {
                                 Children = new Controls
                                 {
-                                    new Button { Name = "Button1" },
-                                    new Button { Name = "Button2" },
-                                    (current = new Button { Name = "Button3" }),
+                                    new TestControl { Name = "Button1" },
+                                    new TestControl { Name = "Button2" },
+                                    (current = new TestControl { Name = "Button3" }),
                                 }
                             }),
                         },
@@ -144,9 +145,9 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            (next = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            (next = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -160,13 +161,13 @@ namespace Perspex.Input.UnitTests
         [Fact]
         public void GetNextInTabOrder_Continue_Returns_Child_Of_Top_Level()
         {
-            Button next;
+            TestControl next;
 
             var top = new StackPanel
             {
                 Children = new Controls
                 {
-                    (next = new Button { Name = "Button1" }),
+                    (next = new TestControl { Name = "Button1" }),
                 }
             };
 
@@ -179,8 +180,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Continue_Wraps()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -194,9 +195,9 @@ namespace Perspex.Input.UnitTests
                             {
                                 Children = new Controls
                                 {
-                                    (next = new Button { Name = "Button1" }),
-                                    new Button { Name = "Button2" },
-                                    new Button { Name = "Button3" },
+                                    (next = new TestControl { Name = "Button1" }),
+                                    new TestControl { Name = "Button2" },
+                                    new TestControl { Name = "Button3" },
                                 }
                             }),
                         },
@@ -205,9 +206,9 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            (current = new Button { Name = "Button6" }),
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            (current = new TestControl { Name = "Button6" }),
                         }
                     },
                 }
@@ -222,8 +223,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Cycle_Returns_Next_Control_In_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -234,18 +235,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Cycle,
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            (current = new Button { Name = "Button2" }),
-                            (next = new Button { Name = "Button3" }),
+                            new TestControl { Name = "Button1" },
+                            (current = new TestControl { Name = "Button2" }),
+                            (next = new TestControl { Name = "Button3" }),
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -260,8 +261,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Cycle_Wraps_To_First()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -272,18 +273,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Cycle,
                         Children = new Controls
                         {
-                            (next = new Button { Name = "Button1" }),
-                            new Button { Name = "Button2" },
-                            (current = new Button { Name = "Button3" }),
+                            (next = new TestControl { Name = "Button1" }),
+                            new TestControl { Name = "Button2" },
+                            (current = new TestControl { Name = "Button3" }),
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -298,8 +299,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Once_Moves_To_Next_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -310,18 +311,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Once,
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            (current = new Button { Name = "Button2" }),
-                            new Button { Name = "Button3" },
+                            new TestControl { Name = "Button1" },
+                            (current = new TestControl { Name = "Button2" }),
+                            new TestControl { Name = "Button3" },
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            (next = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            (next = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -336,8 +337,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Once_Moves_To_Active_Element()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -348,18 +349,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Once,
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            (next = new Button { Name = "Button2" }),
-                            new Button { Name = "Button3" },
+                            new TestControl { Name = "Button1" },
+                            (next = new TestControl { Name = "Button2" }),
+                            new TestControl { Name = "Button3" },
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            (current = new Button { Name = "Button6" }),
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            (current = new TestControl { Name = "Button6" }),
                         }
                     },
                 }
@@ -376,8 +377,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Never_Moves_To_Next_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -388,18 +389,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Never,
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            (current = new Button { Name = "Button2" }),
-                            new Button { Name = "Button3" },
+                            new TestControl { Name = "Button1" },
+                            (current = new TestControl { Name = "Button2" }),
+                            new TestControl { Name = "Button3" },
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            (next = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            (next = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -414,8 +415,8 @@ namespace Perspex.Input.UnitTests
         public void GetNextInTabOrder_Never_Skips_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -426,18 +427,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Never,
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            new Button { Name = "Button2" },
-                            new Button { Name = "Button3" },
+                            new TestControl { Name = "Button1" },
+                            new TestControl { Name = "Button2" },
+                            new TestControl { Name = "Button3" },
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            (next = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            (current = new Button { Name = "Button6" }),
+                            (next = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            (current = new TestControl { Name = "Button6" }),
                         }
                     },
                 }
@@ -454,8 +455,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Continue_Returns_Previous_Control_In_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -465,18 +466,18 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            (next = new Button { Name = "Button2" }),
-                            (current = new Button { Name = "Button3" }),
+                            new TestControl { Name = "Button1" },
+                            (next = new TestControl { Name = "Button2" }),
+                            (current = new TestControl { Name = "Button3" }),
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -491,8 +492,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Continue_Returns_Last_Control_In_Previous_Sibling_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -502,18 +503,18 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            new Button { Name = "Button2" },
-                            (next = new Button { Name = "Button3" }),
+                            new TestControl { Name = "Button1" },
+                            new TestControl { Name = "Button2" },
+                            (next = new TestControl { Name = "Button3" }),
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            (current = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            (current = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -528,8 +529,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Continue_Returns_Last_Child_Of_Sibling()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -539,12 +540,12 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            new Button { Name = "Button2" },
-                            (next = new Button { Name = "Button3" }),
+                            new TestControl { Name = "Button1" },
+                            new TestControl { Name = "Button2" },
+                            (next = new TestControl { Name = "Button3" }),
                         }
                     }),
-                    (current = new Button { Name = "Button4" }),
+                    (current = new TestControl { Name = "Button4" }),
                 }
             };
 
@@ -557,8 +558,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Continue_Returns_Last_Control_In_Previous_Nephew_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -572,9 +573,9 @@ namespace Perspex.Input.UnitTests
                             {
                                 Children = new Controls
                                 {
-                                    new Button { Name = "Button1" },
-                                    new Button { Name = "Button2" },
-                                    (next = new Button { Name = "Button3" }),
+                                    new TestControl { Name = "Button1" },
+                                    new TestControl { Name = "Button2" },
+                                    (next = new TestControl { Name = "Button3" }),
                                 }
                             }),
                         },
@@ -583,9 +584,9 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            (current = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            (current = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -600,8 +601,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Continue_Wraps()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -615,9 +616,9 @@ namespace Perspex.Input.UnitTests
                             {
                                 Children = new Controls
                                 {
-                                    (current = new Button { Name = "Button1" }),
-                                    new Button { Name = "Button2" },
-                                    new Button { Name = "Button3" },
+                                    (current = new TestControl { Name = "Button1" }),
+                                    new TestControl { Name = "Button2" },
+                                    new TestControl { Name = "Button3" },
                                 }
                             }),
                         },
@@ -626,9 +627,9 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            (next = new Button { Name = "Button6" }),
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            (next = new TestControl { Name = "Button6" }),
                         }
                     },
                 }
@@ -643,8 +644,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Cycle_Returns_Previous_Control_In_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -655,18 +656,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Cycle,
                         Children = new Controls
                         {
-                            (next = new Button { Name = "Button1" }),
-                            (current = new Button { Name = "Button2" }),
-                            new Button { Name = "Button3" },
+                            (next = new TestControl { Name = "Button1" }),
+                            (current = new TestControl { Name = "Button2" }),
+                            new TestControl { Name = "Button3" },
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -681,8 +682,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Cycle_Wraps_To_Last()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -693,18 +694,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Cycle,
                         Children = new Controls
                         {
-                            (current = new Button { Name = "Button1" }),
-                            new Button { Name = "Button2" },
-                            (next = new Button { Name = "Button3" }),
+                            (current = new TestControl { Name = "Button1" }),
+                            new TestControl { Name = "Button2" },
+                            (next = new TestControl { Name = "Button3" }),
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            new TestControl { Name = "Button4" },
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -719,8 +720,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Once_Moves_To_Previous_Container()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -730,9 +731,9 @@ namespace Perspex.Input.UnitTests
                     {
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            new Button { Name = "Button2" },
-                            (next = new Button { Name = "Button3" }),
+                            new TestControl { Name = "Button1" },
+                            new TestControl { Name = "Button2" },
+                            (next = new TestControl { Name = "Button3" }),
                         }
                     }),
                     new StackPanel
@@ -740,9 +741,9 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Once,
                         Children = new Controls
                         {
-                            new Button { Name = "Button4" },
-                            (current = new Button { Name = "Button5" }),
-                            new Button { Name = "Button6" },
+                            new TestControl { Name = "Button4" },
+                            (current = new TestControl { Name = "Button5" }),
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -757,8 +758,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Once_Moves_To_Active_Element()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -769,18 +770,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Once,
                         Children = new Controls
                         {
-                            new Button { Name = "Button1" },
-                            (next = new Button { Name = "Button2" }),
-                            new Button { Name = "Button3" },
+                            new TestControl { Name = "Button1" },
+                            (next = new TestControl { Name = "Button2" }),
+                            new TestControl { Name = "Button3" },
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            (current = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            (current = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -797,8 +798,8 @@ namespace Perspex.Input.UnitTests
         public void GetPreviousInTabOrder_Once_Moves_To_First_Element()
         {
             StackPanel container;
-            Button current;
-            Button next;
+            TestControl current;
+            TestControl next;
 
             var top = new StackPanel
             {
@@ -809,18 +810,18 @@ namespace Perspex.Input.UnitTests
                         [KeyboardNavigation.TabNavigationProperty] = KeyboardNavigationMode.Once,
                         Children = new Controls
                         {
-                            (next = new Button { Name = "Button1" }),
-                            new Button { Name = "Button2" },
-                            new Button { Name = "Button3" },
+                            (next = new TestControl { Name = "Button1" }),
+                            new TestControl { Name = "Button2" },
+                            new TestControl { Name = "Button3" },
                         }
                     }),
                     new StackPanel
                     {
                         Children = new Controls
                         {
-                            (current = new Button { Name = "Button4" }),
-                            new Button { Name = "Button5" },
-                            new Button { Name = "Button6" },
+                            (current = new TestControl { Name = "Button4" }),
+                            new TestControl { Name = "Button5" },
+                            new TestControl { Name = "Button6" },
                         }
                     },
                 }
@@ -829,6 +830,14 @@ namespace Perspex.Input.UnitTests
             var result = KeyboardNavigationHandler.GetPreviousInTabOrder(current);
 
             Assert.Equal(next, result);
+        }
+
+        private class TestControl : Control
+        {
+            public TestControl()
+            {
+                Focusable = true;
+            }
         }
     }
 }

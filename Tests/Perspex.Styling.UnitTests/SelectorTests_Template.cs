@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SelectorTests.cs" company="Steven Kirk">
+// <copyright file="SelectorTests_Template.cs" company="Steven Kirk">
 // Copyright 2014 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -8,12 +8,13 @@ namespace Perspex.Styling.UnitTests
 {
     using System.Linq;
     using System.Reactive.Linq;
+    using System.Threading.Tasks;
     using Moq;
     using Perspex.Controls;
+    using Perspex.Controls.Core;
     using Perspex.Styling;
     using Perspex.VisualTree;
     using Xunit;
-    using System.Threading.Tasks;
 
     public class SelectorTests_Template
     {
@@ -34,16 +35,17 @@ namespace Perspex.Styling.UnitTests
         [Fact]
         public void Control_Not_In_Template_Is_Not_Matched_With_Template_Selector()
         {
-            var target = new Mock<IVisual>();
-            var templatedControl = target.As<ITemplatedControl>();
-            var styleable = target.As<IStyleable>();
-            this.BuildVisualTree(target);
+            Assert.True(false);
+            ////var target = new Mock<IVisual>();
+            ////var templatedControl = target.As<ITemplatedControl>();
+            ////var styleable = target.As<IStyleable>();
+            ////this.BuildVisualTree(target);
 
-            var border = (Border)target.Object.GetVisualChildren().Single();
-            border.SetValue(Border.TemplatedParentProperty, null);
-            var selector = new Selector().Template().OfType<Border>();
+            ////var border = (Border)target.Object.GetVisualChildren().Single();
+            ////border.SetValue(Border.TemplatedParentProperty, null);
+            ////var selector = new Selector().Template().OfType<Border>();
 
-            Assert.False(selector.Match(border).ImmediateResult);
+            ////Assert.False(selector.Match(border).ImmediateResult);
         }
 
         [Fact]
@@ -116,10 +118,10 @@ namespace Perspex.Styling.UnitTests
             {
                 new Border
                 {
-                    [Border.TemplatedParentProperty] = templatedControl.Object,
-                    Content = new TextBlock
+                    ////[Border.TemplatedParentProperty] = templatedControl.Object,
+                    Child = new TextBlock
                     {
-                        [Border.TemplatedParentProperty] = templatedControl.Object,
+                        ////[Border.TemplatedParentProperty] = templatedControl.Object,
                     },
                 },
             });

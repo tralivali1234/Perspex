@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SelectorTests.cs" company="Steven Kirk">
+// <copyright file="SelectorTests_Multiple.cs" company="Steven Kirk">
 // Copyright 2014 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -18,39 +18,40 @@ namespace Perspex.Styling.UnitTests
         [Fact]
         public void Template_Child_Of_Control_With_Two_Classes()
         {
-            var template = new ControlTemplate(parent =>
-            {
-                return new Border
-                {
-                    Name = "border",
-                };
-            });
+            throw new NotImplementedException();
+            ////var template = new ControlTemplate(parent =>
+            ////{
+            ////    return new Border
+            ////    {
+            ////        Name = "border",
+            ////    };
+            ////});
 
-            var control = new Button
-            {
-                Template = template,
-            };
+            ////var control = new Button
+            ////{
+            ////    Template = template,
+            ////};
 
-            control.ApplyTemplate();
+            ////control.ApplyTemplate();
 
-            var selector = new Selector()
-                .OfType<Button>()
-                .Class("foo")
-                .Class("bar")
-                .Template()
-                .Name("border");
+            ////var selector = new Selector()
+            ////    .OfType<Button>()
+            ////    .Class("foo")
+            ////    .Class("bar")
+            ////    .Template()
+            ////    .Name("border");
 
-            var border = (Border)((IVisual)control).VisualChildren.Single();
-            var values = new List<bool>();
-            var activator = selector.Match(border).ObservableResult;
+            ////var border = (Border)((IVisual)control).VisualChildren.Single();
+            ////var values = new List<bool>();
+            ////var activator = selector.Match(border).ObservableResult;
 
-            activator.Subscribe(x => values.Add(x));
+            ////activator.Subscribe(x => values.Add(x));
 
-            Assert.Equal(new[] { false }, values);
-            control.Classes.Add("foo", "bar");
-            Assert.Equal(new[] { false, true }, values);
-            control.Classes.Remove("foo");
-            Assert.Equal(new[] { false, true, false }, values);
+            ////Assert.Equal(new[] { false }, values);
+            ////control.Classes.Add("foo", "bar");
+            ////Assert.Equal(new[] { false, true }, values);
+            ////control.Classes.Remove("foo");
+            ////Assert.Equal(new[] { false, true, false }, values);
         }
     }
 }

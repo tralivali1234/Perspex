@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SelectorTests.cs" company="Steven Kirk">
+// <copyright file="SelectorTests_PropertyEquals.cs" company="Steven Kirk">
 // Copyright 2014 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -9,7 +9,7 @@ namespace Perspex.Styling.UnitTests
     using System.Linq;
     using System.Reactive.Linq;
     using System.Threading.Tasks;
-    using Perspex.Controls;
+    using Perspex.Controls.Core;
     using Perspex.Styling;
     using Xunit;
 
