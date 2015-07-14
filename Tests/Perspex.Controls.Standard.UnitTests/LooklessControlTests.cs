@@ -11,6 +11,7 @@ namespace Perspex.Controls.Standard.UnitTests
     using Perspex.Controls.Core;
     using Perspex.VisualTree;
     using Xunit;
+    using Perspex.Controls.Standard.Presenters;
 
     public class LooklessControlTests
     {
@@ -19,7 +20,7 @@ namespace Perspex.Controls.Standard.UnitTests
         {
             var target = new TestControl
             {
-                Template = new LooklessControlTemplate(x => new TextBlock())
+                Template = new LooklessControlTemplate(_ => new TextBlock())
             };
 
             Assert.Empty(target.GetVisualChildren());
@@ -30,7 +31,7 @@ namespace Perspex.Controls.Standard.UnitTests
         {
             var target = new TestControl
             {
-                Template = new LooklessControlTemplate(x => new TextBlock())
+                Template = new LooklessControlTemplate(_ => new TextBlock())
             };
 
             target.ApplyTemplate();
@@ -46,7 +47,7 @@ namespace Perspex.Controls.Standard.UnitTests
         {
             var target = new TestControl
             {
-                Template = new LooklessControlTemplate(x => new TextBlock())
+                Template = new LooklessControlTemplate(_ => new TextBlock())
             };
 
             var called = false;
@@ -74,7 +75,7 @@ namespace Perspex.Controls.Standard.UnitTests
         {
             var target = new TestControl
             {
-                Template = new LooklessControlTemplate(x => new TextBlock())
+                Template = new LooklessControlTemplate(_ => new TextBlock())
             };
 
             var called = false;
@@ -91,13 +92,13 @@ namespace Perspex.Controls.Standard.UnitTests
         {
             var target = new TestControl
             {
-                Template = new LooklessControlTemplate(x => new TextBlock())
+                Template = new LooklessControlTemplate(_ => new TextBlock())
             };
 
             var called = false;
 
             target.ApplyTemplate();
-            target.Template = new LooklessControlTemplate(x => new Border());
+            target.Template = new LooklessControlTemplate(_ => new Border());
             target.OnTemplateAppliedCalled += (s, e) => called = true;
             target.ApplyTemplate();
 
@@ -109,7 +110,7 @@ namespace Perspex.Controls.Standard.UnitTests
         {
             var target = new TestControl
             {
-                Template = new LooklessControlTemplate(x => new TextBlock())
+                Template = new LooklessControlTemplate(_ => new TextBlock())
             };
 
             target.ApplyTemplate();
@@ -122,13 +123,34 @@ namespace Perspex.Controls.Standard.UnitTests
         {
             var target = new TestControl
             {
-                Template = new LooklessControlTemplate(x => new TextBlock())
+                Template = new LooklessControlTemplate(_ => new TextBlock())
             };
 
             target.ApplyTemplate();
 
             var textBlock = ((NameScope)target.GetVisualChildren().First()).Child;
             Assert.Equal(target, LooklessControl.GetTemplatedParent(textBlock));
+        }
+
+        [Fact]
+        public void Child_Of_Presenter_Does_Not_Have_TemplatedParent_Property_Set()
+        {
+            var target = new TestControl
+            {
+                Template = new LooklessControlTemplate(_ =>
+                    new Decorator
+                    {
+                        Child = new TestPresenter
+                        {
+                            Child = new TextBlock()
+                        }
+                    })
+            };
+
+            target.ApplyTemplate();
+
+            var textBlock = target.GetVisualDescendents().OfType<TextBlock>().Single();
+            Assert.Null(LooklessControl.GetTemplatedParent(textBlock));
         }
 
         private class TestControl : LooklessControl
@@ -139,6 +161,10 @@ namespace Perspex.Controls.Standard.UnitTests
             {
                 this.OnTemplateAppliedCalled?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        private class TestPresenter : Decorator, IPresenter
+        {
         }
     }
 }
