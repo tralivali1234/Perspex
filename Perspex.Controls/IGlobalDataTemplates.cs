@@ -12,7 +12,7 @@ namespace Perspex.Controls
     public interface IGlobalDataTemplates
     {
         /// <summary>
-        /// Gets the globals data templates.
+        /// Gets the global data templates.
         /// </summary>
         DataTemplates DataTemplates { get; }
     }

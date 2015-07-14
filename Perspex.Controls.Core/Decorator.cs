@@ -94,8 +94,8 @@ namespace Perspex.Controls.Core
 
             if (oldChild != null)
             {
-                this.RemoveVisualChild(oldChild);
                 ((ISetLogicalParent)oldChild).SetParent(null);
+                this.RemoveVisualChild(oldChild);
             }
 
             if (newChild != null)
