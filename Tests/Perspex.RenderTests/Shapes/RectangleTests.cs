@@ -21,7 +21,7 @@ namespace Perspex.Direct2D1.RenderTests.Shapes
         [Fact]
         public void Rectangle_1px_Stroke()
         {
-            Decorator target = new Decorator
+            var target = new Border
             {
                 Padding = new Thickness(8),
                 Width = 200,
@@ -40,7 +40,7 @@ namespace Perspex.Direct2D1.RenderTests.Shapes
         [Fact]
         public void Rectangle_2px_Stroke()
         {
-            Decorator target = new Decorator
+            var target = new Border
             {
                 Padding = new Thickness(8),
                 Width = 200,
@@ -59,7 +59,7 @@ namespace Perspex.Direct2D1.RenderTests.Shapes
         [Fact]
         public void Rectangle_Stroke_Fill()
         {
-            Decorator target = new Decorator
+            var target = new Border
             {
                 Padding = new Thickness(8),
                 Width = 200,

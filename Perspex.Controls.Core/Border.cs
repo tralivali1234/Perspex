@@ -32,6 +32,12 @@ namespace Perspex.Controls.Core
             PerspexProperty.Register<Border, double>("BorderThickness");
 
         /// <summary>
+        /// Defines the <see cref="Padding"/> property.
+        /// </summary>
+        public static readonly PerspexProperty<Thickness> PaddingProperty =
+            PerspexProperty.Register<Decorator, Thickness>("Padding");
+
+        /// <summary>
         /// Initializes static members of the <see cref="Border"/> class.
         /// </summary>
         static Border()
@@ -65,6 +71,15 @@ namespace Perspex.Controls.Core
         {
             get { return this.GetValue(BorderThicknessProperty); }
             set { this.SetValue(BorderThicknessProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the padding to place around the decorated control.
+        /// </summary>
+        public Thickness Padding
+        {
+            get { return this.GetValue(PaddingProperty); }
+            set { this.SetValue(PaddingProperty, value); }
         }
 
         /// <summary>

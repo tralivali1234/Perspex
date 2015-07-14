@@ -67,7 +67,7 @@ namespace Perspex.Controls.Core.UnitTests
             var child = new Control();
             var called = false;
 
-            ((ILogical)decorator).LogicalChildren.CollectionChanged += (s, e) => 
+            ((ILogical)decorator).LogicalChildren.CollectionChanged += (s, e) =>
                 called = e.Action == NotifyCollectionChangedAction.Add;
 
             decorator.Child = child;
@@ -108,19 +108,6 @@ namespace Perspex.Controls.Core.UnitTests
             decorator.Child = child2;
 
             Assert.True(called);
-        }
-
-        [Fact]
-        public void Measure_Should_Return_Padding_When_No_Child_Present()
-        {
-            var target = new Decorator
-            {
-                Padding = new Thickness(8),
-            };
-
-            target.Measure(new Size(100, 100));
-
-            Assert.Equal(new Size(16, 16), target.DesiredSize);
         }
     }
 }

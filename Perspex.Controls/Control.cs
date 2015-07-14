@@ -7,15 +7,13 @@
 namespace Perspex.Controls
 {
     using System;
+    using System.Linq;
     using Perspex.Collections;
     using Perspex.Input;
     using Perspex.Rendering;
     using Perspex.Styling;
     using Splat;
     using Perspex.LogicalTree;
-    using System.Linq;
-
-
 
     /// <summary>
     /// Base class for Perspex controls.
@@ -30,7 +28,7 @@ namespace Perspex.Controls
     /// - Implements <see cref="IStyleable"/> to allow styling to work on the control.
     /// - Implements <see cref="ILogical"/> to form part of a logical tree.
     /// </remarks>
-    public class Control : InputElement, IControl
+    public class Control : InputElement, IControl, ISetLogicalParent
     {
         /// <summary>
         /// Defines the <see cref="DataContext"/> property.
@@ -208,7 +206,6 @@ namespace Perspex.Controls
         ILogical ILogical.LogicalParent
         {
             get { return this.Parent; }
-            set { this.SetValue(ParentProperty, value); }
         }
 
         /// <summary>
@@ -258,20 +255,61 @@ namespace Perspex.Controls
         }
 
         /// <summary>
-        /// Called when the control is attached to a visual tree.
+        /// Sets the control's logical parent.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        void ISetLogicalParent.SetParent(IControl parent)
+        {
+            var old = this.Parent;
+
+            if (old != null && parent != null)
+            {
+                throw new InvalidOperationException("The Control already has a parent.");
+            }
+
+            this.SetValue(ParentProperty, parent);
+
+            if (parent != null)
+            {
+                var nameScope = parent.GetSelfAndLogicalAncestors()
+                    .OfType<INameScope>()
+                    .FirstOrDefault();
+
+                if (nameScope != null)
+                {
+                    this.RegisterName(nameScope);
+
+                    foreach (var descendent in this.GetLogicalDescendents().OfType<Control>())
+                    {
+                        descendent.RegisterName(nameScope);
+                    }
+                }
+            }
+            else
+            {
+                var nameScope = old.GetSelfAndLogicalAncestors()
+                    .OfType<INameScope>()
+                    .FirstOrDefault();
+
+                if (nameScope != null)
+                {
+                    this.UnregisterName(nameScope);
+
+                    foreach (var descendent in this.GetLogicalDescendents().OfType<Control>())
+                    {
+                        descendent.UnregisterName(nameScope);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Styles the control when attached to the visual tree.
         /// </summary>
         /// <param name="root">The root of the visual tree.</param>
         protected override void OnAttachedToVisualTree(IRenderRoot root)
         {
             base.OnAttachedToVisualTree(root);
-
-            if (!string.IsNullOrWhiteSpace(this.name))
-            {
-                var nameScope = this.GetLogicalAncestors()
-                    .OfType<INameScope>()
-                    .FirstOrDefault();
-                nameScope?.Names.Register(this);
-            }
 
             IStyler styler = Locator.Current.GetService<IStyler>();
             styler?.ApplyStyles(this);
@@ -284,13 +322,29 @@ namespace Perspex.Controls
         protected override void OnDetachedFromVisualTree(IRenderRoot root)
         {
             base.OnDetachedFromVisualTree(root);
+        }
 
-            if (!string.IsNullOrWhiteSpace(this.name))
+        /// <summary>
+        /// Registers the control with the specified name scope.
+        /// </summary>
+        /// <param name="nameScope">The name scope.</param>
+        private void RegisterName(INameScope nameScope)
+        {
+            if (!string.IsNullOrWhiteSpace(this.Name))
             {
-                var nameScope = this.GetLogicalAncestors()
-                    .OfType<INameScope>()
-                    .FirstOrDefault();
-                nameScope?.Names.Deregister(this);
+                nameScope.RegisterName(this.Name, this);
+            }
+        }
+
+        /// <summary>
+        /// Unregisters the control with the specified name scope.
+        /// </summary>
+        /// <param name="nameScope">The name scope.</param>
+        private void UnregisterName(INameScope nameScope)
+        {
+            if (!string.IsNullOrWhiteSpace(this.Name))
+            {
+                nameScope.UnregisterName(this.Name);
             }
         }
     }

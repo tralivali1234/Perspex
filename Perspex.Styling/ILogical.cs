@@ -16,7 +16,7 @@ namespace Perspex
         /// <summary>
         /// Gets or sets the logical parent.
         /// </summary>
-        ILogical LogicalParent { get; set;  }
+        ILogical LogicalParent { get; }
 
         /// <summary>
         /// Gets the logical children.

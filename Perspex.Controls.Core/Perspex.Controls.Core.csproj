@@ -80,6 +80,7 @@
     <Compile Include="GridLength.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="INavigablePanel.cs" />
+    <Compile Include="NameScope.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Parsers\GridLengthsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

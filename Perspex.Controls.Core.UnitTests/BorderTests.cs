@@ -74,7 +74,7 @@ namespace Perspex.Controls.Core.UnitTests
 
             Assert.True(called);
         }
-
+        
         [Fact]
         public void Clearing_Content_Should_Fire_LogicalChildren_CollectionChanged()
         {

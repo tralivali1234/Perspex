@@ -25,7 +25,7 @@ namespace Perspex.Direct2D1.RenderTests.Controls
         [Fact]
         public void Image_Stretch_None()
         {
-            Decorator target = new Decorator
+            var target = new Border
             {
                 Padding = new Thickness(20, 8),
                 Width = 200,
@@ -48,7 +48,7 @@ namespace Perspex.Direct2D1.RenderTests.Controls
         [Fact]
         public void Image_Stretch_Fill()
         {
-            Decorator target = new Decorator
+            var target = new Border
             {
                 Padding = new Thickness(20, 8),
                 Width = 200,
@@ -71,7 +71,7 @@ namespace Perspex.Direct2D1.RenderTests.Controls
         [Fact]
         public void Image_Stretch_Uniform()
         {
-            Decorator target = new Decorator
+            var target = new Border
             {
                 Padding = new Thickness(20, 8),
                 Width = 200,
@@ -94,7 +94,7 @@ namespace Perspex.Direct2D1.RenderTests.Controls
         [Fact]
         public void Image_Stretch_UniformToFill()
         {
-            Decorator target = new Decorator
+            var target = new Border
             {
                 Padding = new Thickness(20, 8),
                 Width = 200,

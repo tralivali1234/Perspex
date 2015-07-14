@@ -108,7 +108,7 @@ namespace Perspex.Controls.Core
         {
             foreach (var control in controls)
             {
-                ((ILogical)control).LogicalParent = null;
+                ((ISetLogicalParent)control).SetParent(null);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Perspex.Controls.Core
         {
             foreach (var control in controls)
             {
-                ((ILogical)control).LogicalParent = this.childLogicalParent as Control;
+                ((ISetLogicalParent)control).SetParent(this.childLogicalParent as IControl);
             }
         }
 
@@ -138,22 +138,22 @@ namespace Perspex.Controls.Core
             {
                 case NotifyCollectionChangedAction.Add:
                     controls = e.NewItems.OfType<Control>().ToList();
-                    this.SetLogicalParent(controls);
                     this.AddVisualChildren(e.NewItems.OfType<Visual>());
+                    this.SetLogicalParent(controls);
                     this.OnChildrenAdded(controls);
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
                     controls = e.OldItems.OfType<Control>().ToList();
-                    this.RemoveVisualChildren(e.OldItems.OfType<Visual>());
                     this.ClearLogicalParent(e.OldItems.OfType<Control>());
+                    this.RemoveVisualChildren(e.OldItems.OfType<Visual>());
                     this.OnChildrenRemoved(controls);
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     controls = e.OldItems.OfType<Control>().ToList();
-                    this.ClearVisualChildren();
                     this.ClearLogicalParent(controls);
+                    this.ClearVisualChildren();
                     this.SetLogicalParent(this.children);
                     this.AddVisualChildren(this.children.Cast<Visual>());
                     this.OnChildrenAdded(controls);

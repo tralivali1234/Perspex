@@ -6,74 +6,57 @@
 
 namespace Perspex.Controls.UnitTests
 {
-    using System;
-    using System.Collections.Generic;
     using Perspex.Controls.Core;
     using Xunit;
-    using Perspex.Rendering;
-    using Perspex.Platform;
 
     public class ControlTests
     {
         [Fact]
-        public void Named_Control_Should_Register_With_NameScope()
+        public void Controls_Should_Register_With_NameScope()
         {
-            Control target;
-
             var scope = new NameScope
             {
-                Children = new Controls
+                Child = new Decorator
                 {
-                    (target = new Control
+                    Name = "Decorator",
+                    Child = new Border
                     {
-                        Name = "Foo"
-                    })
+                        Child = new TextBlock
+                        {
+                            Name = "TextBlock",
+                        }
+                    }
                 }
             };
 
-            Assert.Equal(
-                new[] { new KeyValuePair<string, INamed>("Foo", target) },
-                scope.Names);
+            Assert.IsType<Decorator>(((INameScope)scope).FindName("Decorator"));
+            Assert.IsType<TextBlock>(((INameScope)scope).FindName("TextBlock"));
         }
 
         [Fact]
-        public void Named_Control_Should_Unregister_With_NameScope()
+        public void Controls_Should_Unregister_With_NameScope()
         {
-            Control target;
-
             var scope = new NameScope
             {
-                Children = new Controls
+                Child = new Decorator
                 {
-                    (target = new Control
+                    Name = "Decorator",
+                    Child = new Border
                     {
-                        Name = "Foo"
-                    })
+                        Child = new TextBlock
+                        {
+                            Name = "TextBlock",
+                        }
+                    }
                 }
             };
 
-            scope.Children.Remove(target);
+            var decorator = ((INameScope)scope).FindName("Decorator") as Decorator;
+            decorator.Child = null;
+            Assert.Null(((INameScope)scope).FindName("TextBlock"));
 
-            Assert.Empty(scope.Names);
-        }
-
-        private class NameScope : Panel, INameScope, IRenderRoot
-        {
-            public NameScope()
-            {
-                this.Names = new NameDictionary();
-            }
-
-            public NameDictionary Names { get; }
-
-            public IRenderer Renderer { get; }
-
-            public IRenderManager RenderManager { get; }
-
-            public Point TranslatePointToScreen(Point p)
-            {
-                throw new NotImplementedException();
-            }
+            scope.Child = null;
+            Assert.Null(((INameScope)scope).FindName("Decorator"));
         }
     }
 }

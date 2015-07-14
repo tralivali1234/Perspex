@@ -21,7 +21,7 @@ namespace Perspex.Direct2D1.RenderTests.Shapes
         [Fact]
         public void Circle_1px_Stroke()
         {
-            Decorator target = new Decorator
+            var target = new Border
             {
                 Padding = new Thickness(8),
                 Width = 200,

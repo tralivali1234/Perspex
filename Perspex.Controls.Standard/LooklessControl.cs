@@ -107,7 +107,7 @@ namespace Perspex.Controls.Standard
                     var children = this.ApplyTemplatedParent(child);
 
                     this.AddVisualChild(child);
-                    ((ILogical)child).LogicalParent = this;
+                    ((ISetLogicalParent)child).SetParent(this);
 
                     foreach (var i in children.OfType<ILayoutable>())
                     {

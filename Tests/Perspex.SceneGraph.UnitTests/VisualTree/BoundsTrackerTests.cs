@@ -21,10 +21,10 @@ namespace Perspex.SceneGraph.UnitTests.VisualTree
         {
             var target = new BoundsTracker();
             var control = default(TextBlock);
-            var tree = new Decorator
+            var tree = new Border
             {
                 Padding = new Thickness(10),
-                Child = new Decorator
+                Child = new Border
                 {
                     Padding = new Thickness(5),
                     Child = control = new TextBlock

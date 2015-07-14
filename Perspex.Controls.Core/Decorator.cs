@@ -11,7 +11,7 @@ namespace Perspex.Controls.Core
     /// <summary>
     /// Base class for controls which decorate a single child control.
     /// </summary>
-    public class Decorator : Control, IVisual, ILogical
+    public class Decorator : Control, ILogical
     {
         /// <summary>
         /// Defines the <see cref="Child"/> property.
@@ -19,18 +19,12 @@ namespace Perspex.Controls.Core
         public static readonly PerspexProperty<IControl> ChildProperty =
             PerspexProperty.Register<Decorator, IControl>("Content");
 
-        /// <summary>
-        /// Defines the <see cref="Padding"/> property.
-        /// </summary>
-        public static readonly PerspexProperty<Thickness> PaddingProperty =
-            PerspexProperty.Register<Decorator, Thickness>("Padding");
-
         private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Decorator"/> class.
+        /// Initializes static members of the <see cref="Decorator"/> class.
         /// </summary>
-        public Decorator()
+        static Decorator()
         {
             ChildProperty.Changed.AddClassHandler<Decorator>(x => x.ChildChanged);
         }
@@ -42,15 +36,6 @@ namespace Perspex.Controls.Core
         {
             get { return this.GetValue(ChildProperty); }
             set { this.SetValue(ChildProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the padding to place around the decorated control.
-        /// </summary>
-        public Thickness Padding
-        {
-            get { return this.GetValue(PaddingProperty); }
-            set { this.SetValue(PaddingProperty, value); }
         }
 
         /// <summary>
@@ -69,16 +54,15 @@ namespace Perspex.Controls.Core
         protected override Size MeasureOverride(Size availableSize)
         {
             var content = this.Child;
-            var padding = this.Padding;
 
             if (content != null)
             {
-                content.Measure(availableSize.Deflate(padding));
-                return content.DesiredSize.Inflate(padding);
+                content.Measure(availableSize);
+                return content.DesiredSize;
             }
             else
             {
-                return new Size(padding.Left + padding.Right, padding.Bottom + padding.Top);
+                return base.MeasureOverride(availableSize);
             }
         }
 
@@ -93,7 +77,7 @@ namespace Perspex.Controls.Core
 
             if (content != null)
             {
-                content.Arrange(new Rect(finalSize).Deflate(this.Padding));
+                content.Arrange(new Rect(finalSize));
             }
 
             return finalSize;
@@ -111,13 +95,13 @@ namespace Perspex.Controls.Core
             if (oldChild != null)
             {
                 this.RemoveVisualChild(oldChild);
-                ((ILogical)oldChild).LogicalParent = null;
+                ((ISetLogicalParent)oldChild).SetParent(null);
             }
 
             if (newChild != null)
             {
                 this.AddVisualChild(newChild);
-                ((ILogical)newChild).LogicalParent = this;
+                ((ISetLogicalParent)newChild).SetParent(this);
             }
 
             this.logicalChild.SingleItem = newChild;
