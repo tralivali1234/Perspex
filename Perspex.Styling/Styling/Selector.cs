@@ -60,39 +60,38 @@ namespace Perspex.Styling
 
         public SelectorMatch Match(IStyleable control)
         {
-            throw new NotImplementedException();
-            ////List<IObservable<bool>> inputs = new List<IObservable<bool>>();
-            ////Selector selector = this;
-            
-            ////while (selector != null)
-            ////{
-            ////    if (selector.inTemplate && control.TemplatedParent == null)
-            ////    {
-            ////        return SelectorMatch.False;
-            ////    }
+            List<IObservable<bool>> inputs = new List<IObservable<bool>>();
+            Selector selector = this;
 
-            ////    var match = selector.evaluate(control);
+            while (selector != null)
+            {
+                ////if (selector.inTemplate && control.TemplatedParent == null)
+                ////{
+                ////    return SelectorMatch.False;
+                ////}
 
-            ////    if (match.ImmediateResult == false)
-            ////    {
-            ////        return match;
-            ////    }
-            ////    else if (match.ObservableResult != null)
-            ////    {
-            ////        inputs.Add(match.ObservableResult);
-            ////    }
+                var match = selector.evaluate(control);
 
-            ////    selector = selector.MovePrevious();
-            ////}
+                if (match.ImmediateResult == false)
+                {
+                    return match;
+                }
+                else if (match.ObservableResult != null)
+                {
+                    inputs.Add(match.ObservableResult);
+                }
 
-            ////if (inputs.Count > 0)
-            ////{
-            ////    return new SelectorMatch(new StyleActivator(inputs));
-            ////}
-            ////else
-            ////{
-            ////    return SelectorMatch.True;
-            ////}
+                selector = selector.MovePrevious();
+            }
+
+            if (inputs.Count > 0)
+            {
+                return new SelectorMatch(new StyleActivator(inputs));
+            }
+            else
+            {
+                return SelectorMatch.True;
+            }
         }
 
         public override string ToString()
