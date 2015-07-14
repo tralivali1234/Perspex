@@ -13,6 +13,8 @@ namespace Perspex.Controls.Standard
     using Perspex.Controls.Standard.Presenters;
     using Perspex.VisualTree;
     using Perspex.Layout;
+    using Perspex.Controls.Core;
+
 
     /// <summary>
     /// Base class for lookless controls.
@@ -101,13 +103,18 @@ namespace Perspex.Controls.Standard
 
                 if (this.Template != null)
                 {
-                    this.templateLog.Verbose("Creating control template");
+                    this.templateLog.Verbose("Creating lookless control template");
 
-                    var child = this.Template.Build(this);
-                    var children = this.ApplyTemplatedParent(child);
+                    var root = this.Template.Build(this);
 
-                    this.AddVisualChild(child);
-                    ((ISetLogicalParent)child).SetParent(this);
+                    var nameScope = new NameScope
+                    {
+                        Child = root
+                    };
+
+                    var children = this.ApplyTemplatedParent(nameScope);
+
+                    this.AddVisualChild(nameScope);
 
                     foreach (var i in children.OfType<ILayoutable>())
                     {

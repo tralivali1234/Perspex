@@ -26,7 +26,7 @@ namespace Perspex.Controls.Standard.UnitTests
         }
 
         [Fact]
-        public void ApplyTemplate_Creates_Visual_Child()
+        public void ApplyTemplate_Creates_NameScope_And_Templated_Child()
         {
             var target = new TestControl
             {
@@ -36,7 +36,9 @@ namespace Perspex.Controls.Standard.UnitTests
             target.ApplyTemplate();
 
             Assert.Equal(1, target.GetVisualChildren().Count());
-            Assert.IsType<TextBlock>(target.GetVisualChildren().First());
+            var nameScope = target.GetVisualChildren().First() as NameScope;
+            Assert.NotNull(nameScope);
+            Assert.IsType<TextBlock>(nameScope.Child);
         }
 
         [Fact]
@@ -100,6 +102,33 @@ namespace Perspex.Controls.Standard.UnitTests
             target.ApplyTemplate();
 
             Assert.True(called);
+        }
+
+        [Fact]
+        public void Templated_NameScope_Has_Parent_Property_Null()
+        {
+            var target = new TestControl
+            {
+                Template = new LooklessControlTemplate(x => new TextBlock())
+            };
+
+            target.ApplyTemplate();
+
+            Assert.Null(((NameScope)target.GetVisualChildren().First()).Parent);
+        }
+
+        [Fact]
+        public void Templated_Child_Has_TemplatedParent_Property_Set()
+        {
+            var target = new TestControl
+            {
+                Template = new LooklessControlTemplate(x => new TextBlock())
+            };
+
+            target.ApplyTemplate();
+
+            var textBlock = ((NameScope)target.GetVisualChildren().First()).Child;
+            Assert.Equal(target, LooklessControl.GetTemplatedParent(textBlock));
         }
 
         private class TestControl : LooklessControl

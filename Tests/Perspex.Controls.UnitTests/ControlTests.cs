@@ -58,5 +58,19 @@ namespace Perspex.Controls.UnitTests
             scope.Child = null;
             Assert.Null(((INameScope)scope).FindName("Decorator"));
         }
+
+        [Fact]
+        public void NameScope_Shouldnt_Register_With_Itself()
+        {
+            var scope = new NameScope
+            {
+                Child = new NameScope
+                {
+                    Name = "Foo"
+                }
+            };
+
+            Assert.Equal(scope.Child, ((INameScope)scope).FindName("Foo"));
+        }
     }
 }
