@@ -12,6 +12,7 @@ namespace Perspex.Win32
     using System.Diagnostics.CodeAnalysis;
     using System.Reactive.Disposables;
     using System.Runtime.InteropServices;
+    using Perspex.Controls.Windowing.Platform;
     using Perspex.Input;
     using Perspex.Platform;
     using Perspex.Win32.Input;

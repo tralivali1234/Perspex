@@ -6,11 +6,6 @@
 
 namespace Perspex.Win32
 {
-    using Perspex.Controls;
-    using Perspex.Input.Raw;
-    using Perspex.Platform;
-    using Perspex.Win32.Input;
-    using Perspex.Win32.Interop;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -19,6 +14,12 @@ namespace Perspex.Win32
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Runtime.InteropServices;
+    using Perspex.Controls.Windowing;
+    using Perspex.Controls.Windowing.Platform;
+    using Perspex.Input.Raw;
+    using Perspex.Platform;
+    using Perspex.Win32.Input;
+    using Perspex.Win32.Interop;
 
     public class WindowImpl : IWindowImpl
     {

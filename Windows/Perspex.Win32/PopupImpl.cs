@@ -9,6 +9,7 @@ namespace Perspex.Win32
     using System;
     using Perspex.Platform;
     using Perspex.Win32.Interop;
+    using Perspex.Controls.Windowing.Platform;
 
     public class PopupImpl : WindowImpl, IPopupImpl
     {

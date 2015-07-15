@@ -81,13 +81,21 @@
       <Project>{B09B78D8-9B26-48B0-9149-D64A2F120F3F}</Project>
       <Name>Perspex.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Perspex.Controls.Core\Perspex.Controls.Core.csproj">
+      <Project>{ad2445de-3530-4ceb-8b13-98bb61839b95}</Project>
+      <Name>Perspex.Controls.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Perspex.Controls.Standard\Perspex.Controls.Standard.csproj">
+      <Project>{d232ff37-50c8-4a74-8901-c35503937426}</Project>
+      <Name>Perspex.Controls.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Perspex.Controls.Windowing\Perspex.Controls.Windowing.csproj">
+      <Project>{71f30db7-49f9-4571-84b7-3358863643e5}</Project>
+      <Name>Perspex.Controls.Windowing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Perspex.Controls\Perspex.Controls.csproj">
       <Project>{D2221C82-4A25-4583-9B43-D791E3F6820C}</Project>
       <Name>Perspex.Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Perspex.Diagnostics\Perspex.Diagnostics.csproj">
-      <Project>{7062AE20-5DCC-4442-9645-8195BDECE63E}</Project>
-      <Name>Perspex.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Perspex.Input\Perspex.Input.csproj">
       <Project>{62024B2D-53EB-4638-B26B-85EEAA54866E}</Project>

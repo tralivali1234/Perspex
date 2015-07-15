@@ -10,6 +10,7 @@ namespace Perspex.Win32.Input
     using Perspex.Controls;
     using Perspex.Input;
     using Perspex.Win32.Interop;
+    using Perspex.Controls.Windowing;
 
     public class WindowsKeyboardDevice : KeyboardDevice
     {

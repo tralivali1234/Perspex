@@ -45,6 +45,22 @@
       <Project>{B09B78D8-9B26-48B0-9149-D64A2F120F3F}</Project>
       <Name>Perspex.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Perspex.Controls.Core\Perspex.Controls.Core.csproj">
+      <Project>{ad2445de-3530-4ceb-8b13-98bb61839b95}</Project>
+      <Name>Perspex.Controls.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Perspex.Controls.Shapes\Perspex.Controls.Shapes.csproj">
+      <Project>{d9105695-8e72-4d2c-820a-2d3bec278e74}</Project>
+      <Name>Perspex.Controls.Shapes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Perspex.Controls.Standard\Perspex.Controls.Standard.csproj">
+      <Project>{d232ff37-50c8-4a74-8901-c35503937426}</Project>
+      <Name>Perspex.Controls.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Perspex.Controls.Windowing\Perspex.Controls.Windowing.csproj">
+      <Project>{71f30db7-49f9-4571-84b7-3358863643e5}</Project>
+      <Name>Perspex.Controls.Windowing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Perspex.Controls\Perspex.Controls.csproj">
       <Project>{D2221C82-4A25-4583-9B43-D791E3F6820C}</Project>
       <Name>Perspex.Controls</Name>
@@ -71,33 +87,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MenuItemStyle.cs" />
-    <Compile Include="MenuStyle.cs" />
-    <Compile Include="ToolTipStyle.cs" />
-    <Compile Include="FocusAdornerStyle.cs" />
-    <Compile Include="DropDownStyle.cs" />
-    <Compile Include="DeckStyle.cs" />
-    <Compile Include="RadioButtonStyle.cs" />
-    <Compile Include="ToggleButtonStyle.cs" />
-    <Compile Include="ListBoxStyle.cs" />
-    <Compile Include="ListBoxItemStyle.cs" />
-    <Compile Include="PopupRootStyle.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="WindowStyle.cs" />
-    <Compile Include="ScrollViewerStyle.cs" />
-    <Compile Include="ScrollBarStyle.cs" />
-    <Compile Include="GridSplitterStyle.cs" />
-    <Compile Include="ButtonStyle.cs" />
-    <Compile Include="CheckBoxStyle.cs" />
-    <Compile Include="ContentControlStyle.cs" />
     <Compile Include="DefaultTheme.cs" />
-    <Compile Include="ItemsControlStyle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TabControlStyle.cs" />
-    <Compile Include="TabItemStyle.cs" />
-    <Compile Include="TabStripStyle.cs" />
-    <Compile Include="TextBoxStyle.cs" />
-    <Compile Include="TreeViewItemStyle.cs" />
-    <Compile Include="TreeViewStyle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">

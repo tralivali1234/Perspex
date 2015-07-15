@@ -8,13 +8,20 @@ namespace Perspex.Themes.Default
 {
     using System.Linq;
     using Perspex.Controls;
-    using Perspex.Controls.Presenters;
-    using Perspex.Controls.Primitives;
-    using Perspex.Media;
+    using Perspex.Controls.Core;
+    using Perspex.Controls.Standard.Presenters;
+    using Perspex.Controls.Windowing;
     using Perspex.Styling;
+    using Perspex.Controls.Standard;
 
+    /// <summary>
+    /// Defines the default style for the <see cref="Window"/> class.
+    /// </summary>
     public class WindowStyle : Styles
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WindowStyle"/> class.
+        /// </summary>
         public WindowStyle()
         {
             this.AddRange(new[]
@@ -23,7 +30,7 @@ namespace Perspex.Themes.Default
                 {
                     Setters = new[]
                     {
-                        new Setter(Window.TemplateProperty, ControlTemplate.Create<Window>(this.Template)),
+                        new Setter(Window.TemplateProperty, new LooklessControlTemplate<Window>(this.Template)),
                         new Setter(Window.FontFamilyProperty, "Segoe UI"),
                         new Setter(Window.FontSizeProperty, 12.0),
                     },
@@ -36,15 +43,20 @@ namespace Perspex.Themes.Default
             return new Border
             {
                 [~Border.BackgroundProperty] = control[~Window.BackgroundProperty],
-                Content = new AdornerDecorator
+                Child = new ContentPresenter
                 {
-                    Content = new ContentPresenter
-                    {
-                        Name = "contentPresenter",
-                        [~ContentPresenter.ContentProperty] = control[~Window.ContentProperty],
-                    }
+                    Name = "contentPresenter",
+                    [~ContentPresenter.ContentProperty] = control[~Window.ContentProperty],
                 }
-            };
+                //Content = new AdornerDecorator
+                //{
+                //    Content = new ContentPresenter
+                //    {
+                //        Name = "contentPresenter",
+                //        [~ContentPresenter.ContentProperty] = control[~Window.ContentProperty],
+                //    }
+                //}
+        };
         }
     }
 }
