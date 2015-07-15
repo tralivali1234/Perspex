@@ -6,6 +6,8 @@
 
 namespace Perspex.Controls.Standard.Presenters
 {
+    using Perspex.Controls.Core;
+
     /// <summary>
     /// Interface for presenters such as <see cref="ContentPresenter"/> and
     /// <see cref="ItemsPresenter"/>.
@@ -16,7 +18,7 @@ namespace Perspex.Controls.Standard.Presenters
     /// template of a <see cref="LooklessControl"/> then that signals that the visual child of
     /// the presenter is not a part of the lookless control template.
     /// </remarks>
-    public interface IPresenter
+    public interface IPresenter : IReparentingControl
     {
     }
 }

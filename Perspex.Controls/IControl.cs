@@ -15,5 +15,9 @@ namespace Perspex.Controls
     /// </summary>
     public interface IControl : IVisual, ILogical, ILayoutable, IInputElement, INamed, IStyleable, IStyleHost
     {
+        /// <summary>
+        /// Gets the control's logical parent.
+        /// </summary>
+        IControl Parent { get; }
     }
 }

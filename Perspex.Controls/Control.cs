@@ -201,7 +201,15 @@ namespace Perspex.Controls
         }
 
         /// <summary>
-        /// Gets or sets the control's logical parent.
+        /// Gets the control's logical parent.
+        /// </summary>
+        IControl IControl.Parent
+        {
+            get { return this.Parent; }
+        }
+
+        /// <summary>
+        /// Gets the control's logical parent.
         /// </summary>
         ILogical ILogical.LogicalParent
         {

@@ -78,8 +78,10 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridLength.cs" />
+    <Compile Include="ContentHost.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="INavigablePanel.cs" />
+    <Compile Include="IReparentingControl.cs" />
     <Compile Include="NameScope.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Parsers\GridLengthsParser.cs" />
@@ -87,10 +89,15 @@
     <Compile Include="RowDefinition.cs" />
     <Compile Include="RowDefinitions.cs" />
     <Compile Include="StackPanel.cs" />
+    <Compile Include="Templates\DataTemplateExtensions.cs" />
     <Compile Include="TextBlock.cs" />
     <Compile Include="TextWrapping.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Splat.1.6.2\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>

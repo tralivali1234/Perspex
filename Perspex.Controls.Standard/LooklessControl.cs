@@ -14,6 +14,8 @@ namespace Perspex.Controls.Standard
     using Perspex.VisualTree;
     using Perspex.Layout;
     using Perspex.Controls.Core;
+    using Perspex.Collections;
+
 
 
     /// <summary>
@@ -24,7 +26,7 @@ namespace Perspex.Controls.Standard
     /// being defined by the control itself, it is provided by the control's <see cref="Template"/>
     /// property.
     /// </remarks>
-    public abstract class LooklessControl : Control, ILooklessControl
+    public abstract class LooklessControl : Control, ILooklessControl, ILogical
     {
         /// <summary>
         /// Defines the <see cref="Template"/> property.
@@ -37,6 +39,8 @@ namespace Perspex.Controls.Standard
         /// </summary>
         public static readonly PerspexProperty<ILooklessControl> TemplatedParentProperty =
             PerspexProperty.RegisterAttached<LooklessControl, Control, ILooklessControl>("TemplatedParent");
+
+        private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
 
         private bool templateApplied;
 
@@ -70,6 +74,14 @@ namespace Perspex.Controls.Standard
         {
             get { return this.GetValue(TemplateProperty); }
             set { this.SetValue(TemplateProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the logical children of the control.
+        /// </summary>
+        IPerspexReadOnlyList<ILogical> ILogical.LogicalChildren
+        {
+            get { return this.logicalChild; }
         }
 
         /// <summary>
@@ -107,12 +119,16 @@ namespace Perspex.Controls.Standard
 
                     var root = this.Template.Build(this);
 
+                    // This needs to be called before the NameScope is created because attaching
+                    // the tree to a name scope causes LogicalChildren to be enumerated, meaning
+                    // that any IPresenters can't be reparented.
+                    var children = this.ApplyTemplatedParentAndReparentPresenters(root).ToList();
+
                     var nameScope = new NameScope
                     {
-                        Child = root
+                        Child = root,
+                        [TemplatedParentProperty] = this
                     };
-
-                    var children = this.ApplyTemplatedParent(nameScope);
 
                     this.AddVisualChild(nameScope);
 
@@ -121,7 +137,7 @@ namespace Perspex.Controls.Standard
                         i.ApplyTemplate();
                     }
 
-                    this.OnTemplateApplied();
+                    this.OnTemplateApplied(nameScope);
                 }
 
                 this.templateApplied = true;
@@ -169,7 +185,8 @@ namespace Perspex.Controls.Standard
         /// <summary>
         /// Called when the <see cref="LooklessControl"/>'s <see cref="Template"/> is applied.
         /// </summary>
-        protected virtual void OnTemplateApplied()
+        /// <param name="nameScope">The templated children's name scope.</param>
+        protected virtual void OnTemplateApplied(INameScope nameScope)
         {
         }
 
@@ -186,26 +203,34 @@ namespace Perspex.Controls.Standard
         /// <summary>
         /// Sets the <see cref="TemplatedParentProperty"/> attached property to the specified
         /// control and optionally its children if the control is not an <see cref="IPresenter"/>.
+        /// Also calls <see cref="IReparentingControl.ReparentLogicalChildren(ILogical, Collections.IPerspexList{ILogical})"/>
+        /// on any <see cref="IPresenter"/>s.
         /// </summary>
         /// <param name="control">The control.</param>
         /// <returns>
         /// The controls in the template.
         /// </returns>
-        private IEnumerable<IControl> ApplyTemplatedParent(IControl control)
+        private IEnumerable<IControl> ApplyTemplatedParentAndReparentPresenters(IControl control)
         {
             SetTemplatedParent(control, this);
 
             yield return control;
 
-            if (!(control is IPresenter))
+            var presenter = control as IPresenter;
+
+            if (presenter == null)
             {
                 foreach (var child in control.GetVisualChildren().OfType<IControl>())
                 {
-                    foreach (var i in this.ApplyTemplatedParent(child))
+                    foreach (var i in this.ApplyTemplatedParentAndReparentPresenters(child))
                     {
                         yield return i;
                     }
                 }
+            }
+            else
+            {
+                presenter.ReparentLogicalChildren(this, this.logicalChild);
             }
         }
     }

@@ -12,6 +12,7 @@ namespace Perspex.Controls.Standard.UnitTests
     using Perspex.VisualTree;
     using Xunit;
     using Perspex.Controls.Standard.Presenters;
+    using Perspex.Collections;
 
     public class LooklessControlTests
     {
@@ -157,7 +158,7 @@ namespace Perspex.Controls.Standard.UnitTests
         {
             public event EventHandler OnTemplateAppliedCalled;
 
-            protected override void OnTemplateApplied()
+            protected override void OnTemplateApplied(INameScope nameScope)
             {
                 this.OnTemplateAppliedCalled?.Invoke(this, EventArgs.Empty);
             }
@@ -165,6 +166,9 @@ namespace Perspex.Controls.Standard.UnitTests
 
         private class TestPresenter : Decorator, IPresenter
         {
+            public void ReparentLogicalChildren(ILogical logicalParent, IPerspexList<ILogical> children)
+            {
+            }
         }
     }
 }
