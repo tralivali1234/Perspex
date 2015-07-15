@@ -52,6 +52,19 @@ namespace Perspex
         /// <summary>
         /// Initializes a new instance of the <see cref="Rect"/> structure.
         /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public Rect(double width, double height)
+        {
+            this.x = 0;
+            this.y = 0;
+            this.width = width;
+            this.height = height;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Rect"/> structure.
+        /// </summary>
         /// <param name="size">The size of the rectangle.</param>
         public Rect(Size size)
         {
