@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="TopLevel.cs" company="Steven Kirk">
-// Copyright 2014 MIT Licence. See licence.md for more information.
+// Copyright 2015 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
 
@@ -16,8 +16,9 @@ namespace Perspex.Controls.Windowing
     using Perspex.Rendering;
     using Perspex.Styling;
     using Perspex.Threading;
-    using Perspex.Controls.Primitives;
-    using Perspex.Interactivity;
+    using Perspex.Controls.Core;
+    using Perspex.Controls.Standard;
+    using Perspex.Controls.Windowing.Platform;
     using Splat;
 
     /// <summary>

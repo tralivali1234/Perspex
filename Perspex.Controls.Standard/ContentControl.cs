@@ -13,7 +13,7 @@ namespace Perspex.Controls.Standard
     /// A lookless control that displays a piece of data according to a
     /// <see cref="DataTemplate"/>.
     /// </summary>
-    public class ContentControl : LooklessControl
+    public class ContentControl : StandardControl
     {
         /// <summary>
         /// Defines the <see cref="Content"/> property.
