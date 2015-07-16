@@ -42,8 +42,8 @@ namespace Perspex
                 Convert(validate),
                 isAttached)
         {
-            Contract.Requires<NullReferenceException>(name != null);
-            Contract.Requires<NullReferenceException>(ownerType != null);
+            Contract.Requires<ArgumentNullException>(name != null);
+            Contract.Requires<ArgumentNullException>(ownerType != null);
         }
 
         /// <summary>

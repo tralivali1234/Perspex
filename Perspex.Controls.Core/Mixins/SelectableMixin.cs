@@ -28,9 +28,9 @@ namespace Perspex.Controls.Core.Mixins
             Func<TControl, IList<TItem>> itemsSelector)
                 where TControl : PerspexObject, IControl
         {
-            Contract.Requires<NullReferenceException>(selectedIndex != null);
-            Contract.Requires<NullReferenceException>(selectedItem != null);
-            Contract.Requires<NullReferenceException>(itemsSelector != null);
+            Contract.Requires<ArgumentNullException>(selectedIndex != null);
+            Contract.Requires<ArgumentNullException>(selectedItem != null);
+            Contract.Requires<ArgumentNullException>(itemsSelector != null);
 
             selectedIndex.OverrideValidation<TControl>((obj, index) =>
             {

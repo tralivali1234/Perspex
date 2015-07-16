@@ -14,7 +14,7 @@ namespace Perspex.VisualTree
     {
         public static IEnumerable<IVisual> GetVisualAncestors(this IVisual visual)
         {
-            Contract.Requires<NullReferenceException>(visual != null);
+            Contract.Requires<ArgumentNullException>(visual != null);
 
             visual = visual.VisualParent;
 
@@ -37,14 +37,14 @@ namespace Perspex.VisualTree
 
         public static IVisual GetVisualAt(this IVisual visual, Point p)
         {
-            Contract.Requires<NullReferenceException>(visual != null);
+            Contract.Requires<ArgumentNullException>(visual != null);
 
             return visual.GetVisualsAt(p).FirstOrDefault();
         }
 
         public static IEnumerable<IVisual> GetVisualsAt(this IVisual visual, Point p)
         {
-            Contract.Requires<NullReferenceException>(visual != null);
+            Contract.Requires<ArgumentNullException>(visual != null);
 
             if (visual.Bounds.Contains(p))
             {
@@ -105,7 +105,7 @@ namespace Perspex.VisualTree
 
         public static IVisual GetVisualRoot(this IVisual visual)
         {
-            Contract.Requires<NullReferenceException>(visual != null);
+            Contract.Requires<ArgumentNullException>(visual != null);
 
             var parent = visual.VisualParent;
 

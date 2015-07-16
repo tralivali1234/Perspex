@@ -14,7 +14,7 @@ namespace Perspex.LogicalTree
     {
         public static IEnumerable<ILogical> GetLogicalAncestors(this ILogical logical)
         {
-            Contract.Requires<NullReferenceException>(logical != null);
+            Contract.Requires<ArgumentNullException>(logical != null);
 
             logical = logical.LogicalParent;
 

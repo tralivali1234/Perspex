@@ -21,7 +21,7 @@ namespace Perspex.Controls.Standard
         /// <param name="build">The build function.</param>
         public LooklessControlTemplate(Func<ILooklessControl, IControl> build)
         {
-            Contract.Requires<NullReferenceException>(build != null);
+            Contract.Requires<ArgumentNullException>(build != null);
 
             this.build = build;
         }

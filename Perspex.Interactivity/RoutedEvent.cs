@@ -29,9 +29,9 @@ namespace Perspex.Interactivity
             Type eventArgsType,
             Type ownerType)
         {
-            Contract.Requires<NullReferenceException>(name != null);
-            Contract.Requires<NullReferenceException>(eventArgsType != null);
-            Contract.Requires<NullReferenceException>(ownerType != null);
+            Contract.Requires<ArgumentNullException>(name != null);
+            Contract.Requires<ArgumentNullException>(eventArgsType != null);
+            Contract.Requires<ArgumentNullException>(ownerType != null);
             Contract.Requires<InvalidCastException>(typeof(RoutedEventArgs).GetTypeInfo().IsAssignableFrom(eventArgsType.GetTypeInfo()));
 
             this.EventArgsType = eventArgsType;
@@ -69,7 +69,7 @@ namespace Perspex.Interactivity
             RoutingStrategies routingStrategy)
                 where TEventArgs : RoutedEventArgs
         {
-            Contract.Requires<NullReferenceException>(name != null);
+            Contract.Requires<ArgumentNullException>(name != null);
 
             return new RoutedEvent<TEventArgs>(name, routingStrategy, typeof(TOwner));
         }
@@ -80,7 +80,7 @@ namespace Perspex.Interactivity
             Type ownerType) 
                 where TEventArgs : RoutedEventArgs
         {
-            Contract.Requires<NullReferenceException>(name != null);
+            Contract.Requires<ArgumentNullException>(name != null);
 
             return new RoutedEvent<TEventArgs>(name, routingStrategy, ownerType);
         }
@@ -120,8 +120,8 @@ namespace Perspex.Interactivity
         public RoutedEvent(string name, RoutingStrategies routingStrategies, Type ownerType)
             : base(name, routingStrategies, typeof(TEventArgs), ownerType)
         {
-            Contract.Requires<NullReferenceException>(name != null);
-            Contract.Requires<NullReferenceException>(ownerType != null);
+            Contract.Requires<ArgumentNullException>(name != null);
+            Contract.Requires<ArgumentNullException>(ownerType != null);
         }
 
         public void AddClassHandler<TTarget>(
