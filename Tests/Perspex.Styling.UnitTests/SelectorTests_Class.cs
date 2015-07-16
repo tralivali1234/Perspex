@@ -23,7 +23,7 @@ namespace Perspex.Styling.UnitTests
                 Classes = new Classes { "foo" },
             };
 
-            var target = new Selector().Class("foo");
+            var target = new StyleSelector().Class("foo");
             var activator = target.Match(control).ObservableResult;
 
             Assert.True(await activator.Take(1));
@@ -37,7 +37,7 @@ namespace Perspex.Styling.UnitTests
                 Classes = new Classes { "bar" },
             };
 
-            var target = new Selector().Class("foo");
+            var target = new StyleSelector().Class("foo");
             var activator = target.Match(control).ObservableResult;
 
             Assert.False(await activator.Take(1));
@@ -64,7 +64,7 @@ namespace Perspex.Styling.UnitTests
         {
             var control = new Control1();
 
-            var target = new Selector().Class("foo");
+            var target = new StyleSelector().Class("foo");
             var activator = target.Match(control).ObservableResult;
 
             Assert.False(await activator.Take(1));
@@ -80,7 +80,7 @@ namespace Perspex.Styling.UnitTests
                 Classes = new Classes { "foo" },
             };
 
-            var target = new Selector().Class("foo");
+            var target = new StyleSelector().Class("foo");
             var activator = target.Match(control).ObservableResult;
 
             Assert.True(await activator.Take(1));
@@ -92,7 +92,7 @@ namespace Perspex.Styling.UnitTests
         public async Task Multiple_Classes()
         {
             var control = new Control1();
-            var target = new Selector().Class("foo").Class("bar");
+            var target = new StyleSelector().Class("foo").Class("bar");
             var activator = target.Match(control).ObservableResult;
 
             Assert.False(await activator.Take(1));

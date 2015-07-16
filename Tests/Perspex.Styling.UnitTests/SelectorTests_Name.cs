@@ -19,7 +19,7 @@ namespace Perspex.Styling.UnitTests
         public void Name_Matches_Control_With_Correct_Name()
         {
             var control = new Control1 { Name = "foo" };
-            var target = new Selector().Name("foo");
+            var target = new StyleSelector().Name("foo");
 
             Assert.True(target.Match(control).ImmediateResult);
         }
@@ -28,7 +28,7 @@ namespace Perspex.Styling.UnitTests
         public void Name_Doesnt_Match_Control_Of_Wrong_Name()
         {
             var control = new Control1 { Name = "foo" };
-            var target = new Selector().Name("bar");
+            var target = new StyleSelector().Name("bar");
 
             Assert.False(target.Match(control).ImmediateResult);
         }

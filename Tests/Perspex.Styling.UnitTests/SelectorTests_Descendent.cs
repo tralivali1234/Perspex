@@ -24,7 +24,7 @@ namespace Perspex.Styling.UnitTests
 
             child.LogicalParent = parent;
 
-            var selector = new Selector().OfType<TestLogical1>().Descendent().OfType<TestLogical2>();
+            var selector = new StyleSelector().OfType<TestLogical1>().Descendent().OfType<TestLogical2>();
 
             Assert.True(selector.Match(child).ImmediateResult);
         }
@@ -39,7 +39,7 @@ namespace Perspex.Styling.UnitTests
             parent.LogicalParent = grandparent;
             child.LogicalParent = parent;
 
-            var selector = new Selector().OfType<TestLogical1>().Descendent().OfType<TestLogical3>();
+            var selector = new StyleSelector().OfType<TestLogical1>().Descendent().OfType<TestLogical3>();
 
             Assert.True(selector.Match(child).ImmediateResult);
         }
@@ -55,7 +55,7 @@ namespace Perspex.Styling.UnitTests
             parent.LogicalParent = grandparent;
             child.LogicalParent = parent;
 
-            var selector = new Selector().OfType<TestLogical1>().Class("foo").Descendent().OfType<TestLogical3>();
+            var selector = new StyleSelector().OfType<TestLogical1>().Class("foo").Descendent().OfType<TestLogical3>();
             var activator = selector.Match(child).ObservableResult;
 
             Assert.True(await activator.Take(1));
@@ -73,7 +73,7 @@ namespace Perspex.Styling.UnitTests
             parent.Classes.Add("foo");
             child.LogicalParent = parent;
 
-            var selector = new Selector().OfType<TestLogical1>().Class("foo").Descendent().OfType<TestLogical3>();
+            var selector = new StyleSelector().OfType<TestLogical1>().Class("foo").Descendent().OfType<TestLogical3>();
             var activator = selector.Match(child).ObservableResult;
 
             Assert.False(await activator.Take(1));
@@ -89,7 +89,7 @@ namespace Perspex.Styling.UnitTests
             parent.LogicalParent = grandparent;
             child.LogicalParent = parent;
 
-            var selector = new Selector().OfType<TestLogical1>().Class("foo").Descendent().OfType<TestLogical3>();
+            var selector = new StyleSelector().OfType<TestLogical1>().Class("foo").Descendent().OfType<TestLogical3>();
             var activator = selector.Match(child).ObservableResult;
 
             Assert.False(await activator.Take(1));

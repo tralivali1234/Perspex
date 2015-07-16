@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Selector.cs" company="Steven Kirk">
+// <copyright file="StyleSelector.cs" company="Steven Kirk">
 // Copyright 2014 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -9,7 +9,7 @@ namespace Perspex.Styling
     using System;
     using System.Collections.Generic;
 
-    public class Selector
+    public class StyleSelector
     {
         private Func<IStyleable, SelectorMatch> evaluate;
 
@@ -19,13 +19,13 @@ namespace Perspex.Styling
 
         private string description;
 
-        public Selector()
+        public StyleSelector()
         {
             this.evaluate = _ => SelectorMatch.True;
         }
 
-        public Selector(
-            Selector previous,
+        public StyleSelector(
+            StyleSelector previous,
             Func<IStyleable, SelectorMatch> evaluate,
             string selectorString,
             bool inTemplate = false,
@@ -41,7 +41,7 @@ namespace Perspex.Styling
             this.stopTraversal = stopTraversal;
         }
 
-        public Selector Previous
+        public StyleSelector Previous
         {
             get;
             private set;
@@ -53,7 +53,7 @@ namespace Perspex.Styling
             set;
         }
 
-        public Selector MovePrevious()
+        public StyleSelector MovePrevious()
         {
             return this.stopTraversal ? null : this.Previous;
         }
@@ -61,7 +61,7 @@ namespace Perspex.Styling
         public SelectorMatch Match(IStyleable control)
         {
             List<IObservable<bool>> inputs = new List<IObservable<bool>>();
-            Selector selector = this;
+            StyleSelector selector = this;
 
             while (selector != null)
             {

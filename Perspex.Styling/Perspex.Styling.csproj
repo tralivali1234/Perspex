@@ -47,7 +47,7 @@
     <Compile Include="Styling\IStyleHost.cs" />
     <Compile Include="Styling\IStyler.cs" />
     <Compile Include="Styling\SelectorMatch.cs" />
-    <Compile Include="Styling\Selector.cs" />
+    <Compile Include="Styling\StyleSelector.cs" />
     <Compile Include="Styling\Selectors.cs" />
     <Compile Include="Styling\Setter.cs" />
     <Compile Include="Styling\Style.cs" />

@@ -19,7 +19,7 @@ namespace Perspex.Styling.UnitTests
         public void OfType_Matches_Control_Of_Correct_Type()
         {
             var control = new Control1();
-            var target = new Selector().OfType<Control1>();
+            var target = new StyleSelector().OfType<Control1>();
 
             Assert.True(target.Match(control).ImmediateResult);
         }
@@ -28,7 +28,7 @@ namespace Perspex.Styling.UnitTests
         public void OfType_Doesnt_Match_Control_Of_Wrong_Type()
         {
             var control = new Control2();
-            var target = new Selector().OfType<Control1>();
+            var target = new StyleSelector().OfType<Control1>();
 
             Assert.False(target.Match(control).ImmediateResult);
         }

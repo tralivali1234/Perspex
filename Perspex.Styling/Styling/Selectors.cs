@@ -13,72 +13,72 @@ namespace Perspex.Styling
 
     public static class Selectors
     {
-        public static Selector Child(this Selector previous)
+        public static StyleSelector Child(this StyleSelector previous)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
 
-            return new Selector(previous, x => MatchChild(x, previous), " < ", stopTraversal: true);
+            return new StyleSelector(previous, x => MatchChild(x, previous), " < ", stopTraversal: true);
         }
 
-        public static Selector Class(this Selector previous, string name)
+        public static StyleSelector Class(this StyleSelector previous, string name)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
             Contract.Requires<ArgumentNullException>(name != null);
 
-            return new Selector(previous, x => MatchClass(x, name), name);
+            return new StyleSelector(previous, x => MatchClass(x, name), name);
         }
 
-        public static Selector Descendent(this Selector previous)
+        public static StyleSelector Descendent(this StyleSelector previous)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
 
-            return new Selector(previous, x => MatchDescendent(x, previous), " ", stopTraversal: true);
+            return new StyleSelector(previous, x => MatchDescendent(x, previous), " ", stopTraversal: true);
         }
 
-        public static Selector Is(this Selector previous, Type type)
+        public static StyleSelector Is(this StyleSelector previous, Type type)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
 
-            return new Selector(previous, x => MatchIs(x, type), type.Name);
+            return new StyleSelector(previous, x => MatchIs(x, type), type.Name);
         }
 
-        public static Selector Is<T>(this Selector previous) where T : IStyleable
+        public static StyleSelector Is<T>(this StyleSelector previous) where T : IStyleable
         {
             return previous.Is(typeof(T));
         }
 
-        public static Selector Name(this Selector previous, string name)
+        public static StyleSelector Name(this StyleSelector previous, string name)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
 
-            return new Selector(previous, x => MatchName(x, name), '#' + name);
+            return new StyleSelector(previous, x => MatchName(x, name), '#' + name);
         }
 
-        public static Selector OfType(this Selector previous, Type type)
+        public static StyleSelector OfType(this StyleSelector previous, Type type)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
 
-            return new Selector(previous, x => MatchOfType(x, type), type.Name);
+            return new StyleSelector(previous, x => MatchOfType(x, type), type.Name);
         }
 
-        public static Selector OfType<T>(this Selector previous) where T : IStyleable
+        public static StyleSelector OfType<T>(this StyleSelector previous) where T : IStyleable
         {
             return previous.OfType(typeof(T));
         }
 
-        public static Selector PropertyEquals<T>(this Selector previous, PerspexProperty<T> property, object value)
+        public static StyleSelector PropertyEquals<T>(this StyleSelector previous, PerspexProperty<T> property, object value)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
             Contract.Requires<ArgumentNullException>(property != null);
 
-            return new Selector(previous, x => MatchPropertyEquals(x, property, value), $"[{property.Name}={value}]");
+            return new StyleSelector(previous, x => MatchPropertyEquals(x, property, value), $"[{property.Name}={value}]");
         }
 
-        public static Selector Template(this Selector previous)
+        public static StyleSelector Template(this StyleSelector previous)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
 
-            return new Selector(
+            return new StyleSelector(
                 previous, 
                 x => MatchTemplate(x, previous), 
                 " /deep/ ", 
@@ -86,7 +86,7 @@ namespace Perspex.Styling
                 stopTraversal: true);
         }
 
-        private static SelectorMatch MatchChild(IStyleable control, Selector previous)
+        private static SelectorMatch MatchChild(IStyleable control, StyleSelector previous)
         {
             var parent = ((ILogical)control).LogicalParent;
 
@@ -108,7 +108,7 @@ namespace Perspex.Styling
                     .Concat(control.Classes.Changed.Select(e => control.Classes.Contains(name))));
         }
 
-        private static SelectorMatch MatchDescendent(IStyleable control, Selector previous)
+        private static SelectorMatch MatchDescendent(IStyleable control, StyleSelector previous)
         {
             ILogical c = (ILogical)control;
             List<IObservable<bool>> descendentMatches = new List<IObservable<bool>>();
@@ -169,7 +169,7 @@ namespace Perspex.Styling
             }
         }
 
-        private static SelectorMatch MatchTemplate(IStyleable control, Selector previous)
+        private static SelectorMatch MatchTemplate(IStyleable control, StyleSelector previous)
         {
             throw new NotImplementedException();
             //IStyleable templatedParent = control.TemplatedParent as IStyleable;

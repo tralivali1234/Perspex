@@ -1,6 +1,11 @@
 ﻿namespace TestApplication
 {
+    using Perspex;
+    using Perspex.Controls;
+    using Perspex.Controls.Core;
     using Perspex.Controls.Windowing;
+    using Perspex.Media;
+    using Perspex.Styling;
 
     class Program
     {
@@ -8,7 +13,31 @@
         {
             var application = new App();
             var window = new Window();
-            window.Content = "Hello World!";
+
+            window.Content = new Selector
+            {
+                Margin = new Thickness(16),
+                Panel = new StackPanel
+                {
+                    Styles = new Styles
+                    {
+                        new Style(x => x.OfType<TextBlock>().Class("selected"))
+                        {
+                            Setters = new[]
+                            {
+                                new Setter(TextBlock.BackgroundProperty, Brushes.Red),
+                            }
+                        }
+                    },
+                    Children = new Controls
+                    {
+                        new TextBlock { Text = "Foo" },
+                        new TextBlock { Text = "Bar" },
+                        new TextBlock { Text = "Baz" },
+                    }
+                }
+            };
+
             window.Show();
             application.Run(window);
         }

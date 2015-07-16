@@ -10,9 +10,9 @@ namespace Perspex.Styling.UnitTests
 
     public static class TestSelectors
     {
-        public static Selector SubscribeCheck(this Selector selector)
+        public static StyleSelector SubscribeCheck(this StyleSelector selector)
         {
-            return new Selector(
+            return new StyleSelector(
                 selector,
                 control => new SelectorMatch(((TestControlBase)control).SubscribeCheckObservable),
                 "");

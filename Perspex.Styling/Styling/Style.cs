@@ -17,13 +17,13 @@ namespace Perspex.Styling
             this.Setters = new List<Setter>();
         }
 
-        public Style(Func<Selector, Selector> selector)
+        public Style(Func<StyleSelector, StyleSelector> selector)
             : this()
         {
-            this.Selector = selector(new Selector());
+            this.Selector = selector(new StyleSelector());
         }
 
-        public Selector Selector
+        public StyleSelector Selector
         {
             get;
             set;
