@@ -85,7 +85,10 @@ namespace Perspex.Interactivity
             return new RoutedEvent<TEventArgs>(name, routingStrategy, ownerType);
         }
 
-        public void AddClassHandler(Type type, EventHandler<RoutedEventArgs> handler, RoutingStrategies routes)
+        public void AddClassHandler(
+            Type type,
+            EventHandler<RoutedEventArgs> handler,
+            RoutingStrategies routes = RoutingStrategies.Direct | RoutingStrategies.Bubble)
         {
             this.subscriptions.Add(new ClassEventSubscription
             {

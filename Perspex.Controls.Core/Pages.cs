@@ -9,6 +9,7 @@ namespace Perspex.Controls.Core
     using System.Linq;
     using Perspex.Controls.Core.Mixins;
     using Perspex.VisualTree;
+    using Perspex.Collections;
 
     /// <summary>
     /// A panel which shows a single child at a time.
@@ -27,16 +28,28 @@ namespace Perspex.Controls.Core
         public static readonly PerspexProperty<IControl> SelectedItemProperty =
             Selector.SelectedItemProperty.AddOwner<Pages>();
 
+        private static readonly SelectorMixin<Pages, IControl> SelectorMixin;
+
         /// <summary>
         /// Initializes static members of the <see cref="Pages"/> class.
         /// </summary>
         static Pages()
         {
-            SelectableMixin.Attach<Pages, IControl>(
+            SelectorMixin = new SelectorMixin<Pages, IControl>(
                 SelectedIndexProperty,
                 SelectedItemProperty,
                 x => x.Children);
             AffectsMeasure(SelectedItemProperty);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pages"/> class.
+        /// </summary>
+        public Pages()
+        {
+            this.Children.ForEachItem(
+                x => SelectorMixin.ItemAdded(this, x),
+                x => SelectorMixin.ItemRemoved(this, x));
         }
 
         /// <summary>

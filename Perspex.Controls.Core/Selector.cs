@@ -66,6 +66,8 @@ namespace Perspex.Controls.Core
         public static readonly RoutedEvent<RoutedEventArgs> IsSelectedChangedEvent =
             RoutedEvent.Register<Selector, RoutedEventArgs>("IsSelectedChanged", RoutingStrategies.Bubble);
 
+        private static readonly SelectorMixin<Selector, IControl> SelectorMixin;
+
         private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
 
         private IDisposable childSubscription;
@@ -75,14 +77,12 @@ namespace Perspex.Controls.Core
         /// </summary>
         static Selector()
         {
-            SelectableMixin.Attach<Selector, IControl>(
+            SelectorMixin = new SelectorMixin<Selector, IControl>(
                 SelectedIndexProperty,
                 SelectedItemProperty,
                 x => x.Panel?.Children);
 
-            IsSelectedChangedEvent.AddClassHandler<Selector>(x => x.ItemIsSelectedChanged);
             PanelProperty.Changed.AddClassHandler<Selector>(x => x.PanelChanged);
-            SelectedItemProperty.Changed.AddClassHandler<Selector>(x => x.SelectedItemChanged);
         }
 
         /// <summary>
@@ -171,59 +171,10 @@ namespace Perspex.Controls.Core
             if (panel != null)
             {
                 this.childSubscription = panel.Children.ForEachItem(
-                    this.ChildAdded,
-                    this.ChildRemoved);
+                    x => SelectorMixin.ItemAdded(this, x),
+                    x => SelectorMixin.ItemRemoved(this, x));
                 this.AddVisualChild(panel);
                 this.logicalChild.SingleItem = panel;
-            }
-        }
-
-        /// <summary>
-        /// Called when a child is added to the <see cref="Panel"/>.
-        /// </summary>
-        /// <param name="child">The child.</param>
-        private void ChildAdded(IControl child)
-        {
-            var selectable = child as ISelectable;
-
-            if ((selectable != null && selectable.IsSelected) ||
-                child.Classes.Contains("selected"))
-            {
-                this.SelectedItem = child;
-            }
-        }
-
-        /// <summary>
-        /// Called when a child is removed from the <see cref="Panel"/>.
-        /// </summary>
-        /// <param name="child">The child.</param>
-        private void ChildRemoved(IControl child)
-        {
-            if (child == this.SelectedItem)
-            {
-                this.SelectedItem = null;
-            }
-        }
-
-        /// <summary>
-        /// Called when the selection on a child item changes.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        private void ItemIsSelectedChanged(RoutedEventArgs e)
-        {
-            var source = e.Source as IControl;
-            var selectable = e.Source as ISelectable;
-
-            if (selectable.IsSelected)
-            {
-                if (this.Panel.Children.Contains(source))
-                {
-                    this.SelectedItem = source;
-                }
-            }
-            else if (selectable == this.SelectedItem)
-            {
-                this.SelectedItem = null;
             }
         }
 
@@ -241,40 +192,6 @@ namespace Perspex.Controls.Core
             {
                 this.SelectedItem = (IControl)((IVisual)e.Source).GetSelfAndVisualAncestors()
                     .First(x => x.VisualParent == this.Panel);
-            }
-        }
-
-        /// <summary>
-        /// Called when the <see cref="SelectedItem"/> changes.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        private void SelectedItemChanged(PerspexPropertyChangedEventArgs e)
-        {
-            if (this.Panel != null && this.Panel.Children != null)
-            {
-                var child = (IControl)e.OldValue;
-                var selectable = child as ISelectable;
-
-                if (selectable != null)
-                {
-                    selectable.IsSelected = false;
-                }
-                else if (child != null)
-                {
-                    child.Classes.Remove("selected");
-                }
-
-                child = (IControl)e.NewValue;
-                selectable = child as ISelectable;
-
-                if (selectable != null)
-                {
-                    selectable.IsSelected = true;
-                }
-                else if(child != null)
-                {
-                    child.Classes.Add("selected");
-                }
             }
         }
     }

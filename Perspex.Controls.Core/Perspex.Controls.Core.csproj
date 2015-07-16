@@ -71,7 +71,7 @@
   <ItemGroup>
     <Compile Include="IPanel.cs" />
     <Compile Include="ISelectable.cs" />
-    <Compile Include="Mixins\SelectableMixin.cs" />
+    <Compile Include="Mixins\SelectorMixin.cs" />
     <Compile Include="Pages.cs" />
     <Compile Include="AccessText.cs" />
     <Compile Include="Border.cs" />
