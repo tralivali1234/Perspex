@@ -19,7 +19,7 @@ namespace Perspex.Controls.Core
     /// Controls can be added to a <see cref="Panel"/> by adding them to its <see cref="Children"/>
     /// collection. All children are layed out to fill the panel.
     /// </remarks>
-    public class Panel : Control, ILogical
+    public class Panel : Control, IPanel, ILogical
     {
         private Controls children;
 
@@ -30,22 +30,24 @@ namespace Perspex.Controls.Core
         /// </summary>
         public Panel()
         {
+            this.children = new Controls();
+            this.children.CollectionChanged += this.ChildrenChanged;
             this.childLogicalParent = this;
         }
 
         /// <summary>
         /// Gets or sets the children of the <see cref="Panel"/>.
         /// </summary>
+        /// <remarks>
+        /// Even though this property can be set, the setter is only intended for use in object
+        /// initializers. Assigning to this property does not change the underlying collection,
+        /// it simply clears the existing collection and addds the contents of the assigned
+        /// collection.
+        /// </remarks>
         public Controls Children
         {
             get
             {
-                if (this.children == null)
-                {
-                    this.children = new Controls();
-                    this.children.CollectionChanged += this.ChildrenChanged;
-                }
-
                 return this.children;
             }
 
@@ -53,26 +55,9 @@ namespace Perspex.Controls.Core
             {
                 Contract.Requires<ArgumentNullException>(value != null);
 
-                if (this.children != value)
-                {
-                    this.ClearVisualChildren();
-
-                    if (this.children != null)
-                    {
-                        this.ClearLogicalParent(this.children);
-                        this.children.CollectionChanged -= this.ChildrenChanged;
-                    }
-
-                    this.children = value;
-
-                    if (this.children != null)
-                    {
-                        this.children.CollectionChanged += this.ChildrenChanged;
-                        this.SetLogicalParent(value);
-                        this.AddVisualChildren(value.Cast<Visual>());
-                        this.InvalidateMeasure();
-                    }
-                }
+                this.ClearVisualChildren();
+                this.children.Clear();
+                this.children.AddRange(value);
             }
         }
 

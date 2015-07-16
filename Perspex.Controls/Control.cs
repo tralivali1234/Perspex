@@ -48,7 +48,7 @@ namespace Perspex.Controls
         public static readonly PerspexProperty<object> TagProperty =
             PerspexProperty.Register<Control, object>("Tag");
 
-        private Classes classes;
+        private Classes classes = new Classes();
 
         private DataTemplates dataTemplates;
 
@@ -68,28 +68,30 @@ namespace Perspex.Controls
         /// Gets or sets the controls classes.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Classes can be used to apply user-defined styling to controls, or to allow controls
         /// that share a common purpose to be easily selected.
+        /// </para>
+        /// <para>
+        /// Even though this property can be set, the setter is only intended for use in object
+        /// initializers. Assigning to this property does not change the underlying collection,
+        /// it simply clears the existing collection and addds the contents of the assigned
+        /// collection.
+        /// </para>
         /// </remarks>
         public Classes Classes
         {
             get
             {
-                if (this.classes == null)
-                {
-                    this.classes = new Classes();
-                }
-
                 return this.classes;
             }
 
             set
             {
-                if (this.classes != value)
-                {
-                    this.classes.Clear();
-                    this.classes.Add(value);
-                }
+                Contract.Requires<ArgumentNullException>(value != null);
+
+                this.classes.Clear();
+                this.classes.Add(value);
             }
         }
 

@@ -8,7 +8,6 @@ namespace Perspex.Controls.Core
 {
     using System.Linq;
     using Perspex.Controls.Core.Mixins;
-    using Perspex.Layout;
     using Perspex.VisualTree;
 
     /// <summary>
@@ -20,13 +19,13 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="SelectedIndex"/> property.
         /// </summary>
         public static readonly PerspexProperty<int> SelectedIndexProperty =
-            PerspexProperty.Register<Pages, int>("SelectedIndex", -1);
+            Selector.SelectedIndexProperty.AddOwner<Pages>();
 
         /// <summary>
         /// Defines the <see cref="SelectedItem"/> property.
         /// </summary>
         public static readonly PerspexProperty<IControl> SelectedItemProperty =
-            PerspexProperty.Register<Pages, IControl>("SelectedItem");
+            Selector.SelectedItemProperty.AddOwner<Pages>();
 
         /// <summary>
         /// Initializes static members of the <see cref="Pages"/> class.

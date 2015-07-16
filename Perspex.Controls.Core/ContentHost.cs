@@ -11,8 +11,6 @@ namespace Perspex.Controls.Core
     using System.Collections;
     using Perspex.Collections;
     using Perspex.Controls.Core.Templates;
-    using System.Collections.Generic;
-
 
     /// <summary>
     /// Displays a piece of data according to a <see cref="DataTemplate"/>.

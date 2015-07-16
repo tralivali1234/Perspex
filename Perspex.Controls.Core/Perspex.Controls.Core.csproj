@@ -69,6 +69,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPanel.cs" />
     <Compile Include="Mixins\SelectableMixin.cs" />
     <Compile Include="Pages.cs" />
     <Compile Include="AccessText.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RowDefinition.cs" />
     <Compile Include="RowDefinitions.cs" />
+    <Compile Include="Selector.cs" />
     <Compile Include="StackPanel.cs" />
     <Compile Include="Templates\DataTemplateExtensions.cs" />
     <Compile Include="TextBlock.cs" />

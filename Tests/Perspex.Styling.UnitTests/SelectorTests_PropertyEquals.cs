@@ -19,7 +19,7 @@ namespace Perspex.Styling.UnitTests
         public async Task PropertyEquals_Matches_When_Property_Has_Matching_Value()
         {
             var control = new TextBlock();
-            var target = new Selector().PropertyEquals(TextBlock.TextProperty, "foo");
+            var target = new Styling.Selector().PropertyEquals(TextBlock.TextProperty, "foo");
             var activator = target.Match(control).ObservableResult;
 
             Assert.False(await activator.Take(1));

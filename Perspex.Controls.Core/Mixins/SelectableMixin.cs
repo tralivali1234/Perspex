@@ -35,13 +35,13 @@ namespace Perspex.Controls.Core.Mixins
             selectedIndex.OverrideValidation<TControl>((obj, index) =>
             {
                 var items = itemsSelector(obj);
-                return (index >= 0 && index < items.Count) ? index : -1;
+                return (index >= 0 && index < items?.Count) ? index : -1;
             });
 
             selectedItem.OverrideValidation<TControl>((obj, item) =>
             {
                 var items = itemsSelector(obj);
-                return items.Contains(item) ? item : default(TItem);
+                return items != null && items.Contains(item) ? item : default(TItem);
             });
 
             selectedIndex.Changed.Subscribe(x =>
@@ -69,7 +69,9 @@ namespace Perspex.Controls.Core.Mixins
 
                 if (target != null)
                 {
-                    target.SetValue(selectedIndex, itemsSelector(target).IndexOf((TItem)x.NewValue));
+                    target.SetValue(
+                        selectedIndex,
+                        itemsSelector(target)?.IndexOf((TItem)x.NewValue) ?? -1);
                 }
             });
         }

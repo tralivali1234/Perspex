@@ -17,7 +17,7 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="Child"/> property.
         /// </summary>
         public static readonly PerspexProperty<IControl> ChildProperty =
-            PerspexProperty.Register<Decorator, IControl>("Content");
+            PerspexProperty.Register<Decorator, IControl>("Child");
 
         private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
 
