@@ -11,6 +11,8 @@ namespace Perspex.Controls.Core.UnitTests
     using System.Linq;
     using Perspex.VisualTree;
     using Xunit;
+    using Perspex.Interactivity;
+    using Perspex.Input;
 
     public class SelectorTests
     {
@@ -325,6 +327,76 @@ namespace Perspex.Controls.Core.UnitTests
 
             Assert.Equal(2, target.SelectedIndex);
             Assert.Equal(target.Panel.Children[2], target.SelectedItem);
+        }
+
+        [Fact]
+        public void PointerDown_Event_Should_Set_Selection()
+        {
+            var target = new Selector
+            {
+                Panel = new StackPanel
+                {
+                    Children = new Controls
+                    {
+                        new Border { Name = "Foo" },
+                        new Border { Name = "Bar" },
+                    }
+                },
+            };
+
+            target.Panel.Children[1].RaiseEvent(new PointerPressEventArgs
+            {
+                RoutedEvent = InputElement.PointerPressedEvent,
+            });
+
+            Assert.Equal(1, target.SelectedIndex);
+        }
+
+        [Fact]
+        public void GotFocus_Event_Should_Set_Selection()
+        {
+            var target = new Selector
+            {
+                Panel = new StackPanel
+                {
+                    Children = new Controls
+                    {
+                        new Border { Name = "Foo" },
+                        new Border { Name = "Bar" },
+                    }
+                },
+            };
+
+            target.Panel.Children[1].RaiseEvent(new GotFocusEventArgs
+            {
+                RoutedEvent = InputElement.GotFocusEvent
+            });
+
+            Assert.Equal(1, target.SelectedIndex);
+        }
+
+        [Fact]
+        public void PointerDown_Event_Should_Not_Set_Selection_When_IsUserSelectable_False()
+        {
+            var target = new Selector
+            {
+                IsUserSelectable = false,
+                Panel = new StackPanel
+                {
+                    Children = new Controls
+                    {
+                        new Border { Name = "Foo" },
+                        new Border { Name = "Bar" },
+                    }
+                },
+            };
+
+            target.Panel.Children[1].RaiseEvent(new PointerPressEventArgs
+            {
+                RoutedEvent = InputElement.PointerPressedEvent,
+            });
+
+            Assert.Equal(-1, target.SelectedIndex);
         }
 
         private static IEnumerable<bool> GetSelectedClass(Selector target)

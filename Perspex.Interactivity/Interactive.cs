@@ -127,6 +127,11 @@ namespace Perspex.Interactivity
             e.Source = e.Source ?? this;
             e.OriginalSource = e.OriginalSource ?? this;
 
+            if (e.RoutedEvent == null)
+            {
+                throw new InvalidOperationException("RoutedEvent must be set.");
+            }
+
             if (e.RoutedEvent.RoutingStrategies == RoutingStrategies.Direct)
             {
                 e.Route = RoutingStrategies.Direct;

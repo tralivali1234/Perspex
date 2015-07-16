@@ -7,17 +7,21 @@
 namespace Perspex.Controls.Core
 {
     using System;
-    using System.Collections.Specialized;
+    using System.Linq;
     using Perspex.Controls.Core.Mixins;
     using Perspex.Collections;
+    using Perspex.Input;
+    using Perspex.VisualTree;
+    using Perspex.Interactivity;
 
     /// <summary>
     /// Hosts an <see cref="IPanel"/> whose children can be selected.
     /// </summary>
     /// <remarks>
     /// The Selector control hosts a <see cref="Panel"/> and makes the children of the panel
-    /// selectable. A child will become selected when it is clicked, or when it gains keyboard
-    /// focus. The selected control will be marked in one of two ways:
+    /// selectable. If the <see cref="IsUserSelectable"/> property is set (the default) then a
+    /// child will become selected when it is clicked, or when it gains keyboard focus. The
+    /// selected control will be marked in one of two ways:
     ///
     /// <list type="bullet">
     ///     <item>
@@ -29,8 +33,14 @@ namespace Perspex.Controls.Core
     ///     </item>
     /// </list>
     /// </remarks>
-    public class Selector : Control
+    public class Selector : Control, ILogical
     {
+        /// <summary>
+        /// Defines the <see cref="IsUserSelectable"/> property.
+        /// </summary>
+        public static readonly PerspexProperty<bool> IsUserSelectableProperty =
+            PerspexProperty.Register<Selector, bool>("IsUserSelectable", true);
+
         /// <summary>
         /// Defines the <see cref="Panel"/> property.
         /// </summary>
@@ -49,6 +59,8 @@ namespace Perspex.Controls.Core
         public static readonly PerspexProperty<IControl> SelectedItemProperty =
             PerspexProperty.Register<Selector, IControl>("SelectedItem");
 
+        private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
+
         private IDisposable childSubscription;
 
         /// <summary>
@@ -62,6 +74,15 @@ namespace Perspex.Controls.Core
                 x => x.Panel?.Children);
             PanelProperty.Changed.AddClassHandler<Selector>(x => x.PanelChanged);
             SelectedItemProperty.Changed.AddClassHandler<Selector>(x => x.SelectedItemChanged);
+        }
+
+        /// <summary>
+        /// Gets or sets indicating whether the selection changes due to user interaction.
+        /// </summary>
+        public bool IsUserSelectable
+        {
+            get { return this.GetValue(IsUserSelectableProperty); }
+            set { this.SetValue(IsUserSelectableProperty, value); }
         }
 
         /// <summary>
@@ -101,6 +122,28 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
+        /// Gets the logical children of the control.
+        /// </summary>
+        IPerspexReadOnlyList<ILogical> ILogical.LogicalChildren
+        {
+            get { return this.logicalChild; }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGotFocus(GotFocusEventArgs e)
+        {
+            base.OnGotFocus(e);
+            this.SelectItemFromEvent(e);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPointerPressed(PointerPressEventArgs e)
+        {
+            base.OnPointerPressed(e);
+            this.SelectItemFromEvent(e);
+        }
+
+        /// <summary>
         /// Called when the <see cref="Panel"/> changes.
         /// </summary>
         /// <param name="e">The event args.</param>
@@ -112,6 +155,8 @@ namespace Perspex.Controls.Core
             {
                 this.childSubscription.Dispose();
                 this.SelectedItem = null;
+                this.ClearVisualChildren();
+                this.logicalChild.SingleItem = null;
             }
 
             if (panel != null)
@@ -119,6 +164,8 @@ namespace Perspex.Controls.Core
                 this.childSubscription = panel.Children.ForEachItem(
                     this.ChildAdded,
                     this.ChildRemoved);
+                this.AddVisualChild(panel);
+                this.logicalChild.SingleItem = panel;
             }
         }
 
@@ -146,6 +193,23 @@ namespace Perspex.Controls.Core
             if (child == this.SelectedItem)
             {
                 this.SelectedItem = null;
+            }
+        }
+
+        /// <summary>
+        /// Selects an item from an event.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void SelectItemFromEvent(RoutedEventArgs e)
+        {
+            if (this.IsUserSelectable &&
+                !e.Handled &&
+                this.Panel != null &&
+                e.Source != this &&
+                e.Source != this.Panel)
+            {
+                this.SelectedItem = (IControl)((IVisual)e.Source).GetSelfAndVisualAncestors()
+                    .First(x => x.VisualParent == this.Panel);
             }
         }
 
