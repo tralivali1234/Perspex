@@ -59,6 +59,13 @@ namespace Perspex.Controls.Core
         public static readonly PerspexProperty<IControl> SelectedItemProperty =
             PerspexProperty.Register<Selector, IControl>("SelectedItem");
 
+        /// <summary>
+        /// Event that should be raised by items that implement <see cref="ISelectable"/> to
+        /// notify the parent <see cref="Selector"/> that their selection state has changed.
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> IsSelectedChangedEvent =
+            RoutedEvent.Register<Selector, RoutedEventArgs>("IsSelectedChanged", RoutingStrategies.Bubble);
+
         private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
 
         private IDisposable childSubscription;
@@ -72,6 +79,8 @@ namespace Perspex.Controls.Core
                 SelectedIndexProperty,
                 SelectedItemProperty,
                 x => x.Panel?.Children);
+
+            IsSelectedChangedEvent.AddClassHandler<Selector>(x => x.ItemIsSelectedChanged);
             PanelProperty.Changed.AddClassHandler<Selector>(x => x.PanelChanged);
             SelectedItemProperty.Changed.AddClassHandler<Selector>(x => x.SelectedItemChanged);
         }
@@ -191,6 +200,28 @@ namespace Perspex.Controls.Core
         private void ChildRemoved(IControl child)
         {
             if (child == this.SelectedItem)
+            {
+                this.SelectedItem = null;
+            }
+        }
+
+        /// <summary>
+        /// Called when the selection on a child item changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void ItemIsSelectedChanged(RoutedEventArgs e)
+        {
+            var source = e.Source as IControl;
+            var selectable = e.Source as ISelectable;
+
+            if (selectable.IsSelected)
+            {
+                if (this.Panel.Children.Contains(source))
+                {
+                    this.SelectedItem = source;
+                }
+            }
+            else if (selectable == this.SelectedItem)
             {
                 this.SelectedItem = null;
             }

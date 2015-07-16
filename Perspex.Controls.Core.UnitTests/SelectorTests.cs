@@ -11,7 +11,6 @@ namespace Perspex.Controls.Core.UnitTests
     using System.Linq;
     using Perspex.VisualTree;
     using Xunit;
-    using Perspex.Interactivity;
     using Perspex.Input;
 
     public class SelectorTests
@@ -270,6 +269,50 @@ namespace Perspex.Controls.Core.UnitTests
         }
 
         [Fact]
+        public void Setting_Child_IsSelected_True_Should_Change_Selection()
+        {
+            var target = new Selector
+            {
+                Panel = new StackPanel
+                {
+                    Children = new Controls
+                    {
+                        new SelectableBorder { Name = "Foo" },
+                        new SelectableBorder { Name = "Bar" },
+                    }
+                },
+                SelectedIndex = 0
+            };
+
+            ((ISelectable)target.Panel.Children[1]).IsSelected = true;
+
+            Assert.Equal(1, target.SelectedIndex);
+            Assert.Equal(target.Panel.Children[1], target.SelectedItem);
+        }
+
+        [Fact]
+        public void Setting_Child_IsSelected_False_Should_Change_Selection()
+        {
+            var target = new Selector
+            {
+                Panel = new StackPanel
+                {
+                    Children = new Controls
+                    {
+                        new SelectableBorder { Name = "Foo" },
+                        new SelectableBorder { Name = "Bar" },
+                    }
+                },
+                SelectedIndex = 0
+            };
+
+            ((ISelectable)target.Panel.Children[0]).IsSelected = false;
+
+            Assert.Equal(-1, target.SelectedIndex);
+            Assert.Null(target.SelectedItem);
+        }
+
+        [Fact]
         public void Selector_With_No_Panel_Is_Allowed()
         {
             var target = new Selector();
@@ -415,7 +458,27 @@ namespace Perspex.Controls.Core.UnitTests
 
         private class SelectableBorder : Border, ISelectable
         {
-            public bool IsSelected { get; set; }
+            private bool isSelected;
+
+            public bool IsSelected
+            {
+                get
+                {
+                    return this.isSelected;
+                }
+
+                set
+                {
+                    if (this.isSelected != value)
+                    {
+                        this.isSelected = value;
+                        this.RaiseEvent(new Interactivity.RoutedEventArgs
+                        {
+                            RoutedEvent = Selector.IsSelectedChangedEvent
+                        });
+                    }
+                }
+            }
         }
     }
 }

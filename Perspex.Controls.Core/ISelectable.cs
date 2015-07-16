@@ -9,6 +9,12 @@ namespace Perspex.Controls.Core
     /// <summary>
     /// Interface for objects that are selectable.
     /// </summary>
+    /// <remarks>
+    /// Controls such as <see cref="Selector"/> use this interface to indicate the selected
+    /// control in a list. If changing the control's <see cref="IsSelected"/> property should
+    /// update the selection in a <see cref="Selector"/> or equivalent, then the control should
+    /// raise the <see cref="Selector.IsSelectedChangedEvent"/>.
+    /// </remarks>
     public interface ISelectable
     {
         /// <summary>
