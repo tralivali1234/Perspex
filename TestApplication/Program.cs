@@ -3,6 +3,7 @@
     using Perspex;
     using Perspex.Controls;
     using Perspex.Controls.Core;
+    using Perspex.Controls.Standard;
     using Perspex.Controls.Windowing;
     using Perspex.Media;
     using Perspex.Styling;
@@ -38,9 +39,9 @@
                             },
                             Children = new Controls
                             {
-                                new TextBlock { Text = "Foo" },
-                                new TextBlock { Text = "Bar" },
-                                new TextBlock { Text = "Baz" },
+                                new TabItem { Header = "Foo" },
+                                new TabItem { Header = "Bar" },
+                                new TabItem { Header = "Baz" },
                             }
                         }
                     }),

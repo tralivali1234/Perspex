@@ -15,7 +15,7 @@ namespace Perspex.Themes.Default
     using Perspex.Controls.Standard;
 
     /// <summary>
-    /// Defines the default style for the <see cref="Window"/> class.
+    /// The default style for the <see cref="Window"/> control.
     /// </summary>
     public class WindowStyle : Styles
     {
@@ -30,7 +30,7 @@ namespace Perspex.Themes.Default
                 {
                     Setters = new[]
                     {
-                        new Setter(Window.TemplateProperty, new LooklessControlTemplate<Window>(this.Template)),
+                        new Setter(Window.TemplateProperty, new LooklessControlTemplate<Window>(Template)),
                         new Setter(Window.FontFamilyProperty, "Segoe UI"),
                         new Setter(Window.FontSizeProperty, 12.0),
                     },
@@ -38,7 +38,12 @@ namespace Perspex.Themes.Default
             });
         }
 
-        private Control Template(Window control)
+        /// <summary>
+        /// The default template for the <see cref="Window"/> control.
+        /// </summary>
+        /// <param name="control">The control to which the template is being applied.</param>
+        /// <returns>The root of the materialized template.</returns>
+        public static Control Template(Window control)
         {
             return new Border
             {
@@ -48,15 +53,7 @@ namespace Perspex.Themes.Default
                     Name = "contentPresenter",
                     [~ContentPresenter.ContentProperty] = control[~Window.ContentProperty],
                 }
-                //Content = new AdornerDecorator
-                //{
-                //    Content = new ContentPresenter
-                //    {
-                //        Name = "contentPresenter",
-                //        [~ContentPresenter.ContentProperty] = control[~Window.ContentProperty],
-                //    }
-                //}
-        };
+            };
         }
     }
 }

@@ -129,7 +129,7 @@ namespace Perspex.Interactivity
 
         public void AddClassHandler<TTarget>(
             Func<TTarget, Action<TEventArgs>> handler,
-            RoutingStrategies routes = RoutingStrategies.Direct | RoutingStrategies.Bubble) 
+            RoutingStrategies routes = RoutingStrategies.Direct | RoutingStrategies.Bubble)
             where TTarget : class
         {
             this.AddClassHandler(typeof(TTarget), (s, e) => ClassHandlerAdapter<TTarget>(s, e, handler), routes);
