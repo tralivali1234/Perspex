@@ -21,8 +21,8 @@ namespace Perspex.Controls.Core.UnitTests
             {
                 Children = new Controls
                 {
-                    new TextBlock { Text = "Foo" },
-                    new TextBlock { Text = "Bar" },
+                    new Border { Name = "Foo" },
+                    new Border { Name = "Bar" },
                 }
             };
 
@@ -41,12 +41,12 @@ namespace Perspex.Controls.Core.UnitTests
             {
                 Children = new Controls
                 {
-                    new TextBlock { Text = "Foo" },
-                    new TextBlock { Text = "Bar" },
-                }
+                    new Border { Name = "Foo" },
+                    new Border { Name = "Bar" },
+                },
+                SelectedIndex = 1,
             };
 
-            target.SelectedIndex = 1;
             target.Measure(new Size(100, 100));
             target.Arrange(new Rect(100, 100));
 
@@ -62,8 +62,8 @@ namespace Perspex.Controls.Core.UnitTests
             {
                 Children = new Controls
                 {
-                    new TextBlock { Text = "Foo" },
-                    new TextBlock { Text = "Bar" },
+                    new Border { Name = "Foo" },
+                    new Border { Name = "Bar" },
                 }
             };
 
@@ -74,6 +74,54 @@ namespace Perspex.Controls.Core.UnitTests
             Assert.Equal(1, target.SelectedIndex);
             Assert.Equal(target.Children[1], target.SelectedItem);
             Assert.Equal(new[] { false, true }, GetChildVisibility(target));
+        }
+
+        [Fact]
+        public void Setting_SelectedIndex_Out_Of_Range_Should_Clear_Selection()
+        {
+            var target = new Pages
+            {
+                Children = new Controls
+                {
+                    new Border { Name = "Foo" },
+                    new Border { Name = "Bar" },
+                },
+                SelectedIndex = 1,
+            };
+
+            target.Measure(new Size(100, 100));
+            target.Arrange(new Rect(100, 100));
+            target.SelectedIndex = 3;
+            target.Measure(new Size(100, 100));
+            target.Arrange(new Rect(100, 100));
+
+            Assert.Equal(-1, target.SelectedIndex);
+            Assert.Null(target.SelectedItem);
+            Assert.Equal(new[] { false, false }, GetChildVisibility(target));
+        }
+
+        [Fact]
+        public void Setting_SelectedItem_Out_Of_Range_Should_Clear_Selection()
+        {
+            var target = new Pages
+            {
+                Children = new Controls
+                {
+                    new Border { Name = "Foo" },
+                    new Border { Name = "Bar" },
+                },
+                SelectedIndex = 1,
+            };
+
+            target.Measure(new Size(100, 100));
+            target.Arrange(new Rect(100, 100));
+            target.SelectedItem = new Border();
+            target.Measure(new Size(100, 100));
+            target.Arrange(new Rect(100, 100));
+
+            Assert.Equal(-1, target.SelectedIndex);
+            Assert.Null(target.SelectedItem);
+            Assert.Equal(new[] { false, false }, GetChildVisibility(target));
         }
 
         private static IEnumerable<bool> GetChildVisibility(Pages target)

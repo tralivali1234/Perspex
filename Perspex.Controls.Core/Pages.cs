@@ -33,7 +33,10 @@ namespace Perspex.Controls.Core
         /// </summary>
         static Pages()
         {
-            SelectableMixin.Attach<Pages, IControl>(SelectedIndexProperty, SelectedItemProperty);
+            SelectableMixin.Attach<Pages, IControl>(
+                SelectedIndexProperty,
+                SelectedItemProperty,
+                x => x.Children);
         }
 
         /// <summary>
