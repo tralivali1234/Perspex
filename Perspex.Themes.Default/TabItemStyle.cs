@@ -34,7 +34,7 @@ namespace Perspex.Themes.Default
                         new Setter(TabItem.TemplateProperty, new LooklessControlTemplate<TabItem>(Template)),
                     },
                 },
-                new Style(x => x.OfType<TabItem>().Class(":selected"))
+                new Style(x => x.OfType<TabItem>().Class("selected"))
                 {
                     Setters = new[]
                     {
