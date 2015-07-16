@@ -14,26 +14,45 @@
             var application = new App();
             var window = new Window();
 
-            window.Content = new Selector
+            Selector selector;
+
+            window.Content = new StackPanel
             {
-                Margin = new Thickness(16),
-                Panel = new StackPanel
+                Orientation = Orientation.Horizontal,
+                Children = new Controls
                 {
-                    Styles = new Styles
+                    (selector = new Selector
                     {
-                        new Style(x => x.OfType<TextBlock>().Class("selected"))
+                        Margin = new Thickness(16),
+                        Panel = new StackPanel
                         {
-                            Setters = new[]
+                            Styles = new Styles
                             {
-                                new Setter(TextBlock.BackgroundProperty, Brushes.Red),
+                                new Style(x => x.OfType<TextBlock>().Class("selected"))
+                                {
+                                    Setters = new[]
+                                    {
+                                        new Setter(TextBlock.BackgroundProperty, Brushes.Red),
+                                    }
+                                }
+                            },
+                            Children = new Controls
+                            {
+                                new TextBlock { Text = "Foo" },
+                                new TextBlock { Text = "Bar" },
+                                new TextBlock { Text = "Baz" },
                             }
                         }
-                    },
-                    Children = new Controls
+                    }),
+                    new Pages
                     {
-                        new TextBlock { Text = "Foo" },
-                        new TextBlock { Text = "Bar" },
-                        new TextBlock { Text = "Baz" },
+                        Margin = new Thickness(16),
+                        [!Pages.SelectedIndexProperty] = selector[!Pages.SelectedIndexProperty],
+                        Children = new Controls
+                        {
+                            new TextBlock { Text = "Foo Content" },
+                            new TextBlock { Text = "Bar Content" },
+                        }
                     }
                 }
             };

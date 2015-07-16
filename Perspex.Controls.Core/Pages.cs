@@ -36,6 +36,7 @@ namespace Perspex.Controls.Core
                 SelectedIndexProperty,
                 SelectedItemProperty,
                 x => x.Children);
+            AffectsMeasure(SelectedItemProperty);
         }
 
         /// <summary>
