@@ -10,10 +10,39 @@ namespace Perspex.Controls.Core
     using System.Collections;
     using System.Collections.Specialized;
     using Perspex.Controls.Core.Generators;
+    using System.Linq;
+
 
     /// <summary>
     /// Displays a collection of data according to a <see cref="DataTemplate"/>.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The <see cref="Repeat"/> control populates a <see cref="Panel"/> based on a collection
+    /// of <see cref="Items"/>. A control is created in the panel for each non-null item based
+    /// on a <see cref="IDataTemplate"/>:
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// First the <see cref="ItemTemplate"/> is checked for a template that matches the item.
+    /// </item>
+    /// <item>
+    /// Next the <see cref="DataTemplates"/> collection is checked.
+    /// </item>
+    /// <item>
+    /// If neither of the previous two location contain a matching data template, then the logical
+    /// tree is searched upwards to the root.
+    /// </item>
+    /// <item>
+    /// If still no matching data template is found, then Application's DataTemplates collection is
+    /// searched.
+    /// </item>
+    /// <item>
+    /// Finally, a <see cref="TextBlock"/> will be created with the result of calling
+    /// <see cref="object.ToString"/> on the item.
+    /// </item>
+    /// </list>
+    /// </remarks>
     public class Repeat : Control
     {
         /// <summary>
@@ -40,6 +69,7 @@ namespace Perspex.Controls.Core
         static Repeat()
         {
             ItemsProperty.Changed.AddClassHandler<Repeat>(x => x.ItemsChanged);
+            PanelProperty.Changed.AddClassHandler<Repeat>(x => x.PanelChanged);
         }
 
         /// <summary>
@@ -94,6 +124,10 @@ namespace Perspex.Controls.Core
             return new ItemContainerGenerator(this);
         }
 
+        /// <summary>
+        /// Called when the <see cref="Items"/> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
         private void ItemsChanged(PerspexPropertyChangedEventArgs e)
         {
             var items = (ICollection)e.NewValue;
@@ -111,6 +145,11 @@ namespace Perspex.Controls.Core
             }
         }
 
+        /// <summary>
+        /// Called when the <see cref="Items"/> collection mutates.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -124,7 +163,7 @@ namespace Perspex.Controls.Core
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
-                    this.ResetItems();
+                    this.ResetItems(this.Panel);
                     break;
 
                 default:
@@ -132,22 +171,66 @@ namespace Perspex.Controls.Core
             }
         }
 
+        /// <summary>
+        /// Called when the <see cref="Panel"/> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void PanelChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var panel = (Panel)e.OldValue;
+
+            if (panel != null)
+            {
+                this.ResetItems(panel);
+            }
+
+            panel = (Panel)e.NewValue;
+
+            if (panel != null && this.Items != null)
+            {
+                this.AddItems(0, this.Items);
+            }
+        }
+
+        /// <summary>
+        /// Adds containers for the specified items.
+        /// </summary>
+        /// <param name="startingIndex">The index of the first item in <see cref="Items"/>.</param>
+        /// <param name="items">The items to add.</param>
         private void AddItems(int startingIndex, IEnumerable items)
         {
-            var containers = this.Generator.CreateContainers(startingIndex, items, this.ItemTemplate);
-            this.Panel.Children.AddRange(containers);
+            if (this.Panel != null)
+            {
+                var containers = this.Generator.CreateContainers(startingIndex, items, this.ItemTemplate);
+                this.Panel.Children.AddRange(containers);
+            }
         }
 
+        /// <summary>
+        /// Adds containers for the specified items.
+        /// </summary>
+        /// <param name="startingIndex">The index of the first item in <see cref="Items"/>.</param>
+        /// <param name="count">The number of items to remove.</param>
         private void RemoveItems(int startingIndex, int count)
         {
-            var containers = this.Generator.RemoveContainers(startingIndex, count);
-            this.Panel.Children.RemoveAll(containers);
+            if (this.Panel != null)
+            {
+                var containers = this.Generator.RemoveContainers(startingIndex, count);
+                this.Panel.Children.RemoveAll(containers);
+            }
         }
 
-        private void ResetItems()
+        /// <summary>
+        /// Removes all containers.
+        /// </summary>
+        /// <param name="panel">The panel.</param>
+        private void ResetItems(IPanel panel)
         {
-            var containers = this.Generator.ClearContainers();
-            this.Panel.Children.RemoveAll(containers);
+            if (panel != null)
+            {
+                var containers = this.Generator.ClearContainers();
+                panel.Children.RemoveAll(containers);
+            }
         }
     }
 }

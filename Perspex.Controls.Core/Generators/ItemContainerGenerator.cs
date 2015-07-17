@@ -38,7 +38,7 @@ namespace Perspex.Controls.Core.Generators
         {
             var result = this.containers;
             this.containers = new List<IControl>();
-            return result;
+            return result.Where(x => x != null);
         }
 
         /// <summary>
@@ -64,7 +64,11 @@ namespace Perspex.Controls.Core.Generators
             {
                 IControl container;
 
-                if (itemTemplate != null && itemTemplate.Match(item))
+                if (item == null)
+                {
+                    container = null;
+                }
+                else if (itemTemplate != null && itemTemplate.Match(item))
                 {
                     container = itemTemplate.Build(item);
                     container.DataContext = item;
@@ -78,7 +82,7 @@ namespace Perspex.Controls.Core.Generators
             }
 
             this.AddContainers(startingIndex, result);
-            return result;
+            return result.Where(x => x != null);
         }
 
         /// <summary>
@@ -106,7 +110,7 @@ namespace Perspex.Controls.Core.Generators
                 this.containers[i] = null;
             }
 
-            return result;
+            return result.Where(x => x != null);
         }
 
         /// <summary>

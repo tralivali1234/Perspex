@@ -26,6 +26,18 @@ namespace Perspex.Controls.Core.UnitTests
         }
 
         [Fact]
+        public void Should_Create_Containers_If_Panel_Assigned_After_Items()
+        {
+            var target = new Repeat
+            {
+                Items = new[] { "Foo", "Bar" },
+                Panel = new StackPanel(),
+            };
+
+            Assert.Equal(2, target.Panel.Children.Count);
+        }
+
+        [Fact]
         public void Should_Add_Containers()
         {
             var items = new PerspexList<string>
@@ -110,6 +122,47 @@ namespace Perspex.Controls.Core.UnitTests
 
             var types = target.Panel.Children.Select(x => x.GetType());
             Assert.Equal(new[] { typeof(Border), typeof(Border) }, types);
+        }
+
+        [Fact]
+        public void Removing_Panel_Should_Remove_Children()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = new[] { "Foo", "Bar" },
+            };
+
+            var panel = target.Panel;
+            target.Panel = null;
+
+            Assert.Empty(panel.Children);
+        }
+
+        [Fact]
+        public void Replacing_Panel_Should_Recreate_Children()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = new[] { "Foo", "Bar" },
+            };
+
+            target.Panel = new StackPanel();
+
+            Assert.Equal(2, target.Panel.Children.Count);
+        }
+
+        [Fact]
+        public void Should_Handle_Null_Items()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = new[] { "Foo", null, "Bar" },
+            };
+
+            Assert.Equal(2, target.Panel.Children.Count);
         }
     }
 }
