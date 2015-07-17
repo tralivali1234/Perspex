@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Binding.cs" />
+    <Compile Include="Collections\PerspexListExtensions.cs" />
     <Compile Include="Diagnostics\PerspexObjectExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IObservablePropertyBag.cs" />
@@ -51,7 +52,6 @@
     <Compile Include="Contract.cs" />
     <Compile Include="Diagnostics\PerspexPropertyValue.cs" />
     <Compile Include="IDescription.cs" />
-    <Compile Include="Collections\PerspexListExtensions.cs" />
     <Compile Include="Collections\IPerspexReadOnlyList.cs" />
     <Compile Include="PerspexObject.cs" />
     <Compile Include="PerspexProperty.cs" />

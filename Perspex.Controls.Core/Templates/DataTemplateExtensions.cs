@@ -10,7 +10,6 @@ namespace Perspex.Controls.Core.Templates
     using Perspex.LogicalTree;
     using Splat;
 
-
     /// <summary>
     /// Defines extension methods for working with <see cref="IDataTemplate"/>s.
     /// </summary>
@@ -20,7 +19,7 @@ namespace Perspex.Controls.Core.Templates
         /// The default data template used when no matching data template is found.
         /// </summary>
         public static IDataTemplate Default = new DataTemplate(
-            _ => true, 
+            _ => true,
             x => new TextBlock { Text = x.ToString() });
 
         private static IGlobalDataTemplates global;
@@ -31,7 +30,7 @@ namespace Perspex.Controls.Core.Templates
         /// <param name="control">The control materializing the data template.</param>
         /// <param name="data">The data.</param>
         /// <returns>The data materialized as a control.</returns>
-        public static Control MaterializeDataTemplate(this Control control, object data)
+        public static Control MaterializeDataTemplate(this IControl control, object data)
         {
             IDataTemplate template = control.FindDataTemplate(data);
             Control result;
@@ -63,9 +62,9 @@ namespace Perspex.Controls.Core.Templates
         /// <param name="control">The control searching for the data template.</param>
         /// <param name="data">The data.</param>
         /// <returns>The data template or null if no matching data template was found.</returns>
-        public static IDataTemplate FindDataTemplate(this Control control, object data)
+        public static IDataTemplate FindDataTemplate(this IControl control, object data)
         {
-            foreach (var i in control.GetSelfAndLogicalAncestors().OfType<Control>())
+            foreach (var i in control.GetSelfAndLogicalAncestors().OfType<IControl>())
             {
                 foreach (IDataTemplate dt in i.DataTemplates.Reverse())
                 {

@@ -32,7 +32,8 @@ namespace Perspex.Controls.Core.UnitTests
                 Content = "Foo"
             };
 
-            target.ApplyTemplate();
+            // TODO: Probably shouldn't need to call ApplyTemplate?
+            ////target.ApplyTemplate();
 
             Assert.IsType<TextBlock>(target.Child);
             Assert.Equal(1, target.GetVisualChildren().Count());

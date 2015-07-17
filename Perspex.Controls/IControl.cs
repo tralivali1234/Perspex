@@ -16,6 +16,16 @@ namespace Perspex.Controls
     public interface IControl : IVisual, ILogical, ILayoutable, IInputElement, INamed, IStyleable, IStyleHost
     {
         /// <summary>
+        /// Gets or sets the control's data context.
+        /// </summary>
+        object DataContext { get; set; }
+
+        /// <summary>
+        /// Gets the data templates for the control.
+        /// </summary>
+        DataTemplates DataTemplates { get; }
+
+        /// <summary>
         /// Gets the control's logical parent.
         /// </summary>
         IControl Parent { get; }

@@ -69,8 +69,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generators\ItemContainerGenerator.cs" />
+    <Compile Include="Generators\IItemContainerGenerator.cs" />
     <Compile Include="IPanel.cs" />
     <Compile Include="ISelectable.cs" />
+    <Compile Include="Repeat.cs" />
     <Compile Include="Mixins\SelectableMixin.cs" />
     <Compile Include="Mixins\SelectorMixin.cs" />
     <Compile Include="Pages.cs" />
