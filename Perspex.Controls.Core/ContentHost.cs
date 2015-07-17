@@ -23,11 +23,9 @@ namespace Perspex.Controls.Core
         public static readonly PerspexProperty<object> ContentProperty =
             PerspexProperty.Register<ContentHost, object>("Content");
 
-        private IPerspexList<ILogical> logicalChildren;
+        private IPerspexList<ILogical> logicalChildren = new PerspexSingleItemList<ILogical>();
 
         private IControl logicalParent;
-
-        private bool templateApplied;
 
         /// <summary>
         /// Initializes static members of the <see cref="ContentHost"/> class.
@@ -50,7 +48,7 @@ namespace Perspex.Controls.Core
         /// </summary>
         public IControl Child
         {
-            get { return this.LogicalChildren.SingleOrDefault() as IControl; }
+            get { return this.logicalChildren.SingleOrDefault() as IControl; }
         }
 
         /// <summary>
@@ -67,49 +65,7 @@ namespace Perspex.Controls.Core
         /// </summary>
         IPerspexReadOnlyList<ILogical> ILogical.LogicalChildren
         {
-            get { return this.LogicalChildren; }
-        }
-
-        /// <summary>
-        /// Gets the logical children of the control.
-        /// </summary>
-        /// <remarks>
-        /// Because the control implements <see cref="IReparentingControl"/> the logical children
-        /// collection is lazily-created. Use this property to ensure it is created.
-        /// </remarks>
-        private IPerspexList<ILogical> LogicalChildren
-        {
-            get
-            {
-                if (this.logicalChildren == null)
-                {
-                    this.logicalChildren = new PerspexSingleItemList<ILogical>();
-                }
-
-                return this.logicalChildren;
-            }
-        }
-
-        /// <summary>
-        /// Materializes the data template for the <see cref="Content"/>.
-        /// </summary>
-        public override void ApplyTemplate()
-        {
-            if (!this.templateApplied)
-            {
-                var content = this.Content;
-
-                if (content != null)
-                {
-                    var child = this.MaterializeDataTemplate(content);
-                    this.AddVisualChild(child);
-                    ((IList)this.LogicalChildren).Clear();
-                    this.LogicalChildren.Add(child);
-                    ((ISetLogicalParent)child).SetParent(this.logicalParent);
-                }
-
-                this.templateApplied = true;
-            }
+            get { return this.logicalChildren; }
         }
 
         /// <summary>
@@ -124,14 +80,17 @@ namespace Perspex.Controls.Core
         /// </param>
         void IReparentingControl.ReparentLogicalChildren(ILogical logicalParent, IPerspexList<ILogical> children)
         {
-            if (this.logicalChildren != null)
-            {
-                throw new InvalidOperationException(
-                    "ReparentLogicalChildren must be called before LogicalChildren accessed.");
-            }
+            var child = this.logicalChildren.SingleOrDefault();
 
             this.logicalParent = (IControl)logicalParent;
             this.logicalChildren = children;
+
+            if (child != null)
+            {
+                ((ISetLogicalParent)child).SetParent(null);
+                ((ISetLogicalParent)child).SetParent(this.logicalParent);
+                this.logicalChildren.Add(child);
+            }
         }
 
         /// <summary>
@@ -142,12 +101,19 @@ namespace Perspex.Controls.Core
         {
             if (e.OldValue != null)
             {
-                ((ISetLogicalParent)this.LogicalChildren.Single()).SetParent(null);
-                ((IList)this.LogicalChildren).Clear();
+                ((ISetLogicalParent)this.logicalChildren.Single()).SetParent(null);
+                ((IList)this.logicalChildren).Clear();
                 this.ClearVisualChildren();
             }
 
-            this.templateApplied = false;
+            if (e.NewValue != null)
+            {
+                var child = this.MaterializeDataTemplate(e.NewValue);
+                this.AddVisualChild(child);
+                ((IList)this.logicalChildren).Clear();
+                this.logicalChildren.Add(child);
+                ((ISetLogicalParent)child).SetParent(this.logicalParent);
+            }
         }
     }
 }
