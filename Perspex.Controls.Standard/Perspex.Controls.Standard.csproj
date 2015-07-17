@@ -80,12 +80,13 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ContentControl.cs" />
     <Compile Include="IHeadered.cs" />
+    <Compile Include="ILooklessControlTemplate.cs" />
+    <Compile Include="ItemsControl.cs" />
+    <Compile Include="LooklessControlTemplate.cs" />
     <Compile Include="LooklessControlTemplate`1.cs" />
     <Compile Include="Presenters\ContentPresenter.cs" />
     <Compile Include="Presenters\IPresenter.cs" />
-    <Compile Include="LooklessControlTemplate.cs" />
     <Compile Include="ILooklessControl.cs" />
-    <Compile Include="ILooklessControlTemplate.cs" />
     <Compile Include="Primitives\HeaderedContentControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LooklessControl.cs" />

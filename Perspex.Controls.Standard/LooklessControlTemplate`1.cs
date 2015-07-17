@@ -11,6 +11,7 @@ namespace Perspex.Controls.Standard
     /// <summary>
     /// A template for a <see cref="LooklessControl"/>.
     /// </summary>
+    /// <typeparam name="T">The type of the lookless control.</typeparam>
     public class LooklessControlTemplate<T> : LooklessControlTemplate where T : ILooklessControl
     {
         private Func<ILooklessControl, IControl> build;

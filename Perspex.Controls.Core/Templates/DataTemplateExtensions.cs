@@ -30,10 +30,10 @@ namespace Perspex.Controls.Core.Templates
         /// <param name="control">The control materializing the data template.</param>
         /// <param name="data">The data.</param>
         /// <returns>The data materialized as a control.</returns>
-        public static Control MaterializeDataTemplate(this IControl control, object data)
+        public static IControl MaterializeDataTemplate(this IControl control, object data)
         {
             IDataTemplate template = control.FindDataTemplate(data);
-            Control result;
+            IControl result;
 
             if (template != null)
             {

@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controls.cs" />
+    <Compile Include="FuncTemplate`2.cs" />
     <Compile Include="IControl.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="DataTemplate`1.cs" />
@@ -47,6 +48,9 @@
     <Compile Include="IGlobalDataTemplates.cs" />
     <Compile Include="INamed.cs" />
     <Compile Include="ISetLogicalParent.cs" />
+    <Compile Include="FuncTemplate`1.cs" />
+    <Compile Include="ITemplate`2.cs" />
+    <Compile Include="ITemplate`1.cs" />
     <Compile Include="NameTable.cs" />
     <Compile Include="INameScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,29 +11,15 @@ namespace Perspex.Controls.Standard
     /// <summary>
     /// A template for a <see cref="LooklessControl"/>.
     /// </summary>
-    public class LooklessControlTemplate : ILooklessControlTemplate
+    public class LooklessControlTemplate : FuncTemplate<ILooklessControl, IControl>, ILooklessControlTemplate
     {
-        private Func<ILooklessControl, IControl> build;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LooklessControlTemplate"/> class.
         /// </summary>
         /// <param name="build">The build function.</param>
         public LooklessControlTemplate(Func<ILooklessControl, IControl> build)
+            : base(build)
         {
-            Contract.Requires<ArgumentNullException>(build != null);
-
-            this.build = build;
-        }
-
-        /// <summary>
-        /// Builds the lookless control template.
-        /// </summary>
-        /// <param name="control">The lookless control.</param>
-        /// <returns>The built control##</returns>
-        public IControl Build(ILooklessControl control)
-        {
-            return this.build(control);
         }
     }
 }

@@ -16,8 +16,6 @@ namespace Perspex.Controls.Standard
     using Perspex.Controls.Core;
     using Perspex.Collections;
 
-
-
     /// <summary>
     /// Base class for lookless controls.
     /// </summary>

@@ -12,13 +12,13 @@ namespace Perspex.Controls.Standard
     public interface ILooklessControl
     {
         /// <summary>
-        /// Applies the control's <see cref="Template"/> if it is not already applied.
-        /// </summary>
-        void ApplyTemplate();
-
-        /// <summary>
         /// Gets or sets the control's template.
         /// </summary>
         ILooklessControlTemplate Template { get; set; }
+
+        /// <summary>
+        /// Applies the control's <see cref="Template"/> if it is not already applied.
+        /// </summary>
+        void ApplyTemplate();
     }
 }

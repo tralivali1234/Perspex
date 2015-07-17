@@ -9,13 +9,7 @@ namespace Perspex.Controls.Standard
     /// <summary>
     /// Interface representing a template used to build a <see cref="LooklessControl"/>.
     /// </summary>
-    public interface ILooklessControlTemplate
+    public interface ILooklessControlTemplate : ITemplate<ILooklessControl, IControl>
     {
-        /// <summary>
-        /// Builds the lookless control template.
-        /// </summary>
-        /// <param name="control">The lookless control.</param>
-        /// <returns>The built control##</returns>
-        IControl Build(ILooklessControl control);
     }
 }
