@@ -18,7 +18,7 @@ namespace Perspex.Controls.Standard.Presenters
     /// template of a <see cref="LooklessControl"/> then that signals that the visual child of
     /// the presenter is not a part of the lookless control template.
     /// </remarks>
-    public interface IPresenter : IReparentingControl
+    public interface IPresenter : IControl, IReparentingControl
     {
     }
 }

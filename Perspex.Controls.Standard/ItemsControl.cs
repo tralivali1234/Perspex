@@ -6,9 +6,12 @@
 
 namespace Perspex.Controls.Standard
 {
+    using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
     using Perspex.Controls.Core;
+    using Perspex.Controls.Standard.Presenters;
+
 
     /// <summary>
     /// A control that displays a collection of items.
@@ -62,6 +65,15 @@ namespace Perspex.Controls.Standard
         {
             get { return this.GetValue(ItemTemplateProperty); }
             set { this.SetValue(ItemTemplateProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IItemsPresenter"/> created by the lookless control template.
+        /// </summary>
+        public IItemsPresenter Presenter
+        {
+            get;
+            private set;
         }
     }
 }
