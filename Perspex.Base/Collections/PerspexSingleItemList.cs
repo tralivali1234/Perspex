@@ -276,5 +276,21 @@ namespace Perspex.Collections
         {
             throw new NotImplementedException();
         }
+
+        void IPerspexList<T>.AddRange(IEnumerable<T> items)
+        {
+            foreach (var i in items)
+            {
+                ((IList<T>)this).Add(i);
+            }
+        }
+
+        void IPerspexList<T>.RemoveAll(IEnumerable<T> items)
+        {
+            foreach (var i in items)
+            {
+                ((IList<T>)this).Remove(i);
+            }
+        }
     }
 }

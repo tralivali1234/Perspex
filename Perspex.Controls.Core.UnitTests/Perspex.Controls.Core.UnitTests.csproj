@@ -75,6 +75,7 @@
     <Compile Include="BorderTests.cs" />
     <Compile Include="DecoratorTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="PanelTests_ReparentLogicalChildren.cs" />
     <Compile Include="RepeatTests.cs" />
     <Compile Include="SelectorTests.cs" />
     <Compile Include="PagesTests.cs" />

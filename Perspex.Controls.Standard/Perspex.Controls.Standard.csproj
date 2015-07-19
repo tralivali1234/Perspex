@@ -84,6 +84,8 @@
     <Compile Include="ItemsControl.cs" />
     <Compile Include="LooklessControlTemplate.cs" />
     <Compile Include="LooklessControlTemplate`1.cs" />
+    <Compile Include="Presenters\IItemsPresenter.cs" />
+    <Compile Include="Presenters\ItemsPresenter.cs" />
     <Compile Include="Presenters\ContentPresenter.cs" />
     <Compile Include="Presenters\IPresenter.cs" />
     <Compile Include="ILooklessControl.cs" />

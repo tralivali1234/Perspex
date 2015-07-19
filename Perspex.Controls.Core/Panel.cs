@@ -19,11 +19,13 @@ namespace Perspex.Controls.Core
     /// Controls can be added to a <see cref="Panel"/> by adding them to its <see cref="Children"/>
     /// collection. All children are layed out to fill the panel.
     /// </remarks>
-    public class Panel : Control, IPanel, ILogical
+    public class Panel : Control, IPanel, ILogical, IReparentingControl
     {
         private Controls children;
 
         private ILogical childLogicalParent;
+
+        private IPerspexList<ILogical> logicalChildren;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Panel"/> class.
@@ -58,6 +60,7 @@ namespace Perspex.Controls.Core
                 this.ClearVisualChildren();
                 this.children.Clear();
                 this.children.AddRange(value);
+                this.logicalChildren?.AddRange(value);
             }
         }
 
@@ -66,23 +69,33 @@ namespace Perspex.Controls.Core
         /// </summary>
         IPerspexReadOnlyList<ILogical> ILogical.LogicalChildren
         {
-            get { return this.children; }
+            get { return (IPerspexReadOnlyList<ILogical>)this.logicalChildren ?? this.children; }
         }
 
         /// <summary>
-        /// Called when controls are added to the <see cref="Children"/> collection.
+        /// Requests that the visual children of the panel use another control as their logical
+        /// parent.
         /// </summary>
-        /// <param name="children">The added children.</param>
-        protected virtual void OnChildrenAdded(IEnumerable<IControl> children)
+        /// <param name="logicalParent">
+        /// The logical parent for the visual children of the panel.
+        /// </param>
+        /// <param name="children">
+        /// The <see cref="ILogical.LogicalChildren"/> collection to modify.
+        /// </param>
+        void IReparentingControl.ReparentLogicalChildren(ILogical logicalParent, IPerspexList<ILogical> children)
         {
-        }
+            Contract.Requires<ArgumentNullException>(logicalParent != null);
+            Contract.Requires<ArgumentNullException>(children != null);
 
-        /// <summary>
-        /// Called when controls are removed from the <see cref="Children"/> collection.
-        /// </summary>
-        /// <param name="children">The removed children.</param>
-        protected virtual void OnChildrenRemoved(IEnumerable<IControl> children)
-        {
+            this.childLogicalParent = logicalParent;
+            this.logicalChildren = children;
+
+            foreach (var control in this.Children)
+            {
+                ((ISetLogicalParent)control).SetParent(null);
+                ((ISetLogicalParent)control).SetParent((IControl)logicalParent);
+                children.Add(control);
+            }
         }
 
         /// <summary>
@@ -105,7 +118,7 @@ namespace Perspex.Controls.Core
         {
             foreach (var control in controls)
             {
-                ((ISetLogicalParent)control).SetParent(this.childLogicalParent as IControl);
+                ((ISetLogicalParent)control).SetParent((IControl)this.childLogicalParent);
             }
         }
 
@@ -125,23 +138,23 @@ namespace Perspex.Controls.Core
                     controls = e.NewItems.OfType<Control>().ToList();
                     this.AddVisualChildren(e.NewItems.OfType<Visual>());
                     this.SetLogicalParent(controls);
-                    this.OnChildrenAdded(controls);
+                    this.logicalChildren?.AddRange(controls);
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
                     controls = e.OldItems.OfType<Control>().ToList();
                     this.ClearLogicalParent(e.OldItems.OfType<Control>());
+                    this.logicalChildren?.RemoveAll(e.OldItems.OfType<ILogical>());
                     this.RemoveVisualChildren(e.OldItems.OfType<Visual>());
-                    this.OnChildrenRemoved(controls);
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     controls = e.OldItems.OfType<Control>().ToList();
                     this.ClearLogicalParent(controls);
                     this.ClearVisualChildren();
-                    this.SetLogicalParent(this.children);
                     this.AddVisualChildren(this.children.Cast<Visual>());
-                    this.OnChildrenAdded(controls);
+                    this.SetLogicalParent(this.children);
+                    this.logicalChildren?.AddRange(controls);
                     break;
             }
 
