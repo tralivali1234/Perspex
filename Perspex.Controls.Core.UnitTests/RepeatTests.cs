@@ -61,6 +61,19 @@ namespace Perspex.Controls.Core.UnitTests
         }
 
         [Fact]
+        public void Containers_Should_Have_DataContext_Set_To_Item()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = new[] { "Foo", "Bar" },
+            };
+
+            var dataContexts = target.Panel.Children.Select(x => x.DataContext).ToList();
+            Assert.Equal(new[] { "Foo", "Bar" }, dataContexts);
+        }
+
+        [Fact]
         public void Should_Create_Containers_If_Panel_Assigned_After_Items()
         {
             var target = new Repeat

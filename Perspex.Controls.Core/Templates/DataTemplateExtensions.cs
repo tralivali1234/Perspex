@@ -38,11 +38,6 @@ namespace Perspex.Controls.Core.Templates
             if (template != null)
             {
                 result = template.Build(data);
-
-                if (result != null && result.DataContext == null)
-                {
-                    result.DataContext = data;
-                }
             }
             else if (data is Control)
             {
@@ -51,6 +46,11 @@ namespace Perspex.Controls.Core.Templates
             else
             {
                 result = Default.Build(data);
+            }
+
+            if (result.DataContext == null)
+            {
+                result.DataContext = data;
             }
 
             return result;
