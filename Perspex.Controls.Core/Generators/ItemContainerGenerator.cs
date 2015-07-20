@@ -19,7 +19,7 @@ namespace Perspex.Controls.Core.Generators
     {
         private IControl control;
 
-        private List<IControl> containers = new List<IControl>();
+        private Dictionary<int, IControl> containers = new Dictionary<int, IControl>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemContainerGenerator"/> class.
@@ -37,8 +37,8 @@ namespace Perspex.Controls.Core.Generators
         public IEnumerable<IControl> ClearContainers()
         {
             var result = this.containers;
-            this.containers = new List<IControl>();
-            return result.Where(x => x != null);
+            this.containers = new Dictionary<int, IControl>();
+            return result.Values;
         }
 
         /// <summary>
@@ -122,16 +122,9 @@ namespace Perspex.Controls.Core.Generators
         {
             Contract.Requires<ArgumentNullException>(container != null);
 
-            int lastIndex = index + container.Count;
-
-            if (lastIndex >= this.containers.Count)
-            {
-                this.containers.AddRange(Enumerable.Repeat<IControl>(null, lastIndex - this.containers.Count));
-            }
-
             foreach (var c in container)
             {
-                if (this.containers[index] == null)
+                if (!this.containers.ContainsKey(index))
                 {
                     this.containers[index] = c;
                 }
