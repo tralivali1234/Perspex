@@ -27,6 +27,16 @@ namespace Perspex.Controls.Standard
     public abstract class LooklessControl : Control, ILooklessControl, ILogical
     {
         /// <summary>
+        /// Defines the IsPresenter attached property.
+        /// </summary>
+        /// <remarks>
+        /// Controls are marked with IsPresenter = true to indicate to the LooklessControl that
+        /// the children of the control are no longer in the lookless control template.
+        /// </remarks>
+        public static readonly PerspexProperty<bool> IsPresenterProperty =
+            PerspexProperty.RegisterAttached<LooklessControl, Control, bool>("IsPresenter");
+
+        /// <summary>
         /// Defines the <see cref="Template"/> property.
         /// </summary>
         public static readonly PerspexProperty<ILooklessControlTemplate> TemplateProperty =
@@ -38,7 +48,7 @@ namespace Perspex.Controls.Standard
         public static readonly PerspexProperty<ILooklessControl> TemplatedParentProperty =
             PerspexProperty.RegisterAttached<LooklessControl, Control, ILooklessControl>("TemplatedParent");
 
-        private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
+        private PerspexList<ILogical> logicalChild = new PerspexList<ILogical>();
 
         private bool templateApplied;
 
@@ -83,6 +93,16 @@ namespace Perspex.Controls.Standard
         }
 
         /// <summary>
+        /// Gets the value of the IsPresenter attached property.
+        /// </summary>
+        /// <param name="control">The control from which to read the property.</param>
+        /// <returns>The value of the property on the control.</returns>
+        public static bool GetIsPresenter(IReparentingControl control)
+        {
+            return (bool)control.GetValue(IsPresenterProperty);
+        }
+
+        /// <summary>
         /// Gets the value of the TemplatedParent attached property.
         /// </summary>
         /// <param name="control">The control from which to read the property.</param>
@@ -90,6 +110,16 @@ namespace Perspex.Controls.Standard
         public static ILooklessControl GetTemplatedParent(IControl control)
         {
             return (ILooklessControl)control.GetValue(TemplatedParentProperty);
+        }
+
+        /// <summary>
+        /// Sets the value of the IsPresenter attached property.
+        /// </summary>
+        /// <param name="control">The control on which to set the property.</param>
+        /// <param name="value">The property value/</param>
+        public static void SetIsPresenter(IReparentingControl control, bool value)
+        {
+            control.SetValue(IsPresenterProperty, value, BindingPriority.LocalValue);
         }
 
         /// <summary>
@@ -214,9 +244,9 @@ namespace Perspex.Controls.Standard
 
             yield return control;
 
-            var presenter = control as IPresenter;
+            var reparenting = control as IReparentingControl;
 
-            if (presenter == null)
+            if (reparenting == null || !GetIsPresenter(reparenting))
             {
                 foreach (var child in control.GetVisualChildren().OfType<IControl>())
                 {
@@ -228,7 +258,7 @@ namespace Perspex.Controls.Standard
             }
             else
             {
-                presenter.ReparentLogicalChildren(this, this.logicalChild);
+                reparenting.ReparentLogicalChildren(this, this.logicalChild);
             }
         }
     }

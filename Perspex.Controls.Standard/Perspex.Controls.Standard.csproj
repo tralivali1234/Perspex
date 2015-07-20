@@ -87,7 +87,6 @@
     <Compile Include="Presenters\IItemsPresenter.cs" />
     <Compile Include="Presenters\ItemsPresenter.cs" />
     <Compile Include="Presenters\ContentPresenter.cs" />
-    <Compile Include="Presenters\IPresenter.cs" />
     <Compile Include="ILooklessControl.cs" />
     <Compile Include="Primitives\HeaderedContentControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

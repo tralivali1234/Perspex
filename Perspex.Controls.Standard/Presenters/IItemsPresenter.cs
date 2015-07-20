@@ -11,7 +11,7 @@ namespace Perspex.Controls.Standard.Presenters
     /// <summary>
     /// Presents a collection of data inside a <see cref="LooklessControl"/> template.
     /// </summary>
-    public interface IItemsPresenter : IPresenter
+    public interface IItemsPresenter : IControl
     {
         /// <summary>
         /// Gets the panel that acts as the parent of the items.

@@ -295,7 +295,7 @@ namespace Perspex.Controls
                     }
                 }
             }
-            else
+            else if (old != null)
             {
                 var nameScope = old.GetSelfAndLogicalAncestors()
                     .OfType<INameScope>()

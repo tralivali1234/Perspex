@@ -12,7 +12,6 @@ namespace Perspex.Controls.Standard
     using Perspex.Controls.Core;
     using Perspex.Controls.Standard.Presenters;
 
-
     /// <summary>
     /// A control that displays a collection of items.
     /// </summary>
@@ -21,6 +20,12 @@ namespace Perspex.Controls.Standard
         [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "Needs to be before or a NullReferenceException is thrown.")]
         private static readonly ITemplate<IPanel> DefaultPanel =
             new FuncTemplate<IPanel>(() => new StackPanel { Orientation = Orientation.Vertical });
+
+        /// <summary>
+        /// Defines the <see cref="IsEmpty"/> property.
+        /// </summary>
+        public static readonly PerspexProperty<bool> IsEmptyProperty =
+            Repeat.IsEmptyProperty.AddOwner<ItemsControl>();
 
         /// <summary>
         /// Defines the <see cref="Items"/> property.
@@ -39,6 +44,14 @@ namespace Perspex.Controls.Standard
         /// </summary>
         public static readonly PerspexProperty<IDataTemplate> ItemTemplateProperty =
             Repeat.ItemTemplateProperty.AddOwner<ItemsControl>();
+
+        /// <summary>
+        /// Gets a value indicating whether there are currently no items.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get { return this.GetValue(IsEmptyProperty); }
+        }
 
         /// <summary>
         /// Gets or sets the items to be displayed.
@@ -74,6 +87,12 @@ namespace Perspex.Controls.Standard
         {
             get;
             private set;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTemplateApplied(INameScope nameScope)
+        {
+            this.Presenter = (IItemsPresenter)nameScope.FindName("itemsPresenter");
         }
     }
 }

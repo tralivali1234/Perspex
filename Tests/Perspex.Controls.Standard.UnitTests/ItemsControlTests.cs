@@ -10,12 +10,9 @@ namespace Perspex.Controls.Standard.UnitTests
     using System.Linq;
     using Perspex.Collections;
     using Perspex.Controls;
-    using Perspex.Controls.Core.Templates;
-    using Perspex.Controls.Standard.Presenters;
-    using Perspex.Styling;
-    using Perspex.VisualTree;
-    using Xunit;
     using Perspex.Controls.Core;
+    using Perspex.Controls.Standard.Presenters;
+    using Xunit;
 
     public class ItemsControlTests
     {
@@ -248,18 +245,20 @@ namespace Perspex.Controls.Standard.UnitTests
         }
 
         [Fact]
-        public void Empty_Class_Should_Initially_Be_Applied()
+        public void IsEmpty_Should_Initially_Be_Set()
         {
             var target = new ItemsControl()
             {
                 Template = this.GetTemplate(),
             };
 
-            Assert.True(target.Classes.Contains(":empty"));
+            target.ApplyTemplate();
+
+            Assert.True(target.IsEmpty);
         }
 
         [Fact]
-        public void Empty_Class_Should_Be_Cleared_When_Items_Added()
+        public void IsEmpty_Should_Be_Cleared_When_Items_Added()
         {
             var target = new ItemsControl()
             {
@@ -267,11 +266,13 @@ namespace Perspex.Controls.Standard.UnitTests
                 Items = new[] { 1, 2, 3 },
             };
 
-            Assert.False(target.Classes.Contains(":empty"));
+            target.ApplyTemplate();
+
+            Assert.False(target.IsEmpty);
         }
 
         [Fact]
-        public void Empty_Class_Should_Be_Set_When_Empty_Collection_Set()
+        public void IsEmpty_Should_Be_Set_When_Empty_Collection_Set()
         {
             var target = new ItemsControl()
             {
@@ -280,8 +281,9 @@ namespace Perspex.Controls.Standard.UnitTests
             };
 
             target.Items = new int[0];
+            target.ApplyTemplate();
 
-            Assert.True(target.Classes.Contains(":empty"));
+            Assert.True(target.IsEmpty);
         }
 
         ////[Fact]
@@ -317,6 +319,7 @@ namespace Perspex.Controls.Standard.UnitTests
                         Name = "itemsPresenter",
                         Panel = parent.ItemsPanel.Build(),
                         [~ItemsPresenter.ItemsProperty] = parent[~ItemsControl.ItemsProperty],
+                        [(~ItemsPresenter.IsEmptyProperty).WithMode(BindingMode.OneWayToSource)] = parent[!ItemsControl.IsEmptyProperty],
                     }
                 };
             });

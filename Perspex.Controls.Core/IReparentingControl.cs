@@ -11,7 +11,7 @@ namespace Perspex.Controls.Core
     /// <summary>
     /// A control that can make its visual children the logical children of another control.
     /// </summary>
-    public interface IReparentingControl
+    public interface IReparentingControl : IControl
     {
         /// <summary>
         /// Requests that the visual children of the control use another control as their logical

@@ -13,33 +13,28 @@ namespace Perspex.Controls.Standard.Presenters
     /// <summary>
     /// Presents a collection of data inside a <see cref="LooklessControl"/> template.
     /// </summary>
-    public class ItemsPresenter : Repeat, IPresenter
+    public class ItemsPresenter : Repeat, IItemsPresenter
     {
         /// <summary>
-        /// Requests that the visual children of the control use another control as their logical
-        /// parent.
+        /// Initializes static members of the <see cref="ItemsPresenter"/> class.
         /// </summary>
-        /// <param name="logicalParent">
-        /// The logical parent for the visual children of the control.
-        /// </param>
-        /// <param name="children">
-        /// The <see cref="ILogical.LogicalChildren"/> collection to modify.
-        /// </param>
-        void IReparentingControl.ReparentLogicalChildren(ILogical logicalParent, IPerspexList<ILogical> children)
+        static ItemsPresenter()
         {
-            if (this.Panel == null)
+            PanelProperty.Changed.AddClassHandler<ItemsPresenter>(x => x.PanelChanged);
+        }
+
+        /// <summary>
+        /// Called when the <see cref="Panel"/> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void PanelChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var panel = (IReparentingControl)e.NewValue;
+
+            if (panel != null)
             {
-                throw new InvalidOperationException("ItemsPresenter.Panel may not be null.");
+                LooklessControl.SetIsPresenter(panel, true);
             }
-
-            var reparenting = this.Panel as IReparentingControl;
-
-            if (reparenting == null)
-            {
-                throw new InvalidOperationException("ItemsPresenter.Panel must implement IReparentingControl.");
-            }
-
-            reparenting.ReparentLogicalChildren(logicalParent, children);
         }
     }
 }

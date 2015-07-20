@@ -164,8 +164,13 @@ namespace Perspex.Controls.Standard.UnitTests
             }
         }
 
-        private class TestPresenter : Decorator, IPresenter
+        private class TestPresenter : Decorator, IReparentingControl
         {
+            static TestPresenter()
+            {
+                LooklessControl.IsPresenterProperty.OverrideDefaultValue<TestPresenter>(true);
+            }
+
             public void ReparentLogicalChildren(ILogical logicalParent, IPerspexList<ILogical> children)
             {
             }

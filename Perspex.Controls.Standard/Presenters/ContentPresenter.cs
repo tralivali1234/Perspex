@@ -11,7 +11,11 @@ namespace Perspex.Controls.Standard.Presenters
     /// <summary>
     /// Presents a single item of data inside a <see cref="LooklessControl"/> template.
     /// </summary>
-    public class ContentPresenter : ContentHost, IPresenter
+    public class ContentPresenter : ContentHost
     {
+        static ContentPresenter()
+        {
+            LooklessControl.IsPresenterProperty.OverrideDefaultValue<ContentPresenter>(true);
+        }
     }
 }

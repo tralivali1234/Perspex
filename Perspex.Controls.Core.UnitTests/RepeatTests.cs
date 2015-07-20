@@ -6,13 +6,48 @@
 
 namespace Perspex.Controls.Core.UnitTests
 {
-    using System.Linq;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Perspex.Collections;
+    using Perspex.LogicalTree;
+    using Perspex.VisualTree;
     using Xunit;
 
     public class RepeatTests
     {
+        [Fact]
+        public void Panel_Should_Be_Visual_Child()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+            };
+
+            Assert.Equal(new[] { target.Panel }, target.GetVisualChildren());
+        }
+
+        [Fact]
+        public void Panel_Should_Be_Logical_Child()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+            };
+
+            Assert.Equal(new[] { target.Panel }, target.GetLogicalChildren());
+        }
+
+        [Fact]
+        public void Panel_Should_Have_LogicalParent_Set()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+            };
+
+            Assert.Equal(target, target.Panel.Parent);
+        }
+
         [Fact]
         public void Should_Create_Containers()
         {
@@ -75,6 +110,46 @@ namespace Perspex.Controls.Core.UnitTests
             items.RemoveAt(0);
 
             Assert.Equal(1, target.Panel.Children.Count);
+        }
+
+        [Fact]
+        public void Removing_Item_Should_Clear_Container_Parent()
+        {
+            var items = new PerspexList<string>
+            {
+                "Foo",
+                "Bar",
+            };
+
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = items,
+            };
+
+            var item = target.Panel.Children.First();
+            items.RemoveAt(0);
+
+            Assert.Null(item.GetVisualParent());
+            Assert.Null(item.GetLogicalParent());
+            Assert.Null(item.Parent);
+        }
+
+        [Fact]
+        public void Resetting_Items_Should_Clear_Container_Parent()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = new[] { "Foo", "Bar" },
+            };
+
+            var item = target.Panel.Children.First();
+            target.Items = null;
+
+            Assert.Null(item.GetVisualParent());
+            Assert.Null(item.GetLogicalParent());
+            Assert.Null(item.Parent);
         }
 
         [Fact]
@@ -163,6 +238,103 @@ namespace Perspex.Controls.Core.UnitTests
             };
 
             Assert.Equal(2, target.Panel.Children.Count);
+        }
+
+        [Fact]
+        public void IsEmpty_Should_Initially_Be_Set()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+            };
+
+            Assert.True(target.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_Should_Be_Set_With_Empty_Items()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = new string[0],
+            };
+
+            Assert.True(target.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_Should_Be_Cleared_When_Items_Assigned()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = new[] { "Foo", "Bar" },
+            };
+
+            Assert.False(target.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_Should_Be_Cleared_When_Items_Added()
+        {
+            var items = new PerspexList<string>();
+
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = items,
+            };
+
+            items.Add("Foo");
+
+            Assert.False(target.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_Should_Be_Set_When_All_Items_Removed()
+        {
+            var items = new PerspexList<string>(new[] { "Foo" });
+
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = items,
+            };
+
+            items.RemoveAt(0);
+
+            Assert.True(target.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_Should_Be_Set_When_Items_Cleared()
+        {
+            var items = new ObservableCollection<string>(new[] { "Foo" });
+
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = items,
+            };
+
+            items.Clear();
+
+            Assert.True(target.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_Should_Be_Set_When_Items_Reset()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                Items = new[] { "Foo" },
+            };
+
+            target.Items = null;
+
+            Assert.True(target.IsEmpty);
         }
     }
 }

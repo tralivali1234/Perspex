@@ -9,9 +9,9 @@ namespace Perspex.Controls.Core
     using System;
     using System.Collections;
     using System.Collections.Specialized;
-    using Perspex.Controls.Core.Generators;
     using System.Linq;
-
+    using Perspex.Controls.Core.Generators;
+    using Perspex.Collections;
 
     /// <summary>
     /// Displays a collection of data according to a <see cref="DataTemplate"/>.
@@ -43,8 +43,14 @@ namespace Perspex.Controls.Core
     /// </item>
     /// </list>
     /// </remarks>
-    public class Repeat : Control
+    public class Repeat : Control, ILogical
     {
+        /// <summary>
+        /// Defines the <see cref="IsEmpty"/> property.
+        /// </summary>
+        public static readonly PerspexProperty<bool> IsEmptyProperty =
+            PerspexProperty.Register<Repeat, bool>("IsEmpty", true);
+
         /// <summary>
         /// Defines the <see cref="Items"/> property.
         /// </summary>
@@ -63,6 +69,8 @@ namespace Perspex.Controls.Core
         public static readonly PerspexProperty<IPanel> PanelProperty =
             PerspexProperty.Register<Repeat, IPanel>("Panel");
 
+        private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
+
         /// <summary>
         /// Initializes static members of the <see cref="Repeat"/> class.
         /// </summary>
@@ -78,6 +86,14 @@ namespace Perspex.Controls.Core
         public Repeat()
         {
             this.Generator = this.CreateItemContainerGenerator();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether there are currently no items.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get { return this.GetValue(IsEmptyProperty); }
         }
 
         /// <summary>
@@ -107,6 +123,12 @@ namespace Perspex.Controls.Core
             set { this.SetValue(PanelProperty, value); }
         }
 
+        /// <inheritdoc/>
+        IPerspexReadOnlyList<ILogical> ILogical.LogicalChildren
+        {
+            get { return this.logicalChild; }
+        }
+
         /// <summary>
         /// Gets the item container generator used to generate the controls for the items.
         /// </summary>
@@ -130,7 +152,14 @@ namespace Perspex.Controls.Core
         /// <param name="e">The event args.</param>
         private void ItemsChanged(PerspexPropertyChangedEventArgs e)
         {
-            var items = (ICollection)e.NewValue;
+            var items = (ICollection)e.OldValue;
+
+            if (items != null)
+            {
+                this.ResetItems(this.Panel);
+            }
+
+            items = (ICollection)e.NewValue;
 
             if (items != null)
             {
@@ -182,13 +211,23 @@ namespace Perspex.Controls.Core
             if (panel != null)
             {
                 this.ResetItems(panel);
+                this.ClearVisualChildren();
+                ((ISetLogicalParent)panel).SetParent(null);
+                this.logicalChild.SingleItem = null;
             }
 
             panel = (Panel)e.NewValue;
 
-            if (panel != null && this.Items != null)
+            if (panel != null)
             {
-                this.AddItems(0, this.Items);
+                this.AddVisualChild(panel);
+                ((ISetLogicalParent)panel).SetParent(this);
+                this.logicalChild.SingleItem = panel;
+
+                if (this.Items != null)
+                {
+                    this.AddItems(0, this.Items);
+                }
             }
         }
 
@@ -203,6 +242,7 @@ namespace Perspex.Controls.Core
             {
                 var containers = this.Generator.CreateContainers(startingIndex, items, this.ItemTemplate);
                 this.Panel.Children.AddRange(containers);
+                this.SetValue(IsEmptyProperty, this.Panel.Children.Count == 0);
             }
         }
 
@@ -217,6 +257,7 @@ namespace Perspex.Controls.Core
             {
                 var containers = this.Generator.RemoveContainers(startingIndex, count);
                 this.Panel.Children.RemoveAll(containers);
+                this.SetValue(IsEmptyProperty, this.Panel.Children.Count == 0);
             }
         }
 
@@ -230,6 +271,7 @@ namespace Perspex.Controls.Core
             {
                 var containers = this.Generator.ClearContainers();
                 panel.Children.RemoveAll(containers);
+                this.SetValue(IsEmptyProperty, true);
             }
         }
     }
