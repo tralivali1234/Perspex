@@ -147,6 +147,37 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
+        /// Called when the <see cref="Panel"/> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void PanelChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var panel = (Panel)e.OldValue;
+
+            if (panel != null)
+            {
+                this.ResetItems(panel);
+                this.ClearVisualChildren();
+                ((ISetLogicalParent)panel).SetParent(null);
+                this.logicalChild.SingleItem = null;
+            }
+
+            panel = (Panel)e.NewValue;
+
+            if (panel != null)
+            {
+                this.AddVisualChild(panel);
+                ((ISetLogicalParent)panel).SetParent(this);
+                this.logicalChild.SingleItem = panel;
+
+                if (this.Items != null)
+                {
+                    this.AddItems(0, this.Items);
+                }
+            }
+        }
+
+        /// <summary>
         /// Called when the <see cref="Items"/> property changes.
         /// </summary>
         /// <param name="e">The event args.</param>
@@ -197,37 +228,6 @@ namespace Perspex.Controls.Core
 
                 default:
                     throw new NotSupportedException($"Collection action '{e.Action}' not yet supported.");
-            }
-        }
-
-        /// <summary>
-        /// Called when the <see cref="Panel"/> property changes.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        private void PanelChanged(PerspexPropertyChangedEventArgs e)
-        {
-            var panel = (Panel)e.OldValue;
-
-            if (panel != null)
-            {
-                this.ResetItems(panel);
-                this.ClearVisualChildren();
-                ((ISetLogicalParent)panel).SetParent(null);
-                this.logicalChild.SingleItem = null;
-            }
-
-            panel = (Panel)e.NewValue;
-
-            if (panel != null)
-            {
-                this.AddVisualChild(panel);
-                ((ISetLogicalParent)panel).SetParent(this);
-                this.logicalChild.SingleItem = panel;
-
-                if (this.Items != null)
-                {
-                    this.AddItems(0, this.Items);
-                }
             }
         }
 

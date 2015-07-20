@@ -26,7 +26,6 @@ namespace Perspex.Controls.Standard.Presenters
         {
             ItemsPanelProperty.OverrideDefaultValue<ItemsPresenter>(null);
             ItemsPanelProperty.Changed.AddClassHandler<ItemsPresenter>(x => x.ItemsPanelChanged);
-            PanelProperty.Changed.AddClassHandler<ItemsPresenter>(x => x.PanelChanged);
         }
 
         /// <summary>
@@ -39,26 +38,28 @@ namespace Perspex.Controls.Standard.Presenters
         }
 
         /// <summary>
-        /// Called when the <see cref="ItemsPanel"/> property changes.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        private void ItemsPanelChanged(PerspexPropertyChangedEventArgs e)
-        {
-            this.Panel = ((ITemplate<IPanel>)e.NewValue).Build();
-        }
-
-        /// <summary>
         /// Called when the <see cref="Panel"/> property changes.
         /// </summary>
         /// <param name="e">The event args.</param>
-        private void PanelChanged(PerspexPropertyChangedEventArgs e)
+        protected override void PanelChanged(PerspexPropertyChangedEventArgs e)
         {
+            base.PanelChanged(e);
+
             var panel = (IReparentingControl)e.NewValue;
 
             if (panel != null)
             {
                 LooklessControl.SetIsPresenter(panel, true);
             }
+        }
+
+        /// <summary>
+        /// Called when the <see cref="ItemsPanel"/> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void ItemsPanelChanged(PerspexPropertyChangedEventArgs e)
+        {
+            this.Panel = ((ITemplate<IPanel>)e.NewValue).Build();
         }
     }
 }
