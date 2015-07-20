@@ -79,6 +79,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ItemsControlTests.cs" />
     <Compile Include="LooklessControlTests.cs" />
+    <Compile Include="Presenters\ItemsPresenterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +130,7 @@
       <Name>Perspex.Styling</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -45,7 +45,7 @@ namespace Perspex.Themes.Default
         }
 
         /// <summary>
-        /// The default template for the <see cref="Window"/> control.
+        /// The default template for the <see cref="TabItemStyle"/> control.
         /// </summary>
         /// <param name="control">The control to which the template is being applied.</param>
         /// <returns>The root of the materialized template.</returns>

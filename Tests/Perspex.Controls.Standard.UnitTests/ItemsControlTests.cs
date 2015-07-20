@@ -317,7 +317,7 @@ namespace Perspex.Controls.Standard.UnitTests
                     Child = new ItemsPresenter
                     {
                         Name = "itemsPresenter",
-                        Panel = parent.ItemsPanel.Build(),
+                        [~ItemsPresenter.ItemsPanelProperty] = parent[~ItemsControl.ItemsPanelProperty],
                         [~ItemsPresenter.ItemsProperty] = parent[~ItemsControl.ItemsProperty],
                         [(~ItemsPresenter.IsEmptyProperty).WithMode(BindingMode.OneWayToSource)] = parent[!ItemsControl.IsEmptyProperty],
                     }
@@ -330,7 +330,6 @@ namespace Perspex.Controls.Standard.UnitTests
             public new IItemsPresenter Presenter
             {
                 get { return base.Presenter; }
-                ////set { base.Presenter = value; }
             }
         }
     }

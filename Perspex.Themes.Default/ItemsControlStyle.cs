@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="ItemsControlStyle.cs" company="Steven Kirk">
-// Copyright 2014 MIT Licence. See licence.md for more information.
+// Copyright 2015 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
 
@@ -8,11 +8,18 @@ namespace Perspex.Themes.Default
 {
     using System.Linq;
     using Perspex.Controls;
-    using Perspex.Controls.Presenters;
     using Perspex.Styling;
+    using Perspex.Controls.Standard;
+    using Perspex.Controls.Standard.Presenters;
 
+    /// <summary>
+    /// The default style for the <see cref="ItemsControl"/> class.
+    /// </summary>
     public class ItemsControlStyle : Styles
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemsControlStyle"/> class.
+        /// </summary>
         public ItemsControlStyle()
         {
             this.AddRange(new[]
@@ -21,19 +28,25 @@ namespace Perspex.Themes.Default
                 {
                     Setters = new[]
                     {
-                        new Setter(Button.TemplateProperty, ControlTemplate.Create<ItemsControl>(this.Template)),
+                        new Setter(ItemsControl.TemplateProperty, new LooklessControlTemplate<ItemsControl>(Template)),
                     },
                 },
             });
         }
 
-        private Control Template(ItemsControl control)
+        /// <summary>
+        /// The default template for the <see cref="ItemsControl"/> control.
+        /// </summary>
+        /// <param name="control">The control to which the template is being applied.</param>
+        /// <returns>The root of the materialized template.</returns>
+        public static Control Template(ItemsControl control)
         {
             return new ItemsPresenter
             {
                 Name = "itemsPresenter",
                 [~ItemsPresenter.ItemsProperty] = control[~ItemsControl.ItemsProperty],
                 [~ItemsPresenter.ItemsPanelProperty] = control[~ItemsControl.ItemsPanelProperty],
+                [(~ItemsPresenter.IsEmptyProperty).WithMode(BindingMode.OneWayToSource)] = control[!ItemsControl.IsEmptyProperty],
             };
         }
     }
