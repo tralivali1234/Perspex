@@ -34,13 +34,13 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="Gap"/> property.
         /// </summary>
         public static readonly PerspexProperty<double> GapProperty =
-            PerspexProperty.Register<StackPanel, double>("Gap");
+            PerspexProperty.Register<StackPanel, double>(nameof(Gap));
 
         /// <summary>
         /// Defines the <see cref="Orientation"/> property.
         /// </summary>
         public static readonly PerspexProperty<Orientation> OrientationProperty =
-            PerspexProperty.Register<StackPanel, Orientation>("Orientation");
+            PerspexProperty.Register<StackPanel, Orientation>(nameof(Orientation));
 
         /// <summary>
         /// Gets or sets the size of the gap to place between child controls.

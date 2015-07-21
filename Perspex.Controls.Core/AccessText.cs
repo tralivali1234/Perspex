@@ -20,7 +20,9 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="ShowAccessKey"/> attached property.
         /// </summary>
         public static readonly PerspexProperty<bool> ShowAccessKeyProperty =
-            PerspexProperty.RegisterAttached<AccessText, Control, bool>("ShowAccessKey", inherits: true);
+            PerspexProperty.RegisterAttached<AccessText, Control, bool>(
+                nameof(ShowAccessKey), 
+                inherits: true);
 
         /// <summary>
         /// The access key handler for the current window.

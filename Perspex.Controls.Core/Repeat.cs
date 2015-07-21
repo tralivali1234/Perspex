@@ -54,25 +54,25 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="IsEmpty"/> property.
         /// </summary>
         public static readonly PerspexProperty<bool> IsEmptyProperty =
-            PerspexProperty.Register<Repeat, bool>("IsEmpty", true);
+            PerspexProperty.Register<Repeat, bool>(nameof(IsEmpty), true);
 
         /// <summary>
         /// Defines the <see cref="Items"/> property.
         /// </summary>
         public static readonly PerspexProperty<ICollection> ItemsProperty =
-            PerspexProperty.Register<Repeat, ICollection>("Items");
+            PerspexProperty.Register<Repeat, ICollection>(nameof(Items));
 
         /// <summary>
         /// Defines the <see cref="ItemTemplate"/> property.
         /// </summary>
         public static readonly PerspexProperty<IDataTemplate> ItemTemplateProperty =
-            PerspexProperty.Register<Repeat, IDataTemplate>("ItemTemplate");
+            PerspexProperty.Register<Repeat, IDataTemplate>(nameof(ItemTemplate));
 
         /// <summary>
         /// Defines the <see cref="Panel"/> property.
         /// </summary>
         public static readonly PerspexProperty<IPanel> PanelProperty =
-            PerspexProperty.Register<Repeat, IPanel>("Panel");
+            PerspexProperty.Register<Repeat, IPanel>(nameof(Panel));
 
         private IItemContainerGenerator itemContainerGenerator;
 

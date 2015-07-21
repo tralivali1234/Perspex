@@ -17,25 +17,25 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="Background"/> property.
         /// </summary>
         public static readonly PerspexProperty<Brush> BackgroundProperty =
-            PerspexProperty.Register<Border, Brush>("Background");
+            PerspexProperty.Register<Border, Brush>(nameof(Background));
 
         /// <summary>
         /// Defines the <see cref="BorderBrush"/> property.
         /// </summary>
         public static readonly PerspexProperty<Brush> BorderBrushProperty =
-            PerspexProperty.Register<Border, Brush>("BorderBrush");
+            PerspexProperty.Register<Border, Brush>(nameof(BorderBrush));
 
         /// <summary>
         /// Defines the <see cref="BorderThickness"/> property.
         /// </summary>
         public static readonly PerspexProperty<double> BorderThicknessProperty =
-            PerspexProperty.Register<Border, double>("BorderThickness");
+            PerspexProperty.Register<Border, double>(nameof(BorderThickness));
 
         /// <summary>
         /// Defines the <see cref="Padding"/> property.
         /// </summary>
         public static readonly PerspexProperty<Thickness> PaddingProperty =
-            PerspexProperty.Register<Decorator, Thickness>("Padding");
+            PerspexProperty.Register<Decorator, Thickness>(nameof(Padding));
 
         /// <summary>
         /// Initializes static members of the <see cref="Border"/> class.

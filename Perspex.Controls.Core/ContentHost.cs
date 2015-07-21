@@ -21,7 +21,7 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="Content"/> property.
         /// </summary>
         public static readonly PerspexProperty<object> ContentProperty =
-            PerspexProperty.Register<ContentHost, object>("Content");
+            PerspexProperty.Register<ContentHost, object>(nameof(Content));
 
         private IPerspexList<ILogical> logicalChildren = new PerspexSingleItemList<ILogical>();
 

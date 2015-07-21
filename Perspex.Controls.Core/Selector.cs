@@ -57,19 +57,19 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="IsUserSelectable"/> property.
         /// </summary>
         public static readonly PerspexProperty<bool> IsUserSelectableProperty =
-            PerspexProperty.Register<Selector, bool>("IsUserSelectable", true);
+            PerspexProperty.Register<Selector, bool>(nameof(IsUserSelectable), true);
 
         /// <summary>
         /// Defines the <see cref="SelectedIndex"/> property.
         /// </summary>
         public static readonly PerspexProperty<int> SelectedIndexProperty =
-            PerspexProperty.Register<Selector, int>("SelectedIndex", -1);
+            PerspexProperty.Register<Selector, int>(nameof(SelectedIndex), -1);
 
         /// <summary>
         /// Defines the <see cref="SelectedItem"/> property.
         /// </summary>
         public static readonly PerspexProperty<IControl> SelectedItemProperty =
-            PerspexProperty.Register<Selector, IControl>("SelectedItem");
+            PerspexProperty.Register<Selector, IControl>(nameof(SelectedItem));
 
         /// <summary>
         /// Event that should be raised by items that implement <see cref="ISelectable"/> to
