@@ -12,6 +12,10 @@ namespace Perspex.Controls.Core.UnitTests
     using Perspex.LogicalTree;
     using Perspex.VisualTree;
     using Xunit;
+    using Generators;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
 
     public class RepeatTests
     {
@@ -348,6 +352,35 @@ namespace Perspex.Controls.Core.UnitTests
             target.Items = null;
 
             Assert.True(target.IsEmpty);
+        }
+
+        [Fact]
+        public void ItemContainerGenerator_Can_Be_Set()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+            };
+
+            target.Items = new[] { "Foo", "Bar" };
+            target.ItemContainerGenerator = new TestGenerator(target);
+
+            Assert.Equal(2, target.Panel.Children.Count);
+            Assert.IsType<Border>(target.Panel.Children[0]);
+            Assert.IsType<Border>(target.Panel.Children[1]);
+        }
+
+        private class TestGenerator : ItemContainerGenerator
+        {
+            public TestGenerator(IControl owner)
+                : base(owner)
+            {
+            }
+
+            protected override IControl CreateContainer(object item, IDataTemplate itemTemplate)
+            {
+                return new Border();
+            }
         }
     }
 }

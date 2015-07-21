@@ -17,17 +17,17 @@ namespace Perspex.Controls.Core.Generators
     /// </summary>
     public class ItemContainerGenerator : IItemContainerGenerator
     {
-        private IControl control;
+        private IControl owner;
 
         private Dictionary<int, IControl> containers = new Dictionary<int, IControl>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemContainerGenerator"/> class.
         /// </summary>
-        /// <param name="control">The owner control.</param>
-        public ItemContainerGenerator(IControl control)
+        /// <param name="owner">The owner control.</param>
+        public ItemContainerGenerator(IControl owner)
         {
-            this.control = control;
+            this.owner = owner;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Perspex.Controls.Core.Generators
         /// </param>
         /// <param name="items">The items.</param>
         /// <param name="itemTemplate">An optional item template.</param>
-        /// <returns>The created controls.</returns>
+        /// <returns>The created container controls.</returns>
         public IEnumerable<IControl> CreateContainers(
             int startingIndex,
             IEnumerable items,
@@ -62,22 +62,7 @@ namespace Perspex.Controls.Core.Generators
 
             foreach (var item in items)
             {
-                IControl container;
-
-                if (item == null)
-                {
-                    container = null;
-                }
-                else if (itemTemplate != null && itemTemplate.Match(item))
-                {
-                    container = itemTemplate.Build(item);
-                    container.DataContext = item;
-                }
-                else
-                {
-                    container = this.control.MaterializeDataTemplate(item);
-                }
-
+                IControl container = this.CreateContainer(item, itemTemplate);
                 result.Add(container);
             }
 
@@ -111,6 +96,30 @@ namespace Perspex.Controls.Core.Generators
             }
 
             return result.Where(x => x != null);
+        }
+
+        /// <summary>
+        /// Creates the container for an item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="itemTemplate">An optional item template.</param>
+        /// <returns>The created container control.</returns>
+        protected virtual IControl CreateContainer(object item, IDataTemplate itemTemplate)
+        {
+            if (item == null)
+            {
+                return null;
+            }
+            else if (itemTemplate != null && itemTemplate.Match(item))
+            {
+                var result = itemTemplate.Build(item);
+                result.DataContext = item;
+                return result;
+            }
+            else
+            {
+                return this.owner.MaterializeDataTemplate(item);
+            }
         }
 
         /// <summary>

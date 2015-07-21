@@ -19,10 +19,10 @@ namespace Perspex.Controls.Core
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The Selector control hosts a <see cref="Panel"/> and makes the children of the panel
-    /// selectable. If the <see cref="IsUserSelectable"/> property is set (the default) then a
-    /// child will become selected when it is clicked, or when it gains keyboard focus. The
-    /// selected control will be marked in one of two ways:
+    /// The Selector control extends <see cref="Repeat"/> and makes the children of the
+    /// <see cref="Panel"/> selectable. If the <see cref="IsUserSelectable"/> property is set
+    /// (the default) then a child will become selected when it is clicked, or when it gains
+    /// keyboard focus. The selected control will be marked in one of two ways:
     /// </para>
     /// <list type="bullet">
     /// <item>

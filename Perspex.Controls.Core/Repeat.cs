@@ -19,29 +19,34 @@ namespace Perspex.Controls.Core
     /// <remarks>
     /// <para>
     /// The <see cref="Repeat"/> control populates a <see cref="Panel"/> based on a collection
-    /// of <see cref="Items"/>. A control is created in the panel for each non-null item based
-    /// on a <see cref="IDataTemplate"/>:
+    /// of <see cref="Items"/>. The created controls are called 'containers' and a container
+    /// is created in the panel for each non-null item based on a <see cref="IDataTemplate"/>:
     /// </para>
     /// <list type="bullet">
     /// <item>
-    /// First the <see cref="ItemTemplate"/> is checked for a template that matches the item.
+    /// First the <see cref="ItemTemplate"/> is checked for a template that matches the item
     /// </item>
     /// <item>
-    /// Next the <see cref="DataTemplates"/> collection is checked.
+    /// Next the <see cref="DataTemplates"/> collection is checked
     /// </item>
     /// <item>
-    /// If neither of the previous two location contain a matching data template, then the logical
-    /// tree is searched upwards to the root.
+    /// If neither of the previous two locations contain a matching data template, then the logical
+    /// tree is searched upwards to the root
     /// </item>
     /// <item>
     /// If still no matching data template is found, then Application's DataTemplates collection is
-    /// searched.
+    /// searched
     /// </item>
     /// <item>
     /// Finally, a <see cref="TextBlock"/> will be created with the result of calling
     /// <see cref="object.ToString"/> on the item.
     /// </item>
     /// </list>
+    /// <para>
+    /// The type of container generated depends on the <see cref="ItemContainerGenerator"/>
+    /// property: the default <see cref="IItemContainerGenerator"/> simply generates a container
+    /// based on the data template.
+    /// </para>
     /// </remarks>
     public class Repeat : Control, ILogical
     {
@@ -69,6 +74,8 @@ namespace Perspex.Controls.Core
         public static readonly PerspexProperty<IPanel> PanelProperty =
             PerspexProperty.Register<Repeat, IPanel>("Panel");
 
+        private IItemContainerGenerator itemContainerGenerator;
+
         private PerspexSingleItemList<ILogical> logicalChild = new PerspexSingleItemList<ILogical>();
 
         /// <summary>
@@ -81,19 +88,44 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Repeat"/> class.
-        /// </summary>
-        public Repeat()
-        {
-            this.Generator = this.CreateItemContainerGenerator();
-        }
-
-        /// <summary>
         /// Gets a value indicating whether there are currently no items.
         /// </summary>
         public bool IsEmpty
         {
             get { return this.GetValue(IsEmptyProperty); }
+        }
+
+        /// <summary>
+        /// Gets or sets the item container generator used to generate the controls for the items.
+        /// </summary>
+        public IItemContainerGenerator ItemContainerGenerator
+        {
+            get
+            {
+                if (this.itemContainerGenerator == null)
+                {
+                    this.itemContainerGenerator = new ItemContainerGenerator(this);
+                }
+
+                return this.itemContainerGenerator;
+            }
+
+            set
+            {
+                Contract.Requires<ArgumentNullException>(value != null);
+
+                if (this.itemContainerGenerator != null)
+                {
+                    this.ResetItems(this.Panel);
+                }
+
+                this.itemContainerGenerator = value;
+
+                if (this.Items != null)
+                {
+                    this.AddItems(0, this.Items);
+                }
+            }
         }
 
         /// <summary>
@@ -127,23 +159,6 @@ namespace Perspex.Controls.Core
         IPerspexReadOnlyList<ILogical> ILogical.LogicalChildren
         {
             get { return this.logicalChild; }
-        }
-
-        /// <summary>
-        /// Gets the item container generator used to generate the controls for the items.
-        /// </summary>
-        protected IItemContainerGenerator Generator
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Creates the <see cref="Generator"/> for the control.
-        /// </summary>
-        /// <returns>The generator.</returns>
-        protected virtual IItemContainerGenerator CreateItemContainerGenerator()
-        {
-            return new ItemContainerGenerator(this);
         }
 
         /// <summary>
@@ -240,7 +255,7 @@ namespace Perspex.Controls.Core
         {
             if (this.Panel != null)
             {
-                var containers = this.Generator.CreateContainers(startingIndex, items, this.ItemTemplate);
+                var containers = this.ItemContainerGenerator.CreateContainers(startingIndex, items, this.ItemTemplate);
                 this.Panel.Children.AddRange(containers);
                 this.SetValue(IsEmptyProperty, this.Panel.Children.Count == 0);
             }
@@ -255,7 +270,7 @@ namespace Perspex.Controls.Core
         {
             if (this.Panel != null)
             {
-                var containers = this.Generator.RemoveContainers(startingIndex, count);
+                var containers = this.ItemContainerGenerator.RemoveContainers(startingIndex, count);
                 this.Panel.Children.RemoveAll(containers);
                 this.SetValue(IsEmptyProperty, this.Panel.Children.Count == 0);
             }
@@ -269,7 +284,7 @@ namespace Perspex.Controls.Core
         {
             if (panel != null)
             {
-                var containers = this.Generator.ClearContainers();
+                var containers = this.ItemContainerGenerator.ClearContainers();
                 panel.Children.RemoveAll(containers);
                 this.SetValue(IsEmptyProperty, true);
             }
