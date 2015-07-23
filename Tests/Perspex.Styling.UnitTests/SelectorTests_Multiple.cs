@@ -9,7 +9,8 @@ namespace Perspex.Styling.UnitTests
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Perspex.Controls;
+    using Perspex.Controls.Core;
+    using Perspex.Controls.Standard;
     using Perspex.Styling;
     using Xunit;
 
@@ -18,8 +19,8 @@ namespace Perspex.Styling.UnitTests
         [Fact]
         public void Template_Child_Of_Control_With_Two_Classes()
         {
-            throw new NotImplementedException();
-            ////var template = new ControlTemplate(parent =>
+            Assert.True(false);
+            ////var template = new LooklessControlTemplate(parent =>
             ////{
             ////    return new Border
             ////    {
@@ -34,7 +35,7 @@ namespace Perspex.Styling.UnitTests
 
             ////control.ApplyTemplate();
 
-            ////var selector = new Selector()
+            ////var selector = new StyleSelector()
             ////    .OfType<Button>()
             ////    .Class("foo")
             ////    .Class("bar")

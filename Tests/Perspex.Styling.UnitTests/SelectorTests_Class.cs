@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SelectorTests.cs" company="Steven Kirk">
+// <copyright file="SelectorTests_Class.cs" company="Steven Kirk">
 // Copyright 2014 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -46,17 +46,16 @@ namespace Perspex.Styling.UnitTests
         [Fact]
         public async Task Class_Matches_Control_With_TemplatedParent()
         {
-            Assert.True(false);
-            ////var control = new Control1
-            ////{
-            ////    Classes = new Classes { "foo" },
-            ////    TemplatedParent = new Mock<ITemplatedControl>().Object,
-            ////};
+            var control = new Control1
+            {
+                Classes = new Classes { "foo" },
+                [StyleSelectors.TemplatedParentProperty] = new Mock<IStyleable>().Object,
+            };
 
-            ////var target = new Selector().Class("foo");
-            ////var activator = target.Match(control).ObservableResult;
+            var target = new StyleSelector().Class("foo");
+            var activator = target.Match(control).ObservableResult;
 
-            ////Assert.True(await activator.Take(1));
+            Assert.True(await activator.Take(1));
         }
 
         [Fact]

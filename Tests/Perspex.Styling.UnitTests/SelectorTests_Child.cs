@@ -111,7 +111,7 @@ namespace Perspex.Styling.UnitTests
 
             public object GetValue(PerspexProperty property)
             {
-                throw new NotImplementedException();
+                return null;
             }
 
             public bool IsSet(PerspexProperty property)

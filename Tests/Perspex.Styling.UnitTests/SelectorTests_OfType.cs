@@ -36,11 +36,14 @@ namespace Perspex.Styling.UnitTests
         [Fact]
         public void OfType_Matches_Control_With_TemplatedParent()
         {
-            Assert.True(false);
-            ////var control = new Control1 { TemplatedParent = new Mock<ITemplatedControl>().Object };
-            ////var target = new Selector().OfType<Control1>();
+            var control = new Control1
+            {
+                [StyleSelectors.TemplatedParentProperty] = new Mock<IStyleable>().Object
+            };
 
-            ////Assert.True(target.Match(control).ImmediateResult);
+            var target = new StyleSelector().OfType<Control1>();
+
+            Assert.True(target.Match(control).ImmediateResult);
         }
 
         public class Control1 : TestControlBase

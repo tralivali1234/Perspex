@@ -8,13 +8,13 @@ namespace Perspex.Controls.Standard
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Perspex.Collections;
+    using Perspex.Controls.Core;
+    using Perspex.Layout;
+    using Perspex.Styling;
+    using Perspex.VisualTree;
     using Serilog;
     using Serilog.Core.Enrichers;
-    using Perspex.Controls.Standard.Presenters;
-    using Perspex.VisualTree;
-    using Perspex.Layout;
-    using Perspex.Controls.Core;
-    using Perspex.Collections;
 
     /// <summary>
     /// Base class for lookless controls.
@@ -45,8 +45,8 @@ namespace Perspex.Controls.Standard
         /// <summary>
         /// Defines the TemplatedParent attached property.
         /// </summary>
-        public static readonly PerspexProperty<ILooklessControl> TemplatedParentProperty =
-            PerspexProperty.RegisterAttached<LooklessControl, Control, ILooklessControl>("TemplatedParent");
+        public static readonly PerspexProperty<IStyleable> TemplatedParentProperty =
+            StyleSelectors.TemplatedParentProperty;
 
         private PerspexList<ILogical> logicalChild = new PerspexList<ILogical>();
 

@@ -13,6 +13,10 @@ namespace Perspex.Styling
 
     public static class StyleSelectors
     {
+        // TODO: Decide if this should be moved somewhere else - probably should.
+        public static readonly PerspexProperty<IStyleable> TemplatedParentProperty =
+            PerspexProperty.RegisterAttached<Visual, IStyleable>("TemplatedParent", typeof(StyleSelectors));
+
         public static StyleSelector Child(this StyleSelector previous)
         {
             Contract.Requires<ArgumentNullException>(previous != null);
@@ -171,16 +175,15 @@ namespace Perspex.Styling
 
         private static SelectorMatch MatchTemplate(IStyleable control, StyleSelector previous)
         {
-            throw new NotImplementedException();
-            //IStyleable templatedParent = control.TemplatedParent as IStyleable;
+            IStyleable templatedParent = control.GetValue(TemplatedParentProperty) as IStyleable;
 
-            //if (templatedParent == null)
-            //{
-            //    throw new InvalidOperationException(
-            //        "Cannot call Template selector on control with null TemplatedParent.");
-            //}
+            if (templatedParent == null)
+            {
+                throw new InvalidOperationException(
+                    "Cannot call Template selector on control with null TemplatedParent.");
+            }
 
-            //return previous.Match(templatedParent);
+            return previous.Match(templatedParent);
         }
     }
 }

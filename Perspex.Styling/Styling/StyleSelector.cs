@@ -65,10 +65,12 @@ namespace Perspex.Styling
 
             while (selector != null)
             {
-                ////if (selector.inTemplate && control.TemplatedParent == null)
-                ////{
-                ////    return SelectorMatch.False;
-                ////}
+                var templatedParent = control.GetValue(StyleSelectors.TemplatedParentProperty);
+
+                if (selector.inTemplate && templatedParent == null)
+                {
+                    return SelectorMatch.False;
+                }
 
                 var match = selector.evaluate(control);
 
