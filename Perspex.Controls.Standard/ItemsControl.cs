@@ -19,7 +19,7 @@ namespace Perspex.Controls.Standard
     {
         [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "Needs to be before or a NullReferenceException is thrown.")]
         private static readonly ITemplate<IPanel> DefaultPanel =
-            new FuncTemplate<IPanel>(() => new StackPanel { Orientation = Orientation.Vertical });
+            new FuncTemplate<IPanel>(() => new StackPanel());
 
         /// <summary>
         /// Defines the <see cref="IsEmpty"/> property.

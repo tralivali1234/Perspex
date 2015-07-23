@@ -32,7 +32,7 @@ namespace Perspex.Themes.Default
                         new Setter(TabStrip.TemplateProperty, new LooklessControlTemplate<TabStrip>(Template)),
                     },
                 },
-                new Style(x => x.OfType<TabStrip>().Template().OfType<SelectorPresenter>().Template().OfType<StackPanel>())
+                new Style(x => x.OfType<TabStrip>().Template().OfType<StackPanel>())
                 {
                     Setters = new[]
                     {

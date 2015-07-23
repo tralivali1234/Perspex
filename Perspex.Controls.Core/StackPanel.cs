@@ -43,6 +43,15 @@ namespace Perspex.Controls.Core
             PerspexProperty.Register<StackPanel, Orientation>(nameof(Orientation));
 
         /// <summary>
+        /// Initializes static members of the <see cref="StackPanel"/> class.
+        /// </summary>
+        static StackPanel()
+        {
+            AffectsMeasure(GapProperty);
+            AffectsMeasure(OrientationProperty);
+        }
+
+        /// <summary>
         /// Gets or sets the size of the gap to place between child controls.
         /// </summary>
         public double Gap
