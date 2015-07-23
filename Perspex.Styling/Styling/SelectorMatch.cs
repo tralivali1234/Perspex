@@ -13,8 +13,8 @@ namespace Perspex.Styling
     /// </summary>
     /// <remarks>
     /// There are two types of selectors - ones whose match can never change for a particular 
-    /// control (such as <see cref="Selectors.OfType{T}(StyleSelector)"/>) and ones whose result can 
-    /// change over time (such as <see cref="Selectors.Class(StyleSelector, string)"/>. For the first
+    /// control (such as <see cref="StyleSelectors.OfType{T}(StyleSelector)"/>) and ones whose result can 
+    /// change over time (such as <see cref="StyleSelectors.Class(StyleSelector, string)"/>. For the first
     /// category of selectors, the value of <see cref="ImmediateResult"/> will be set but for the
     /// second, <see cref="ImmediateResult"/> will be null and <see cref="ObservableResult"/> will
     /// hold an observable which tracks the match.
