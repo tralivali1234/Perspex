@@ -117,6 +117,18 @@ namespace Perspex.Controls.Core
         }
 
         /// <inheritdoc/>
+        protected override void ContainersAdded(IList<IControl> containers)
+        {
+            foreach (var selectable in containers.OfType<ISelectable>())
+            {
+                if (selectable.IsSelected)
+                {
+                    this.SelectedContainer = (IControl)selectable;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         protected override void ContainersRemoved(IList<IControl> containers)
         {
             var selected = this.SelectedContainer;
@@ -152,6 +164,33 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
+        /// Sets a container's 'selected' class or <see cref="ISelectable.IsSelected"/>.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="selected">Whether the control is selected</param>
+        private void MarkContainerSelected(IControl container, bool selected)
+        {
+            var selectable = container as ISelectable;
+            var styleable = container as IStyleable;
+
+            if (selectable != null)
+            {
+                selectable.IsSelected = selected;
+            }
+            else if (styleable != null)
+            {
+                if (selected)
+                {
+                    styleable.Classes.Add("selected");
+                }
+                else
+                {
+                    styleable.Classes.Remove("selected");
+                }
+            }
+        }
+
+        /// <summary>
         /// Called when the <see cref="SelectedContainer"/> property changes.
         /// </summary>
         /// <param name="e">The event args.</param>
@@ -159,20 +198,11 @@ namespace Perspex.Controls.Core
         {
             var container = (IControl)e.NewValue;
 
+            this.MarkContainerSelected((IControl)e.OldValue, false);
+
             if (container != null)
             {
-                var selectable = container as ISelectable;
-                var styleable = container as IStyleable;
-
-                if (selectable != null)
-                {
-                    selectable.IsSelected = true;
-                }
-                else if (styleable != null)
-                {
-                    styleable.Classes.Add("selected");
-                }
-
+                this.MarkContainerSelected(container, true);
                 this.SelectedIndex = this.ItemContainerGenerator.IndexFromContainer(container);
             }
             else

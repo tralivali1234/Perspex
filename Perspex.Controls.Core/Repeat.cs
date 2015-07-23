@@ -163,6 +163,14 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
+        /// Called when containers are added.
+        /// </summary>
+        /// <param name="containers">The containers that were added.</param>
+        protected virtual void ContainersAdded(IList<IControl> containers)
+        {
+        }
+
+        /// <summary>
         /// Called when containers are removed.
         /// </summary>
         /// <param name="containers">The containers that were removed.</param>
@@ -267,6 +275,7 @@ namespace Perspex.Controls.Core
                 var containers = this.ItemContainerGenerator.CreateContainers(startingIndex, items, this.ItemTemplate);
                 this.Panel.Children.AddRange(containers);
                 this.SetValue(IsEmptyProperty, this.Panel.Children.Count == 0);
+                this.ContainersAdded(containers);
             }
         }
 
@@ -297,6 +306,7 @@ namespace Perspex.Controls.Core
                 var containers = this.ItemContainerGenerator.ClearContainers();
                 panel.Children.RemoveAll(containers);
                 this.SetValue(IsEmptyProperty, true);
+                this.ContainersRemoved(containers);
             }
         }
     }

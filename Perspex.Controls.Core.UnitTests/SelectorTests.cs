@@ -6,6 +6,7 @@
 
 namespace Perspex.Controls.Core.UnitTests
 {
+    using System;
     using Collections;
     using Perspex.Input;
     using Xunit;
@@ -211,6 +212,76 @@ namespace Perspex.Controls.Core.UnitTests
             });
 
             Assert.Equal(-1, target.SelectedIndex);
+        }
+
+        [Fact]
+        public void Selected_Container_Should_Have_Selected_Class_If_Not_ISelectable()
+        {
+            var target = new Selector
+            {
+                Items = new[] { "Foo", "Bar" },
+                Panel = new StackPanel(),
+                SelectedIndex = 0,
+            };
+
+            Assert.True(target.Panel.Children[0].Classes.Contains("selected"));
+            Assert.False(target.Panel.Children[1].Classes.Contains("selected"));
+
+            target.SelectedIndex = 1;
+
+            Assert.False(target.Panel.Children[0].Classes.Contains("selected"));
+            Assert.True(target.Panel.Children[1].Classes.Contains("selected"));
+        }
+
+        [Fact]
+        public void Selected_Container_Should_Have_IsSelected_True_If_ISelectable()
+        {
+            var target = new Selector
+            {
+                Items = new[] { "Foo", "Bar" },
+                ItemTemplate = new DataTemplate<string>(_ => new Selectable()),
+                Panel = new StackPanel(),
+                SelectedIndex = 0,
+            };
+
+            Assert.True(((ISelectable)target.Panel.Children[0]).IsSelected);
+            Assert.False(((ISelectable)target.Panel.Children[1]).IsSelected);
+
+            target.SelectedIndex = 1;
+
+            Assert.False(((ISelectable)target.Panel.Children[0]).IsSelected);
+            Assert.True(((ISelectable)target.Panel.Children[1]).IsSelected);
+        }
+
+        [Fact]
+        public void Adding_Selected_ISelectable_Container_Should_Set_Selection()
+        {
+            var items = new PerspexList<string>(new[] { "Foo", "Bar" });
+
+            var target = new Selector
+            {
+                Items = items,
+                ItemTemplate = new DataTemplate<string>(x => new Selectable
+                {
+                    IsSelected = x == "Baz",
+                }),
+                Panel = new StackPanel(),
+                SelectedIndex = 0,
+            };
+
+            Assert.True(((ISelectable)target.Panel.Children[0]).IsSelected);
+            Assert.False(((ISelectable)target.Panel.Children[1]).IsSelected);
+
+            items.Add("Baz");
+
+            Assert.False(((ISelectable)target.Panel.Children[0]).IsSelected);
+            Assert.False(((ISelectable)target.Panel.Children[1]).IsSelected);
+            Assert.True(((ISelectable)target.Panel.Children[2]).IsSelected);
+        }
+
+        private class Selectable : Border, ISelectable
+        {
+            public bool IsSelected { get; set; }
         }
     }
 }
