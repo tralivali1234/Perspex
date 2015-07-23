@@ -53,8 +53,11 @@ namespace Perspex.Themes.Default
             return new SelectorPresenter
             {
                 Name = "itemsPresenter",
-                [~SelectorPresenter.ItemsProperty] = control[~ItemsControl.ItemsProperty],
-                [~SelectorPresenter.ItemsPanelProperty] = control[~ItemsControl.ItemsPanelProperty],
+                [~SelectorPresenter.ItemsProperty] = control[~TabStrip.ItemsProperty],
+                [~SelectorPresenter.ItemsPanelProperty] = control[~TabStrip.ItemsPanelProperty],
+                [~~SelectorPresenter.SelectedContainerProperty] = control[~~TabStrip.SelectedContainerProperty],
+                [~~SelectorPresenter.SelectedIndexProperty] = control[~~TabStrip.SelectedIndexProperty],
+                [~~SelectorPresenter.SelectedItemProperty] = control[~~TabStrip.SelectedItemProperty],
             };
         }
     }
