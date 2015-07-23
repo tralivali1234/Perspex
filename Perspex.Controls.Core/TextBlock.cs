@@ -93,6 +93,14 @@ namespace Perspex.Controls.Core
         private Size constraint;
 
         /// <summary>
+        /// Initializes static members of the <see cref="TextBlock"/> class.
+        /// </summary>
+        static TextBlock()
+        {
+            AffectsRender(ForegroundProperty);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TextBlock"/> class.
         /// </summary>
         public TextBlock()
