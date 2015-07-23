@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Selectors.cs" company="Steven Kirk">
-// Copyright 2014 MIT Licence. See licence.md for more information.
+// <copyright file="StyleSelectors.cs" company="Steven Kirk">
+// Copyright 2015 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ namespace Perspex.Styling
     using System.Reactive.Linq;
     using System.Reflection;
 
-    public static class Selectors
+    public static class StyleSelectors
     {
         public static StyleSelector Child(this StyleSelector previous)
         {
