@@ -68,6 +68,16 @@ namespace Perspex
         }
 
         /// <summary>
+        /// Overrides the default value for the property on the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <param name="defaultValue">The default value.</param>
+        public void OverrideDefaultValue<T>(TValue defaultValue)
+        {
+            this.OverrideDefaultValue(typeof(T), defaultValue);
+        }
+
+        /// <summary>
         /// Overrides the validation function for the property on the specified type.
         /// </summary>
         /// <typeparam name="T">The type.</typeparam>

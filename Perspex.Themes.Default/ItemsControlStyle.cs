@@ -41,12 +41,12 @@ namespace Perspex.Themes.Default
         /// <returns>The root of the materialized template.</returns>
         public static Control Template(ItemsControl control)
         {
-            return new ItemsPresenter
+            return new RepeatPresenter
             {
                 Name = "itemsPresenter",
-                [~ItemsPresenter.ItemsProperty] = control[~ItemsControl.ItemsProperty],
-                [~ItemsPresenter.ItemsPanelProperty] = control[~ItemsControl.ItemsPanelProperty],
-                [(~ItemsPresenter.IsEmptyProperty).WithMode(BindingMode.OneWayToSource)] = control[!ItemsControl.IsEmptyProperty],
+                [~RepeatPresenter.ItemsProperty] = control[~ItemsControl.ItemsProperty],
+                [~RepeatPresenter.ItemsPanelProperty] = control[~ItemsControl.ItemsPanelProperty],
+                [(~RepeatPresenter.IsEmptyProperty).WithMode(BindingMode.OneWayToSource)] = control[!ItemsControl.IsEmptyProperty],
             };
         }
     }

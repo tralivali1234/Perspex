@@ -18,6 +18,12 @@ namespace Perspex.Controls.Primitives
     public abstract class SelectingItemsControl : ItemsControl
     {
         /// <summary>
+        /// Defines the <see cref="SelectedContainer"/> property.
+        /// </summary>
+        public static readonly PerspexProperty<IControl> SelectedContainerProperty =
+            Selector.SelectedContainerProperty.AddOwner<SelectingItemsControl>();
+
+        /// <summary>
         /// Defines the <see cref="SelectedIndex"/> property.
         /// </summary>
         public static readonly PerspexProperty<int> SelectedIndexProperty =
@@ -27,8 +33,16 @@ namespace Perspex.Controls.Primitives
         /// Defines the <see cref="SelectedItem"/> property.
         /// </summary>
         public static readonly PerspexProperty<object> SelectedItemProperty =
-            PerspexProperty.Register<SelectingItemsControl, object>(
-                nameof(SelectedItem));
+            Selector.SelectedItemProperty.AddOwner<SelectingItemsControl>();
+
+        /// <summary>
+        /// Gets or sets the selected container control.
+        /// </summary>
+        public IControl SelectedContainer
+        {
+            get { return this.GetValue(SelectedContainerProperty); }
+            set { this.SetValue(SelectedContainerProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the index of the selected item.

@@ -314,12 +314,12 @@ namespace Perspex.Controls.Standard.UnitTests
                 return new Border
                 {
                     Background = new Perspex.Media.SolidColorBrush(0xffffffff),
-                    Child = new ItemsPresenter
+                    Child = new RepeatPresenter
                     {
                         Name = "itemsPresenter",
-                        [~ItemsPresenter.ItemsPanelProperty] = parent[~ItemsControl.ItemsPanelProperty],
-                        [~ItemsPresenter.ItemsProperty] = parent[~ItemsControl.ItemsProperty],
-                        [(~ItemsPresenter.IsEmptyProperty).WithMode(BindingMode.OneWayToSource)] = parent[!ItemsControl.IsEmptyProperty],
+                        [~RepeatPresenter.ItemsPanelProperty] = parent[~ItemsControl.ItemsPanelProperty],
+                        [~RepeatPresenter.ItemsProperty] = parent[~ItemsControl.ItemsProperty],
+                        [(~RepeatPresenter.IsEmptyProperty).WithMode(BindingMode.OneWayToSource)] = parent[!ItemsControl.IsEmptyProperty],
                     }
                 };
             });

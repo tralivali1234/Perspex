@@ -31,7 +31,7 @@ namespace Perspex.Themes.Default
             //this.Add(new ScrollViewerStyle());
             //this.Add(new TabControlStyle());
             this.Add(new TabItemStyle());
-            //this.Add(new TabStripStyle());
+            this.Add(new TabStripStyle());
             //this.Add(new TextBoxStyle());
             //this.Add(new ToggleButtonStyle());
             //this.Add(new ToolTipStyle());

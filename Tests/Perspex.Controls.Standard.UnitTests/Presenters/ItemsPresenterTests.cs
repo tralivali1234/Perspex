@@ -16,7 +16,7 @@ namespace Perspex.Controls.Standard.UnitTests
         [Fact]
         public void ItemsPanel_Should_Initially_Be_Null()
         {
-            var target = new ItemsPresenter();
+            var target = new RepeatPresenter();
 
             Assert.Null(target.Panel);
         }
@@ -24,7 +24,7 @@ namespace Perspex.Controls.Standard.UnitTests
         [Fact]
         public void Assigning_ItemsPanel_Should_Set_Panel()
         {
-            var target = new ItemsPresenter();
+            var target = new RepeatPresenter();
 
             target.ItemsPanel = new FuncTemplate<IPanel>(() => new StackPanel());
 

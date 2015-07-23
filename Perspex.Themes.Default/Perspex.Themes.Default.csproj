@@ -90,6 +90,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ItemsControlStyle.cs" />
     <Compile Include="TabItemStyle.cs" />
+    <Compile Include="TabStripStyle.cs" />
     <Compile Include="WindowStyle.cs" />
     <Compile Include="DefaultTheme.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

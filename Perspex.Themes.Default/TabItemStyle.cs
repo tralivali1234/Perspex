@@ -14,7 +14,7 @@ namespace Perspex.Themes.Default
     using Perspex.Styling;
 
     /// <summary>
-    /// The default style for the <see cref="Window"/> class.
+    /// The default style for the <see cref="TabItem"/> class.
     /// </summary>
     public class TabItemStyle : Styles
     {
@@ -45,7 +45,7 @@ namespace Perspex.Themes.Default
         }
 
         /// <summary>
-        /// The default template for the <see cref="TabItemStyle"/> control.
+        /// The default template for the <see cref="TabItem"/> control.
         /// </summary>
         /// <param name="control">The control to which the template is being applied.</param>
         /// <returns>The root of the materialized template.</returns>

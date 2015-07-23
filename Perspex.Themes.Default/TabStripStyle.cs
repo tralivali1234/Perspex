@@ -8,12 +8,19 @@ namespace Perspex.Themes.Default
 {
     using System.Linq;
     using Perspex.Controls;
-    using Perspex.Controls.Presenters;
-    using Perspex.Controls.Primitives;
+    using Perspex.Controls.Core;
+    using Perspex.Controls.Standard;
+    using Perspex.Controls.Standard.Presenters;
     using Perspex.Styling;
 
+    /// <summary>
+    /// The default style for the <see cref="TabStrip"/> class.
+    /// </summary>
     public class TabStripStyle : Styles
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabStripStyle"/> class.
+        /// </summary>
         public TabStripStyle()
         {
             this.AddRange(new[]
@@ -22,10 +29,10 @@ namespace Perspex.Themes.Default
                 {
                     Setters = new[]
                     {
-                        new Setter(TabStrip.TemplateProperty, ControlTemplate.Create<TabStrip>(this.Template)),
+                        new Setter(TabStrip.TemplateProperty, new LooklessControlTemplate<TabStrip>(Template)),
                     },
                 },
-                new Style(x => x.OfType<TabStrip>().Template().OfType<ItemsPresenter>().Template().OfType<StackPanel>())
+                new Style(x => x.OfType<TabStrip>().Template().OfType<SelectorPresenter>().Template().OfType<StackPanel>())
                 {
                     Setters = new[]
                     {
@@ -36,13 +43,18 @@ namespace Perspex.Themes.Default
             });
         }
 
-        private Control Template(TabStrip control)
+        /// <summary>
+        /// The default template for the <see cref="TabStrip"/> control.
+        /// </summary>
+        /// <param name="control">The control to which the template is being applied.</param>
+        /// <returns>The root of the materialized template.</returns>
+        public static Control Template(TabStrip control)
         {
-            return new ItemsPresenter
+            return new SelectorPresenter
             {
                 Name = "itemsPresenter",
-                [~ItemsPresenter.ItemsProperty] = control[~ItemsControl.ItemsProperty],
-                [~ItemsPresenter.ItemsPanelProperty] = control[~ItemsControl.ItemsPanelProperty],
+                [~SelectorPresenter.ItemsProperty] = control[~ItemsControl.ItemsProperty],
+                [~SelectorPresenter.ItemsPanelProperty] = control[~ItemsControl.ItemsPanelProperty],
             };
         }
     }

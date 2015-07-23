@@ -15,10 +15,19 @@
             var application = new App();
             var window = new Window();
 
-            window.Content = new ItemsControl
+            window.Content = new TabStrip
             {
-                Margin = new Thickness(16),
-                Items = new[] { "Foo", "Bar" }
+                Items = new[]
+                {
+                    new TabItem
+                    {
+                        Header = "Buttons",
+                    },
+                    new TabItem
+                    {
+                        Header = "Text",
+                    },
+                }
             };
 
             window.PointerPressed += (s, e) =>

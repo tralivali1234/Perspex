@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ItemsPresenter.cs" company="Steven Kirk">
+// <copyright file="RepeatPresenter.cs" company="Steven Kirk">
 // Copyright 2015 MIT Licence. See licence.md for more information.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -9,23 +9,24 @@ namespace Perspex.Controls.Standard.Presenters
     using Perspex.Controls.Core;
 
     /// <summary>
-    /// Presents a collection of data inside a <see cref="LooklessControl"/> template.
+    /// Presents a collection of data inside a <see cref="LooklessControl"/> template using a
+    /// <see cref="Repeat"/> control.
     /// </summary>
-    public class ItemsPresenter : Repeat, IItemsPresenter
+    public class RepeatPresenter : Repeat, IItemsPresenter
     {
         /// <summary>
         /// Defines the <see cref="ItemsPanel"/> property.
         /// </summary>
         public static readonly PerspexProperty<ITemplate<IPanel>> ItemsPanelProperty =
-            ItemsControl.ItemsPanelProperty.AddOwner<ItemsPresenter>();
+            ItemsControl.ItemsPanelProperty.AddOwner<RepeatPresenter>();
 
         /// <summary>
-        /// Initializes static members of the <see cref="ItemsPresenter"/> class.
+        /// Initializes static members of the <see cref="RepeatPresenter"/> class.
         /// </summary>
-        static ItemsPresenter()
+        static RepeatPresenter()
         {
-            ItemsPanelProperty.OverrideDefaultValue<ItemsPresenter>(null);
-            ItemsPanelProperty.Changed.AddClassHandler<ItemsPresenter>(x => x.ItemsPanelChanged);
+            ItemsPanelProperty.OverrideDefaultValue<RepeatPresenter>(null);
+            ItemsPanelProperty.Changed.AddClassHandler<RepeatPresenter>(x => x.ItemsPanelChanged);
         }
 
         /// <summary>

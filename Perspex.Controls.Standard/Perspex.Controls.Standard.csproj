@@ -85,13 +85,16 @@
     <Compile Include="LooklessControlTemplate.cs" />
     <Compile Include="LooklessControlTemplate`1.cs" />
     <Compile Include="Presenters\IItemsPresenter.cs" />
-    <Compile Include="Presenters\ItemsPresenter.cs" />
+    <Compile Include="Presenters\SelectorPresenter.cs" />
+    <Compile Include="Presenters\RepeatPresenter.cs" />
     <Compile Include="Presenters\ContentPresenter.cs" />
     <Compile Include="ILooklessControl.cs" />
     <Compile Include="Primitives\HeaderedContentControl.cs" />
+    <Compile Include="Primitives\SelectingItemsControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LooklessControl.cs" />
     <Compile Include="StandardControl.cs" />
+    <Compile Include="TabStrip.cs" />
     <Compile Include="TabItem.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace Perspex.Controls.Standard
     using Perspex.Controls.Standard.Primitives;
 
     /// <summary>
-    /// An item in a <see cref="TabStrip"/> or <see cref="TabControl"/>.
+    /// An item in a <see cref="TabStrip"/> or <see cref="TabStrip"/>.
     /// </summary>
     public class TabItem : HeaderedContentControl, ISelectable
     {
