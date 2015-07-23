@@ -31,17 +31,6 @@ namespace Perspex.Controls.Core.Generators
         }
 
         /// <summary>
-        /// Clears the created containers from the index and returns the removed controls.
-        /// </summary>
-        /// <returns>The removed controls.</returns>
-        public IEnumerable<IControl> ClearContainers()
-        {
-            var result = this.containers;
-            this.containers = new Dictionary<int, IControl>();
-            return result.Values;
-        }
-
-        /// <summary>
         /// Creates container controls for a collection of items.
         /// </summary>
         /// <param name="startingIndex">
@@ -50,7 +39,7 @@ namespace Perspex.Controls.Core.Generators
         /// <param name="items">The items.</param>
         /// <param name="itemTemplate">An optional item template.</param>
         /// <returns>The created container controls.</returns>
-        public IEnumerable<IControl> CreateContainers(
+        public IList<IControl> CreateContainers(
             int startingIndex,
             IEnumerable items,
             IDataTemplate itemTemplate)
@@ -67,7 +56,7 @@ namespace Perspex.Controls.Core.Generators
             }
 
             this.AddContainers(startingIndex, result);
-            return result.Where(x => x != null);
+            return result.Where(x => x != null).ToList();
         }
 
         /// <summary>
@@ -78,7 +67,7 @@ namespace Perspex.Controls.Core.Generators
         /// </param>
         /// <param name="count">The number of items to remove.</param>
         /// <returns>The removed controls.</returns>
-        public IEnumerable<IControl> RemoveContainers(int startingIndex, int count)
+        public IList<IControl> RemoveContainers(int startingIndex, int count)
         {
             var result = new List<IControl>();
 
@@ -95,7 +84,48 @@ namespace Perspex.Controls.Core.Generators
                 this.containers[i] = null;
             }
 
-            return result.Where(x => x != null);
+            return result.Where(x => x != null).ToList();
+        }
+
+        /// <summary>
+        /// Clears the created containers from the index and returns the removed controls.
+        /// </summary>
+        /// <returns>The removed controls.</returns>
+        public IList<IControl> ClearContainers()
+        {
+            var result = this.containers;
+            this.containers = new Dictionary<int, IControl>();
+            return result.Values.ToList();
+        }
+
+        /// <summary>
+        /// Gets the container control representing the item with the specified index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The container or null if no container created.</returns>
+        public IControl ContainerFromIndex(int index)
+        {
+            IControl result;
+            this.containers.TryGetValue(index, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the index of the specified container control.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <returns>The index of the container or -1 if not found.</returns>
+        public int IndexFromContainer(IControl container)
+        {
+            foreach (var i in this.containers)
+            {
+                if (i.Value == container)
+                {
+                    return i.Key;
+                }
+            }
+
+            return -1;
         }
 
         /// <summary>

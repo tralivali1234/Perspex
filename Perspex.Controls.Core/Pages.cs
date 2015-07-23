@@ -26,7 +26,7 @@ namespace Perspex.Controls.Core
         /// Defines the <see cref="SelectedItem"/> property.
         /// </summary>
         public static readonly PerspexProperty<IControl> SelectedItemProperty =
-            Selector.SelectedItemProperty.AddOwner<Pages>();
+            PerspexProperty.Register<Pages, IControl>(nameof(SelectedItem));
 
         private static readonly SelectorMixin<Pages, IControl> SelectorMixin;
 
@@ -48,7 +48,7 @@ namespace Perspex.Controls.Core
         public Pages()
         {
             this.Children.ForEachItem(
-                x => SelectorMixin.ItemAdded(this, x),
+                x => { },
                 x => SelectorMixin.ItemRemoved(this, x));
         }
 

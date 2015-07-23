@@ -7,49 +7,20 @@
 namespace Perspex.Controls.Core
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Perspex.Controls.Core.Mixins;
-    using Perspex.Collections;
     using Perspex.Input;
     using Perspex.VisualTree;
     using Perspex.Interactivity;
+    using Perspex.Styling;
 
     /// <summary>
-    /// Hosts an <see cref="IPanel"/> whose children can be selected.
+    /// Displays a selectable collection of data.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// The Selector control extends <see cref="Repeat"/> and makes the children of the
-    /// <see cref="Panel"/> selectable. If the <see cref="IsUserSelectable"/> property is set
-    /// (the default) then a child will become selected when it is clicked, or when it gains
-    /// keyboard focus. The selected control will be marked in one of two ways:
-    /// </para>
-    /// <list type="bullet">
-    /// <item>
-    /// If the control implements <see cref="ISelectable"/> then its
-    /// <see cref="ISelectable.IsSelected"/> property will be set.
-    /// </item>
-    /// <item>
-    /// Otherwise, a "selected" class will be added to the selected child.
-    /// </item>
-    /// </list>
-    /// <para>
-    /// The Panel can be populated in one of two ways:
-    /// </para>
-    /// <list type="bullet">
-    /// <item>
-    /// Controls can be added manually.
-    /// </item>
-    /// <item>
-    /// Controls can be created from the <see cref="Repeat.Items"/> collection based on an
-    /// <see cref="Repeat.ItemTemplate"/> (see the base <see cref="Repeat"/> control's
-    /// documentation for more information).
-    /// </item>
-    /// </list>
-    /// <para>
-    /// Though it is possible to manipulate the children of <see cref="Panel"/> when
-    /// <see cref="Repeat.Items"/> are assigned, it is not recommended.
-    /// </para>
+    /// The <see cref="Selector"/> control extends the <see cref="Repeat"/> control to
+    /// provide selection behavior.
     /// </remarks>
     public class Selector : Repeat
     {
@@ -60,6 +31,12 @@ namespace Perspex.Controls.Core
             PerspexProperty.Register<Selector, bool>(nameof(IsUserSelectable), true);
 
         /// <summary>
+        /// Defines the <see cref="SelectedContainer"/> property.
+        /// </summary>
+        public static readonly PerspexProperty<IControl> SelectedContainerProperty =
+            PerspexProperty.Register<Selector, IControl>(nameof(SelectedContainer));
+
+        /// <summary>
         /// Defines the <see cref="SelectedIndex"/> property.
         /// </summary>
         public static readonly PerspexProperty<int> SelectedIndexProperty =
@@ -68,29 +45,30 @@ namespace Perspex.Controls.Core
         /// <summary>
         /// Defines the <see cref="SelectedItem"/> property.
         /// </summary>
-        public static readonly PerspexProperty<IControl> SelectedItemProperty =
-            PerspexProperty.Register<Selector, IControl>(nameof(SelectedItem));
+        public static readonly PerspexProperty<object> SelectedItemProperty =
+            PerspexProperty.Register<Selector, object>(nameof(SelectedItem));
 
         /// <summary>
-        /// Event that should be raised by items that implement <see cref="ISelectable"/> to
+        /// Event that should be raised by controls that implement <see cref="ISelectable"/> to
         /// notify the parent <see cref="Selector"/> that their selection state has changed.
         /// </summary>
         public static readonly RoutedEvent<RoutedEventArgs> IsSelectedChangedEvent =
             RoutedEvent.Register<Selector, RoutedEventArgs>("IsSelectedChanged", RoutingStrategies.Bubble);
 
-        private static readonly SelectorMixin<Selector, IControl> SelectorMixin;
-
-        private IDisposable childSubscription;
+        private static readonly SelectorMixin<Selector, object> SelectorMixin;
 
         /// <summary>
         /// Initializes static members of the <see cref="Selector"/> class.
         /// </summary>
         static Selector()
         {
-            SelectorMixin = new SelectorMixin<Selector, IControl>(
+            SelectorMixin = new SelectorMixin<Selector, object>(
                 SelectedIndexProperty,
                 SelectedItemProperty,
-                x => x.Panel?.Children);
+                x => x.Items);
+
+            SelectedContainerProperty.Changed.AddClassHandler<Selector>(x => x.SelectedContainerChanged);
+            SelectedIndexProperty.Changed.AddClassHandler<Selector>(x => x.SelectedIndexChanged);
         }
 
         /// <summary>
@@ -103,11 +81,20 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
-        /// Gets or sets the index of the child to be shown.
+        /// Gets or sets the selected container control.
+        /// </summary>
+        public IControl SelectedContainer
+        {
+            get { return this.GetValue(SelectedContainerProperty); }
+            set { this.SetValue(SelectedContainerProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the index of the selected item.
         /// </summary>
         /// <remarks>
         /// The valid range for this property value is from -1 (no selection) to
-        /// <see cref="Children.Count"/> - 1. If an attempt is made to set the property
+        /// <see cref="Items.Count"/> - 1. If an attempt is made to set the property
         /// to a value outside this range, then the selection will be cleared.
         /// </remarks>
         public int SelectedIndex
@@ -117,16 +104,27 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
-        /// Gets or sets the child to be shown.
+        /// Gets or sets the selected item.
         /// </summary>
         /// <remarks>
         /// If an attempt is made to set the property to a object not contained in the
         /// <see cref="Children"/> collection then the selection will be cleared.
         /// </remarks>
-        public IControl SelectedItem
+        public object SelectedItem
         {
             get { return this.GetValue(SelectedItemProperty); }
             set { this.SetValue(SelectedItemProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        protected override void ContainersRemoved(IList<IControl> containers)
+        {
+            var selected = this.SelectedContainer;
+
+            if (selected != null && containers.Contains(selected))
+            {
+                this.SelectedIndex = -1;
+            }
         }
 
         /// <inheritdoc/>
@@ -150,20 +148,55 @@ namespace Perspex.Controls.Core
         protected override void PanelChanged(PerspexPropertyChangedEventArgs e)
         {
             base.PanelChanged(e);
+            this.SelectedIndex = -1;
+        }
 
-            var panel = e.NewValue as IPanel;
+        /// <summary>
+        /// Called when the <see cref="SelectedContainer"/> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void SelectedContainerChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var container = (IControl)e.NewValue;
 
-            if (this.childSubscription != null)
+            if (container != null)
             {
-                this.childSubscription.Dispose();
-                this.SelectedItem = null;
+                var selectable = container as ISelectable;
+                var styleable = container as IStyleable;
+
+                if (selectable != null)
+                {
+                    selectable.IsSelected = true;
+                }
+                else if (styleable != null)
+                {
+                    styleable.Classes.Add("selected");
+                }
+
+                this.SelectedIndex = this.ItemContainerGenerator.IndexFromContainer(container);
             }
-
-            if (panel != null)
+            else
             {
-                this.childSubscription = panel.Children.ForEachItem(
-                    x => SelectorMixin.ItemAdded(this, x),
-                    x => SelectorMixin.ItemRemoved(this, x));
+                this.SelectedIndex = -1;
+            }
+        }
+
+        /// <summary>
+        /// Called when the <see cref="SelectedIndex"/> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void SelectedIndexChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var index = (int)e.NewValue;
+
+            if (index != -1)
+            {
+                var container = this.ItemContainerGenerator.ContainerFromIndex(index);
+                this.SelectedContainer = container;
+            }
+            else
+            {
+                this.SelectedContainer = null;
             }
         }
 
@@ -179,8 +212,9 @@ namespace Perspex.Controls.Core
                 e.Source != this &&
                 e.Source != this.Panel)
             {
-                this.SelectedItem = (IControl)((IVisual)e.Source).GetSelfAndVisualAncestors()
+                this.SelectedContainer = (IControl)((IVisual)e.Source).GetSelfAndVisualAncestors()
                     .First(x => x.VisualParent == this.Panel);
+                e.Handled = true;
             }
         }
     }

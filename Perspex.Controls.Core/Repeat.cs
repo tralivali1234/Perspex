@@ -8,6 +8,7 @@ namespace Perspex.Controls.Core
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using Perspex.Controls.Core.Generators;
@@ -162,6 +163,14 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
+        /// Called when containers are removed.
+        /// </summary>
+        /// <param name="containers">The containers that were removed.</param>
+        protected virtual void ContainersRemoved(IList<IControl> containers)
+        {
+        }
+
+        /// <summary>
         /// Called when the <see cref="Panel"/> property changes.
         /// </summary>
         /// <param name="e">The event args.</param>
@@ -273,6 +282,7 @@ namespace Perspex.Controls.Core
                 var containers = this.ItemContainerGenerator.RemoveContainers(startingIndex, count);
                 this.Panel.Children.RemoveAll(containers);
                 this.SetValue(IsEmptyProperty, this.Panel.Children.Count == 0);
+                this.ContainersRemoved(containers);
             }
         }
 
