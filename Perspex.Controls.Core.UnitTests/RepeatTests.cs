@@ -370,6 +370,34 @@ namespace Perspex.Controls.Core.UnitTests
             Assert.IsType<Border>(target.Panel.Children[1]);
         }
 
+        [Fact]
+        public void MemberSelector_Selects_Properties()
+        {
+            var target = new Repeat
+            {
+                Panel = new StackPanel(),
+                MemberSelector = x => ((Item)x).Name,
+                Items = new[]
+                {
+                    new Item("Foo"),
+                    new Item("Bar"),
+                },
+            };
+
+            Assert.Equal("Foo", ((TextBlock)target.Panel.Children[0]).Text);
+            Assert.Equal("Bar", ((TextBlock)target.Panel.Children[1]).Text);
+        }
+
+        private class Item
+        {
+            public Item(string name)
+            {
+                this.Name = name;
+            }
+
+            public string Name { get; }
+        }
+
         private class TestGenerator : ItemContainerGenerator
         {
             public TestGenerator(IControl owner)

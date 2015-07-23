@@ -11,8 +11,8 @@ namespace Perspex.Controls.Core
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using Perspex.Controls.Core.Generators;
     using Perspex.Collections;
+    using Perspex.Controls.Core.Generators;
 
     /// <summary>
     /// Displays a collection of data according to a <see cref="DataTemplate"/>.
@@ -148,6 +148,17 @@ namespace Perspex.Controls.Core
         }
 
         /// <summary>
+        /// Gets or sets an object that selects a member on <see cref="Items"/> to display.
+        /// </summary>
+        /// TODO: Should probably create an IMemberSelector interface so that this can be set
+        /// from XAML.
+        public Func<object, object> MemberSelector
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the panel containing the items.
         /// </summary>
         public IPanel Panel
@@ -272,6 +283,11 @@ namespace Perspex.Controls.Core
         {
             if (this.Panel != null)
             {
+                if (this.MemberSelector != null)
+                {
+                    items = items.Cast<object>().Select(this.MemberSelector);
+                }
+
                 var containers = this.ItemContainerGenerator.CreateContainers(startingIndex, items, this.ItemTemplate);
                 this.Panel.Children.AddRange(containers);
                 this.SetValue(IsEmptyProperty, this.Panel.Children.Count == 0);

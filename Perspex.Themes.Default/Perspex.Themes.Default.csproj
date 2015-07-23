@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ItemsControlStyle.cs" />
+    <Compile Include="TabControlStyle.cs" />
     <Compile Include="TabItemStyle.cs" />
     <Compile Include="TabStripStyle.cs" />
     <Compile Include="WindowStyle.cs" />

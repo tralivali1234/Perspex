@@ -1,12 +1,12 @@
 ﻿namespace TestApplication
 {
-    using Perspex;
-    using Perspex.Controls;
+    using System.Linq;
     using Perspex.Controls.Core;
     using Perspex.Controls.Standard;
     using Perspex.Controls.Windowing;
     using Perspex.Media;
     using Perspex.Styling;
+    using Perspex.VisualTree;
 
     class Program
     {
@@ -15,24 +15,26 @@
             var application = new App();
             var window = new Window();
 
-            window.Content = new TabStrip
+            window.Content = new TabControl
             {
                 Items = new[]
                 {
                     new TabItem
                     {
                         Header = "Buttons",
+                        Content = "Buttons tab here",
                     },
                     new TabItem
                     {
                         Header = "Text",
+                        Content = "Text tab here",
                     },
                 }
             };
 
             window.PointerPressed += (s, e) =>
             {
-
+                var pages = window.GetVisualDescendents().OfType<Pages>().Single();
             };
 
             window.Show();

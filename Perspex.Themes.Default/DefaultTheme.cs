@@ -29,7 +29,7 @@ namespace Perspex.Themes.Default
             //this.Add(new RadioButtonStyle());
             //this.Add(new ScrollBarStyle());
             //this.Add(new ScrollViewerStyle());
-            //this.Add(new TabControlStyle());
+            this.Add(new TabControlStyle());
             this.Add(new TabItemStyle());
             this.Add(new TabStripStyle());
             //this.Add(new TextBoxStyle());

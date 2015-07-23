@@ -6,18 +6,20 @@
 
 namespace Perspex.Themes.Default
 {
-    using System.Linq;
-    using System.Reactive.Linq;
-    using Perspex.Controls;
-    using Perspex.Controls.Presenters;
-    using Perspex.Controls.Primitives;
-    using Perspex.Styling;
-    using Perspex.Controls.Templates;
-    using Perspex.Animation;
     using System;
+    using Perspex.Controls;
+    using Perspex.Controls.Core;
+    using Perspex.Controls.Standard;
+    using Perspex.Styling;
 
+    /// <summary>
+    /// The default style for the <see cref="TabControl"/> class.
+    /// </summary>
     public class TabControlStyle : Styles
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabControlStyle"/> class.
+        /// </summary>
         public TabControlStyle()
         {
             this.AddRange(new[]
@@ -26,13 +28,18 @@ namespace Perspex.Themes.Default
                 {
                     Setters = new[]
                     {
-                        new Setter(TabControl.TemplateProperty, ControlTemplate.Create<TabControl>(this.Template)),
+                        new Setter(TabControl.TemplateProperty, new LooklessControlTemplate<TabControl>(Template)),
                     },
                 },
             });
         }
 
-        private Control Template(TabControl control)
+        /// <summary>
+        /// The default template for the <see cref="TabControl"/> control.
+        /// </summary>
+        /// <param name="control">The control to which the template is being applied.</param>
+        /// <returns>The root of the materialized template.</returns>
+        private static Control Template(TabControl control)
         {
             return new Grid
             {
@@ -47,18 +54,16 @@ namespace Perspex.Themes.Default
                     {
                         Name = "tabStrip",
                         [~TabStrip.ItemsProperty] = control[~TabControl.ItemsProperty],
-                        [!!TabStrip.SelectedItemProperty] = control[!!TabControl.SelectedItemProperty],
+                        [!!TabStrip.SelectedIndexProperty] = control[!!TabControl.SelectedIndexProperty],
                     },
-                    new Deck
+                    new Repeat
                     {
-                        Name = "deck",
-                        DataTemplates = new DataTemplates
+                        Panel = new Pages
                         {
-                            new DataTemplate<TabItem>(x => control.MaterializeDataTemplate(x.Content)),
+                            [!Pages.SelectedIndexProperty] = control[!TabControl.SelectedIndexProperty]
                         },
-                        [~Deck.ItemsProperty] = control[~TabControl.ItemsProperty],
-                        [!Deck.SelectedItemProperty] = control[!TabControl.SelectedItemProperty],
-                        [~Deck.TransitionProperty] = control[~TabControl.TransitionProperty],
+                        MemberSelector = x => (x as TabItem)?.Content ?? x,
+                        [~Repeat.ItemsProperty] = control[~TabControl.ItemsProperty],
                         [Grid.RowProperty] = 1,
                     }
                 }
