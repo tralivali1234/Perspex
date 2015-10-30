@@ -1,0 +1,8 @@
+﻿<Window xmlns="https://github.com/perspex"
+        xmlns:pages="clr-namespace:ControlCatalog.Pages;assembly=ControlCatalog">
+  <TabControl Classes="sidebar">
+    <TabItem Header="Button">
+      <pages:ButtonPage/>
+    </TabItem>
+  </TabControl>
+</Window>
