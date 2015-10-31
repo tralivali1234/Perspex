@@ -52,6 +52,15 @@
     <Compile Include="MainWindow.paml.cs">
       <DependentUpon>MainWindow.paml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\BorderPage.paml.cs">
+      <DependentUpon>BorderPage.paml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CarouselPage.paml.cs">
+      <DependentUpon>CarouselPage.paml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CanvasPage.paml.cs">
+      <DependentUpon>CanvasPage.paml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ButtonPage.paml.cs">
       <DependentUpon>ButtonPage.paml</DependentUpon>
     </Compile>
@@ -69,6 +78,15 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.paml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\BorderPage.paml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\CanvasPage.paml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\CarouselPage.paml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -149,6 +167,13 @@
       <Project>{811a76cf-1cf6-440f-963b-bbe31bd72a82}</Project>
       <Name>Perspex.Win32</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\hirsch-899118_640.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\delicate-arch-896885_640.jpg" />
+    <EmbeddedResource Include="Assets\maple-leaf-888807_640.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,10 +26,14 @@
     </Setter>
   </Style>
 
+  <Style Selector="TabStrip.sidebar TabItem">
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="8"/>
+  </Style>
+
   <Style Selector="TabStrip.sidebar TabItem:selected">
     <Setter Property="Background" Value="#20ffffff"/>
-    <Setter Property="Foreground" Value="White"/>
-    <Setter Property="Margin" Value="0"/>
-    <Setter Property="Padding" Value="4"/>
   </Style>
 </Styles>

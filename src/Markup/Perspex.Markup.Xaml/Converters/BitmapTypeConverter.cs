@@ -3,8 +3,10 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using OmniXaml.TypeConversion;
 using Perspex.Media.Imaging;
+using Perspex.Platform;
 
 namespace Perspex.Markup.Xaml.Converters
 {
@@ -22,7 +24,18 @@ namespace Perspex.Markup.Xaml.Converters
 
         public object ConvertFrom(IXamlTypeConverterContext context, CultureInfo culture, object value)
         {
-            return new Bitmap((string)value);
+            var uri = new Uri((string)value);
+
+            if (uri.Scheme == "resource")
+            {
+                var assetLoader = PerspexLocator.Current.GetService<IAssetLoader>();
+                var stream = assetLoader.Open(uri);
+                return new Bitmap(stream);
+            }
+            else
+            {
+                return new Bitmap((string)value);
+            }
         }
 
         public object ConvertTo(IXamlTypeConverterContext context, CultureInfo culture, object value, Type destinationType)
