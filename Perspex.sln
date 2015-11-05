@@ -105,6 +105,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlTestApplicationPcl", "samples\XamlTestApplicationPcl\XamlTestApplicationPcl.csproj", "{EA113F1A-D8D7-4142-9948-353270E7EBAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlCatalog", "samples\ControlCatalog\ControlCatalog.csproj", "{61BEC86C-F307-4295-B5B8-9428610D7D55}"
+EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RenderHelpers", "src\Shared\RenderHelpers\RenderHelpers.shproj", "{3C4C0CB4-0C0F-4450-A37B-148C84FF905F}"
 EndProject
 Global
