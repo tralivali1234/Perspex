@@ -37,6 +37,9 @@ namespace Perspex.Controls
         public static readonly PerspexProperty<string> TextProperty =
             TextBlock.TextProperty.AddOwner<TextBox>();
 
+        public static readonly PerspexProperty<TextAlignment> TextAlignmentProperty =
+            TextBlock.TextAlignmentProperty.AddOwner<TextBox>();
+
         public static readonly PerspexProperty<TextWrapping> TextWrappingProperty =
             TextBlock.TextWrappingProperty.AddOwner<TextBox>();
 
@@ -109,6 +112,12 @@ namespace Perspex.Controls
             set { SetValue(TextProperty, value); }
         }
 
+        public TextAlignment TextAlignment
+        {
+            get { return GetValue(TextAlignmentProperty); }
+            set { SetValue(TextAlignmentProperty, value); }
+        }
+
         public string Watermark
         {
             get { return GetValue(WatermarkProperty); }
@@ -127,9 +136,9 @@ namespace Perspex.Controls
             set { SetValue(TextWrappingProperty, value); }
         }
 
-        protected override void OnTemplateApplied()
+        protected override void OnTemplateApplied(INameScope nameScope)
         {
-            _presenter = this.GetTemplateChild<TextPresenter>("PART_TextPresenter");
+            _presenter = nameScope.Get<TextPresenter>("PART_TextPresenter");
             _presenter.Cursor = new Cursor(StandardCursorType.Ibeam);
         }
 
