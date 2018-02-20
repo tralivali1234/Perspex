@@ -9,6 +9,7 @@
 *.suo
 *.user
 *.sln.docstates
+.vs/
 
 # Build results
 
@@ -73,10 +74,6 @@ _TeamCity*
 # DotCover is a Code Coverage Tool
 *.dotCover
 
-# NCrunch
-*.ncrunch*
-.*crunch*.local.xml
-
 # Installshield output folder
 [Ee]xpress/
 
@@ -107,6 +104,11 @@ csx
 
 # Windows Store app package directory
 AppPackages/
+
+# NCrunch
+_NCrunch_*/
+*.ncrunchsolution.user
+nCrunchTemp_*
 
 # Others
 sql/
@@ -156,3 +158,23 @@ $RECYCLE.BIN/
 #################
 *.userprefs
 *.nugetreferenceswitcher
+
+
+#################
+## Rider
+#################
+.idea
+
+#################
+## Cake
+#################
+tools/*
+!tools/packages.config
+.nuget
+artifacts/
+nuget
+Avalonia.XBuild.sln
+project.lock.json
+.idea/*
+**/obj-Skia/*
+**/obj-Direct2D1/*

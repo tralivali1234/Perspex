@@ -6,11 +6,10 @@
     <SharedGUID>3c4c0cb4-0c0f-4450-a37b-148c84ff905f</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Perspex.RenderHelpers</Import_RootNamespace>
+    <Import_RootNamespace>Avalonia.RenderHelpers</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ArcToHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)QuadBezierHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TileBrushImplHelper.cs" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,20 @@
+<Style xmlns="https://github.com/avaloniaui" Selector="ProgressBar">
+  <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush4}"/>
+  <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
+  <Setter Property="Template">
+    <ControlTemplate>
+      <Border Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}">
+        <Grid>
+          <Border Name="PART_Track"
+                  BorderThickness="1"
+                  BorderBrush="{TemplateBinding Background}"/>
+          <Border Name="PART_Indicator"
+                  BorderThickness="1"
+                  Background="{TemplateBinding Foreground}"/>
+        </Grid>
+      </Border>
+    </ControlTemplate>
+  </Setter>
+</Style>

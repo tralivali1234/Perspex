@@ -1,61 +1,50 @@
-# Perspex
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Perspex/Perspex?utm_campaign=pr-badge&utm_content=badge&utm_medium=badge&utm_source=badge)
+<img src='https://avatars2.githubusercontent.com/u/14075148?s=200&v=4' width='100' />
 
-[![Build status](https://ci.appveyor.com/api/projects/status/hubk3k0w9idyibfg/branch/master?svg=true)](https://ci.appveyor.com/project/Perspex/Perspex/branch/master)
+# Avalonia
 
-A multi-platform .NET UI framework. It can run on Windows, Linux, Mac OS X, iOS and Android.
+| Gitter Chat | Windows Build Status | Linux/Mac Build Status |
+|---|---|---|
+| [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/AvaloniaUI/Avalonia?utm_campaign=pr-badge&utm_content=badge&utm_medium=badge&utm_source=badge) | [![Build status](https://ci.appveyor.com/api/projects/status/hubk3k0w9idyibfg/branch/master?svg=true)](https://ci.appveyor.com/project/AvaloniaUI/Avalonia/branch/master) | [![Build Status](https://travis-ci.org/AvaloniaUI/Avalonia.svg?branch=master)](https://travis-ci.org/AvaloniaUI/Avalonia) |
 
-![](docs/screen.png)
+## About
 
-Desktop platforms:
+Avalonia is a WPF-inspired cross-platform XAML-based UI framework providing a flexible styling system and supporting a wide range of OSs: Windows (.NET Framework, .NET Core), Linux (GTK), MacOS, Android and iOS.
 
-<a href='https://www.youtube.com/watch?t=28&v=c_AB_XSILp0' target='_blank'>![](docs/perspex-video.png)<a/>
+<b>Avalonia is now in alpha.</b> This means that framework is now at a stage where you can have a play and hopefully create simple applications. There's still a lot missing, and you *will* find bugs, and the API *will* change, but this represents the first time where we've made it somewhat easy to have a play and experiment with the framework.
 
-Mobile platforms:
+| Control catalog | Desktop platforms | Mobile platforms |
+|---|---|---|
+| <a href='https://youtu.be/wHcB3sGLVYg'><img width='300' src='http://avaloniaui.net/images/screen.png'></a> | <a href='https://www.youtube.com/watch?t=28&v=c_AB_XSILp0' target='_blank'><img width='300' src='http://avaloniaui.net/images/avalonia-video.png'></a> | <a href='https://www.youtube.com/watch?v=NJ9-hnmUbBM' target='_blank'><img width='300' src='https://i.ytimg.com/vi/NJ9-hnmUbBM/hqdefault.jpg'></a> |
 
-<a href='https://www.youtube.com/watch?t=28&v=c_AB_XSILp0 target='_blank'>![](https://i.ytimg.com/vi/NJ9-hnmUbBM/hqdefault.jpg)<a/>
+## Getting Started
 
-## NuGet
+Avalonia [Visual Studio Extension](https://marketplace.visualstudio.com/items?itemName=AvaloniaTeam.AvaloniaforVisualStudio) contains project and control templates that will help you get started. After installing it, open "New Project" dialog in Visual Studio, choose "Avalonia" in "Visual C#" section, select "Avalonia .NET Core Application" and press OK (<a href="http://avaloniaui.net/tutorial/images/add-dialogs.png">screenshot</a>). Now you can write code and markup that will work on multiple platforms!
 
-Perspex is delivered as a NuGet package.
-You can find the packages here: ([stable(ish)](https://www.nuget.org/packages/Perspex/), [nightly](https://github.com/Perspex/Perspex/wiki/Using-nightly-build-feed))
+Avalonia is delivered via <b>NuGet</b> package manager. You can find the packages here: ([stable(ish)](https://www.nuget.org/packages/Avalonia/), [nightly](https://github.com/AvaloniaUI/Avalonia/wiki/Using-nightly-build-feed))
 
-You can install the package like this:
-`Install-Package Perspex -Pre`
+Use these commands in Package Manager console to install Avalonia manually:
+```
+Install-Package Avalonia
+Install-Package Avalonia.Desktop
+```
 
-## Background
+## Bleeding Edge Builds
 
-Perspex is a multi-platform windowing toolkit - somewhat like WPF - that is intended to be multi-
-platform. It supports XAML, lookless controls and a flexible styling system, and runs on Windows
-using Direct2D and other operating systems using Gtk & Cairo.
-
-## Current Status
-
-Perspex is now in alpha. What does "alpha" mean? Well, it means that it's now at a stage where you
-can have a play and hopefully create simple applications. There's now a [Visual
-Studio Extension](https://visualstudiogallery.msdn.microsoft.com/a4542e8a-b56c-4295-8df1-7e220178b873)
-containing project and item templates that will help you get started, and
-there's an initial complement of controls. There's still a lot missing, and you
-*will* find bugs, and the API *will* change, but this represents the first time
-where we've made it somewhat easy to have a play and experiment with the
-framework.
+Try out the latest build of Avalonia available for download here:
+https://ci.appveyor.com/project/AvaloniaUI/Avalonia/branch/master/artifacts
 
 ## Documentation
 
-As mentioned above, Perspex is still in alpha and as such there's not much documentation yet. You can
-take a look at the [getting started page](docs/gettingstarted.md) for an
-overview of how to get started but probably the best thing to do for now is to already know a little bit
-about WPF/Silverlight/UWP/XAML and ask questions in our [Gitter room](https://gitter.im/Perspex/Perspex).
+As mentioned above, Avalonia is still in alpha and as such there's not much documentation yet. You can take a look at the [getting started page](http://avaloniaui.net/guides/quickstart) for an overview of how to get started but probably the best thing to do for now is to already know a little bit about WPF/Silverlight/UWP/XAML and ask questions in our [Gitter room](https://gitter.im/AvaloniaUI/Avalonia).
 
-There's also a high-level [architecture document](docs/architecture.md) that is currently a little bit
-out of date, and I've also started writing blog posts on Perspex at http://grokys.github.io/.
+There's also a high-level [architecture document](http://avaloniaui.net/architecture/project-structure) that is currently a little bit out of date, and I've also started writing blog posts on Avalonia at http://grokys.github.io/.
 
 Contributions are always welcome!
 
 ## Building and Using
 
-See the [build instructions here](https://github.com/grokys/Perspex/blob/master/docs/build.md)
+See the [build instructions here](http://avaloniaui.net/guidelines/build).
 
-## Contributing ##
+## Contributing
 
-Please read the [contribution guidelines](docs/contributing.md) before submitting a pull request.
+Please read the [contribution guidelines](http://avaloniaui.net/guidelines/contributing) before submitting a pull request.
